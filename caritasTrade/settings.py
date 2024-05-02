@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'data_base',
+    'landing_page',
     'affiliate_registration'
 ]
 
