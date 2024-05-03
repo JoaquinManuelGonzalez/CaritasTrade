@@ -22,5 +22,5 @@ from affiliate_registration import views as affiliate_registration_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration_form/', affiliate_registration_views.registration_form, name='registration_form'),
-    path('landing_page/', landing_page_views.landing_page, name='landing_page'),
+    path('', landing_page_views.landing_page, name='landing_page'),
 ]
