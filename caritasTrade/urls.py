@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from landing_page import views as landing_page_views
+from affiliate_registration import views as affiliate_registration_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('landing_page/', landing_page_views.landing_page),
+    path('registration_form/', affiliate_registration_views.registration_form)
 ]
