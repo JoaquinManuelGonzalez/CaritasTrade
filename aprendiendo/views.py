@@ -39,23 +39,29 @@ def createAfiliado(request):
     else:
         # Crear un objeto Reputation
         reputation=Reputation.objects.create()
+        reputation.save()
         # Crear un objeto Affiliate, asignando la clave foránea al objeto Reputation creado anteriormente
-        Affiliate.objects.create(dni=request.POST['dni'],
+        afiliado = Affiliate.objects.create(dni=request.POST['dni'],
         email=request.POST['email'],
         name = request.POST['name'], 
         surname = request.POST['surname'],
         phone_number = request.POST['phone_number'],
         password=request.POST['password'],
-        birth_day='',
+        birth_day='2000-12-12',
         reputation_id=reputation)
         # Redirigir a la página de afiliados
+        afiliado.save()
+        print("HOLA MUNDO")
         return redirect('afiliado')
 
 
 def mostrarDatos (request, id):
-    usuario = get_object_or_404(Affiliate,id=id)  #mostrar el 404 es lo correcto si no encuentra el objeto
-    print(id)
-    print(usuario)
-    return render (request, 'usuario.html',{
-        'usuario' : usuario
-    })
+    if bool(request.session.get("id")):
+        usuario = get_object_or_404(Affiliate,id=id)  #mostrar el 404 es lo correcto si no encuentra el objeto
+        print(id)
+        print(usuario)
+        return render (request, 'usuario.html',{
+            'usuario' : usuario
+        })
+    else:
+        raise(404)
