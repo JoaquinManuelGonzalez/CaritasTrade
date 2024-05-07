@@ -3,8 +3,8 @@ from django.db import models
 class Workers(models.Model):
     name = models.CharField(max_length=20, blank=True)
     surname = models.CharField(max_length=20)
-    dni = models.CharField(max_length=8)
-    email = models.EmailField()
+    dni = models.CharField(max_length=8, unique=True)
+    email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=10, blank=True)
     birth_day = models.DateField(blank=True)
     password = models.CharField(max_length=8)
@@ -14,12 +14,12 @@ class Reputation(models.Model) :
 
 class Affiliate (models.Model): 
     reputation_id = models.ForeignKey(Reputation, on_delete=models.CASCADE)
-    dni = models.CharField(max_length=8)
-    email = models.EmailField()
+    dni = models.CharField(max_length=8, unique=True)
+    email = models.EmailField(unique=True)
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=10)
-    birth_day = models.DateField()
+    birth_day = models.DateField(blank=True)
     password = models.CharField(max_length=8)
 
 class Branches (models.Model): 

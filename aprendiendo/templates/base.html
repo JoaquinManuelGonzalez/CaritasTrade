@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>django projects</title>
+    {# colocar css #}
+    <link rel="stylesheet" href="{% static '/styles/main.css' %}">
+</head>
+
+<body>
+    {# de CSS sacamos clase navbar y container #}
+    <nav class="navbar container">
+        <ul>
+            <li>
+                <a href="{% url 'afiliados' %}">Afiliados JSON</a>
+            </li>
+            <li>
+                <a href="{% url 'afiliados2' %}">Afiliados2</a>
+            </li>
+            <li>
+                <a href="{% url 'render' %}">Afiliados JSON</a>
+            </li>
+            <li>
+                <a href="{% url 'nuevo_afiliado' %}">nuevo afiliado</a>
+            </li>
+           {# <li> #}
+           {#     <a href="{% url 'datos_afiliado' %}">datos afiliado</a> #}
+           {# </li> #}
+        </ul>
+    </nav>
+    <main class="container">
+        {% block content %}
+
+        {% endblock %}
+    </main>
+
+</body>
+
+</html>

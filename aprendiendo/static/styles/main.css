@@ -1,0 +1,31 @@
+body {
+    background: #202020;
+    color: whitesmoke;
+}
+
+.navbar {
+    background-color: #555252;
+    padding: 10px 10;
+}
+.navbar ul {
+    #display: flex;
+    justify-content: space-between;
+}
+.navbar ul li{
+    #saco puntos al lado del hipervinculo
+    list-style: none;
+}
+.navbar ul li a {
+    color: white;
+    #saco las lineas por debajo de los hipervinculos
+    text-decoration: none;
+}
+.navbar ul li a:hover{
+    color: aquamarine;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px 0;
+}
