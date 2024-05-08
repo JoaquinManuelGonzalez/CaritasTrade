@@ -1,137 +1,104 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Title</title>
+        <title>Creacion de intercambio</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous" />
     </head>
-
     <body>
-        <header>
-            <nav class="navbar navbar-expand-lg bg-body-secondary   ">
-                <div class="container-fluid">
-                  <a class="navbar-brand" href="#">
-                    <img src="{% static 'logo_caritasTrade.png' %}" alt="Logo" width="165" height="75" class="d-inline-block align-text-top">
-                  </a>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                      <li class="nav-item">
-                        <a class="nav-link active fs-4" aria-current="page" href="#">Inicio</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link fs-4" href="#">Caracteristicas</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link fs-4" href="#">Precio</a>
-                      </li>
-                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle  fs-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Dropdown link
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Action</a></li>
-                          <li><a class="dropdown-item" href="#">Another action</a></li>
-                          <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </nav>
-            
-        </header>
-        <main class="p-5 m-5 shadow rounded-5 ">
-            <h1>Creacion de intercambios</h1>
-            <form class="d-flex flex-column  action="{% url 'create_post' %}" method="post">
-                <div class="w-50 p-1 ">
-                    <label for="" class="form-label">Titulo</label>
-                    <input type="text" class="form-control" id="text" value="" name="title" required />
-                    <div id="fileHelpId" class="form-text">20 caracteres maximo</div>
-                </div>
-                <div class="w-50 p-1 ">
-                    <div class="mb-3">
-                        <label for="" class="form-label">Imagen</label>
-                        <input
-                            type="file"
-                            class="form-control"
-                            name="image"
-                            id="image"
-                            placeholder=""
-                            aria-describedby="fileHelpId"
-                            required
-                        />
-                        <div id="fileHelpId" class="form-text">Imagen seleccionada:</div>
-                        <img src="{% static 'Imagen no hallada.png' %}" id="preview" alt="preview" class="shadow rounded-1 " style="width: 200px; height: 200px;">
+        {% include "navbar.html" %}
+        <main class="p-5 m-5 shadow rounded-5">
+            <h1>Creación de intercambios</h1>
+            <form class="d-flex flex-column"
+                  id="form"
+                  enctype="multipart/form-data"
+                  action="{% url 'create_post' %}"
+                  method="post">
+                <div class="d-flex flex-row ">
+                    <div class="w-50 p-1">
+                        <label for="" class="form-label">Titulo</label>
+                        <input type="text"
+                               class="form-control"
+                               id="text"
+                               value=""
+                               name="title"
+                               required />
+                        <div id="fileHelpId" class="form-text">20 caracteres máximo</div>
+                    </div>
+                    <div class="w-50 p-1 ">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Imagen</label>
+                            <input type="file"
+                                   class="form-control"
+                                   name="image"
+                                   id="image"
+                                   placeholder=""
+                                   aria-describedby="fileHelpId"
+                                   required />
+                            <div id="fileHelpId" class="form-text">Imagen seleccionada:</div>
+                            <img src="{% static 'Imagen no hallada.png' %}"
+                                 id="preview"
+                                 alt="preview"
+                                 class="shadow rounded-1"
+                                 style="width: 200px;
+                                        height: 200px">
+                        </div>
                     </div>
                 </div>
                 <div class="w-100 p-1 ">
                     <label for="" class="form-label">Descripcion</label>
-                    <input type="text-area" class="form-control" id="" value="" required />
-                    <div id="fileHelpId" class="form-text">300 caracteres maximo</div>
+                    <input type="text-area" class="form-control" id="description" name="description" required/>
+                    <div id="fileHelpId" class="form-text">300 caracteres máximo</div>
                 </div>
                 <div>
-                    <label for="" class="form-label w-100 ">Categoria</label>
-                    <div class="btn-group" role="group" aria-label="">
-                        <button type="button" class="btn btn-secondary">First One</button>
-                        <button type="button" class="btn btn-secondary">Second One</button>
-                        <div class="btn-group" role="group">
-                            <button
-                                id="dropdownId"
-                                type="button"
-                                class="btn btn-secondary dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                            >
-                                More
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownId">
-                                <a class="dropdown-item" href="#">First Dropdown</a>
-                                <a class="dropdown-item" href="#">Second Dropdown</a>
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Categoria</label>
+                        <select class="form-select form-select-lg" name="category" id="category" required>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                    
                 </div>
+                <button type="submit" class="btn btn-danger fw-bold " id="submit">Subir publicación</button>
             </form>
-            
+            <script>
+                var alertList = document.querySelectorAll(".alert");
+                alertList.forEach(function (alert) {
+                    new bootstrap.Alert(alert);
+                });
+            </script>
         </main>
         <footer>
             <!-- place footer here -->
         </footer>
         <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"></script>
     </body>
     <script>
         document.getElementById("image").addEventListener("change", function () {
         const image = document.getElementById("preview");
             image.src = URL.createObjectURL(document.getElementById("image").files[0]);
         });
+
+        document.getElementById("submit").addEventListener("click", function () {
+                let respuesta = confirm("¿Quiere enviar esta publicación para revisión?");
+                if (respuesta) {
+                    document.getElementById("form").submit();
+                }
+            });
     </script>
 </html>

@@ -3,11 +3,14 @@ from django.shortcuts import redirect, render
 from data_base.models import ExchangePost
 
 # Create your views here.
-def create_post(request):
+def create_post(request):    
     if request.method == 'GET':# and request.session.get("id"):
         if not request.session.get("id"):
            request.session["id"] = 1
-        return render(request, 'create_post.html')
+        categories=['Utiles']
+        return render(request, 'create_post.html', {
+            'categories': 
+        })
     elif request.method == 'POST':# and request.sesssion.get("id"):
         post = ExchangePost(
             affiliate_id = request.session.get("id"),
