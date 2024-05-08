@@ -1,14 +1,17 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from data_base.models import Affiliate
+from datetime import date
+import re
 
 class Register_Form(forms.Form):
-    dni = forms.CharField(label="dni", max_length=8)
-    email = forms.EmailField(label="email")
-    name = forms.CharField(label="name", max_length=20)
-    surname = forms.CharField(label="surname", max_length=20)
-    phone_number = forms.CharField(label="phone_number", max_length=10)
-    birth_day = forms.DateField(label="birth_day")
-    password = forms.CharField(label="password", max_length=8)
+    dni = forms.CharField(label="D.N.I")
+    email = forms.EmailField(label="Email")
+    name = forms.CharField(label="Nombre")
+    surname = forms.CharField(label="Apellido")
+    phone_number = forms.CharField(label="Número de teléfono")
+    birth_day = forms.DateField(label="Fecha de nacimiento")
+    password = forms.CharField(label="Contraseña")
 
     def clean_name(self):
         new_name = self.cleaned_data.get('name')
@@ -26,9 +29,12 @@ class Register_Form(forms.Form):
 
     def clean_phone_number(self):
         new_phone_number = self.cleaned_data.get('phone_number')
-        if (len(new_phone_number) > 10):
+        if (len(new_phone_number) != 10):
             raise ValidationError(
                 "El Número Telefónico ingresado es inválido. Tamaño erróneo.")
+        if not new_phone_number.startswith("221"):
+            raise ValidationError(
+                "El número telefónico ingresado es inválido. Debe ser un número telefónico proveniente de La Plata")
         return new_phone_number
 
     def clean_dni(self):
@@ -36,4 +42,33 @@ class Register_Form(forms.Form):
         if (len(new_dni) != 8):
             raise ValidationError(
                 "El D.N.I ingresado es inválido. Tamaño erróneo.")
+        if(Affiliate.objects.filter(dni=new_dni).exists()):
+            raise ValidationError(
+                "El D.N.I ingresado ya se encuentra registrado en el sistema.")
         return new_dni
+
+    def clean_email(self):
+        new_email = self.cleaned_data.get('email')
+        if Affiliate.objects.filter(email=new_email).exists():
+            raise ValidationError(
+                "El email ingresado ya se encuentra registrado en el sistema.")
+        return new_email
+
+    def clean_birth_day(self):
+        new_birth_day = self.cleaned_data.get('birth_day')
+        minimum_age = date.today().year - 18
+        if new_birth_day.year > minimum_age:
+            raise ValidationError(
+                "La fecha de nacimiento ingresada debe ser mayor a 18 años.")
+        return new_birth_day
+    
+    def clean_password(self):
+        new_password = self.cleaned_data.get('password')
+        if (len(new_password) < 8):
+            raise ValidationError(
+                "La Contraseña ingresada es inválida. Tamaño erróneo.")
+        if (not re.search(r"[a-zA-Z]", new_password)) or (not re.search(r"\d", new_password)) or (not re.search(r"\W|_", new_password)):
+            raise ValidationError(
+                "La contraseña ingresada es inválida. Debe contener mínimo 8 caracteres y contar con la combinación de números, letras y caracteres especiales.")
+        return new_password
+    

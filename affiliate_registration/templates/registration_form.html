@@ -17,10 +17,14 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     </head>
     <body class="bg-bg-body-tertiary">
-        {% if form.non_field_errors %}
+        {% if form.errors %}
             <div class="alert alert-danger alert-dismissible show" role="alert">
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                <strong>Error: {{ form.non_field_errors }}</strong>
+                <strong>Error: {% for field, errors in form.errors.items %}
+                                    {% if forloop.first %}
+                                        {{ errors.0 }}
+                                    {% endif %}
+                                {% endfor %} </strong>
             </div>
         {% endif %}
         <br>

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'data_base',
     'landing_page',
-    'affiliate_registration'
+    'affiliate_registration',
+    'log_in'
 ]
 
 MIDDLEWARE = [

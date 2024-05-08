@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from landing_page import views as landing_page_views
 from affiliate_registration import views as affiliate_registration_views
+from log_in import views as log_in_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration_form/', affiliate_registration_views.registration_form, name='registration_form'),
     path('', landing_page_views.landing_page, name='landing_page'),
+    path('log_in/', log_in_views.log_in, name='log_in')
 ]
