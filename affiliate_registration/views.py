@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from datetime import date
 import re
 
-from . import register_form
+from . import forms
 from data_base.models import Affiliate, Reputation
 
 
@@ -41,7 +41,7 @@ def check_password(new_password):
 
 def registration_form(request):
     if request.method == "POST":
-        registration_form = register_form.Register_Form(request.POST)
+        registration_form = forms.Register_Form(request.POST)
         if registration_form.is_valid():
             try:
                 dni = registration_form.cleaned_data["dni"]
@@ -67,17 +67,16 @@ def registration_form(request):
                 surname=request.POST["surname"],
                 phone_number=request.POST["phone_number"],
                 birth_day=request.POST["birth_day"],
-                password=request.POST["password"]
+                password=request.POST["password"],
+                reputation_id=new_reputation
             )
-            new_reputation.save()
-            new_affiliate.save()
             return HttpResponseRedirect("/landing_page/")
         else:
             return render(request, "registration_form.html", {
                 "form": registration_form
             })
     else:
-        registration_form = register_form.Register_Form()
+        registration_form = forms.Register_Form()
         return render(request, "registration_form.html", {
             "form" :registration_form
         })

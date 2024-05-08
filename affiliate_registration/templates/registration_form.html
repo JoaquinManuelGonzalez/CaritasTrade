@@ -15,7 +15,7 @@
         />
     </head>
     <body class="bg-bg-body-tertiary">
-        {% if error_text%}
+        {% if form.non_field_errors %}
             <div
                 class="alert alert-primary alert-dismissible fade show"
                 role="alert"
@@ -26,58 +26,155 @@
                     data-bs-dismiss="alert"
                     aria-label="Close"
                 ></button>
-                <strong>Error: {{error_text}}</strong> Alert Content
+                <strong>Error: {{ form.non_field_errors }}</strong>
             </div>
         {% endif %}
-        
+        <br>
         <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; width: 35%">
             <div class="card shadow-lg">
                 <div class="card-body">
                     <h5 class="card-title text-center mb-2">Registra tu Cuenta</h5>
-                    <form method="post">
+                    <form method="POST">
                         {% csrf_token %}
-                        {{ form.errors }}
                         <div class="form-group row">
-                            <label for="inputFirstName" class="col-sm-9 col-form-label">Nombre</label>
+                            <label for="{{ form.name.id_for_label }}" class="col-sm-9 col-form-label">Nombre</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Ingrese su Nombre/s" required>
+                                <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" placeholder="Ingrese su Nombre/s" required>
+                                {% if form.name.errors %}
+                                    <div
+                                        class="alert alert-primary alert-dismissible fade show"
+                                        role="alert"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"
+                                        ></button>
+                                        <strong>Error: {{form.name.errors}}</strong>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputLastName" class="col-sm-9 col-form-label">Apellido</label>
+                            <label for="{{ form.surname.id_for_label }}" class="col-sm-9 col-form-label">Apellido</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="inputLastName" placeholder="Ingrese su Apellido/s" required>
+                                <input type="text" class="form-control" id="{{ form.surname.id_for_label }}" name="{{ form.surname.html_name }}" placeholder="Ingrese su Apellido/s" required>
+                                {% if form.surname.errors %}
+                                    <div
+                                        class="alert alert-primary alert-dismissible fade show"
+                                        role="alert"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"
+                                        ></button>
+                                        <strong>Error: {{form.surname.errors}}</strong>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputLastName" class="col-sm-9 col-form-label">D.N.I</label>
+                            <label for="{{ form.dni.id_for_label }}" class="col-sm-9 col-form-label">D.N.I</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="inputDNI" placeholder="Ingrese su DNI" required>
+                                <input type="text" class="form-control" id="{{ form.dni.id_for_label }}" name="{{ form.dni.html_name }}" placeholder="Ingrese su DNI" required>
+                                {% if form.dni.errors %}
+                                    <div
+                                        class="alert alert-primary alert-dismissible fade show"
+                                        role="alert"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"
+                                        ></button>
+                                        <strong>Error: {{form.dni.errors}}</strong>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputPhone" class="col-sm-9 col-form-label">Teléfono</label>
+                            <label for="{{ form.phone_number.id_for_label }}" class="col-sm-9 col-form-label">Teléfono</label>
                             <div class="col-sm-15">
-                                <input type="tel" class="form-control" id="inputPhone" placeholder="Ingrese su número de Teléfono" required>
+                                <input type="tel" class="form-control" id="{{ form.phone_number.id_for_label }}" name="{{ form.phone_number.html_name }}" placeholder="Ingrese su número de Teléfono" required>
+                                {% if form.phone_number.errors %}
+                                    <div
+                                        class="alert alert-primary alert-dismissible fade show"
+                                        role="alert"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"
+                                        ></button>
+                                        <strong>Error: {{form.phone_number.errors}}</strong>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputDOB" class="col-sm-9 col-form-label">Ingrese su Fecha de Nacimiento</label>
+                            <label for="{{ form.birth_day.id_for_label }}" class="col-sm-9 col-form-label">Fecha de Nacimiento</label>
                             <div class="col-sm-15">
-                                <input type="date" class="form-control" id="inputDOB" required>
+                                <input type="date" class="form-control" id="{{ form.birth_day.id_for_label }}" name="{{ form.birth_day.html_name }}" required>
+                                {% if form.birth_day.errors %}
+                                    <div
+                                        class="alert alert-primary alert-dismissible fade show"
+                                        role="alert"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"
+                                        ></button>
+                                        <strong>Error: {{form.birth_day.errors}}</strong>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-9 col-form-label">Email</label>
+                            <label for="{{ form.email.id_for_label }}" class="col-sm-9 col-form-label">Email</label>
                             <div class="col-sm-15">
-                                <input type="email" class="form-control" id="inputEmail" placeholder="Ingrese su email" required>
+                                <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="Ingrese su email" required>
+                                {% if form.email.errors %}
+                                    <div
+                                        class="alert alert-primary alert-dismissible fade show"
+                                        role="alert"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"
+                                        ></button>
+                                        <strong>Error: {{form.email.errors}}</strong>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputPassword" class="col-sm-9 col-form-label">Contraseña</label>
+                            <label for="{{ form.password.id_for_label }}" class="col-sm-9 col-form-label">Contraseña</label>
                             <div class="col-sm-15">
-                                <input type="password" class="form-control" id="inputPassword" placeholder="Ingrese su contraseña" required>
+                                <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="Ingrese su contraseña" required>
                                 <small id="passwordHelp" class="form-text text-muted">La contraseña debe tener 8 caracteres y combinar letras, números y caracteres especiales</small>
+                                {% if form.password.errors %}
+                                    <div
+                                        class="alert alert-primary alert-dismissible fade show"
+                                        role="alert"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="alert"
+                                            aria-label="Close"
+                                        ></button>
+                                        <strong>Error: {{form.password.errors}}</strong>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="form-group row mt-4 ">
