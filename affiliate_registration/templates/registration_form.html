@@ -15,32 +15,54 @@
         />
     </head>
     <body class="bg-bg-body-tertiary">
-
-        <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+        {% if error_text%}
+            <div
+                class="alert alert-primary alert-dismissible fade show"
+                role="alert"
+            >
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+                <strong>Error: {{error_text}}</strong> Alert Content
+            </div>
+        {% endif %}
+        
+        <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; width: 35%">
             <div class="card shadow-lg">
                 <div class="card-body">
                     <h5 class="card-title text-center mb-2">Registra tu Cuenta</h5>
-                    <form>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.errors }}
                         <div class="form-group row">
                             <label for="inputFirstName" class="col-sm-9 col-form-label">Nombre</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="Ingrese su nombre" required>
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="Ingrese su Nombre/s" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="inputLastName" class="col-sm-9 col-form-label">Apellido</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="inputLastName" placeholder="Ingrese su apellido" required>
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Ingrese su Apellido/s" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputLastName" class="col-sm-9 col-form-label">D.N.I</label>
+                            <div class="col-sm-15">
+                                <input type="text" class="form-control" id="inputDNI" placeholder="Ingrese su DNI" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="inputPhone" class="col-sm-9 col-form-label">Teléfono</label>
                             <div class="col-sm-15">
-                                <input type="tel" class="form-control" id="inputPhone" placeholder="Ingrese su número de teléfono" required>
+                                <input type="tel" class="form-control" id="inputPhone" placeholder="Ingrese su número de Teléfono" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputDOB" class="col-sm-9 col-form-label">Fecha de Nacimiento</label>
+                            <label for="inputDOB" class="col-sm-9 col-form-label">Ingrese su Fecha de Nacimiento</label>
                             <div class="col-sm-15">
                                 <input type="date" class="form-control" id="inputDOB" required>
                             </div>
@@ -55,6 +77,7 @@
                             <label for="inputPassword" class="col-sm-9 col-form-label">Contraseña</label>
                             <div class="col-sm-15">
                                 <input type="password" class="form-control" id="inputPassword" placeholder="Ingrese su contraseña" required>
+                                <small id="passwordHelp" class="form-text text-muted">La contraseña debe tener 8 caracteres y combinar letras, números y caracteres especiales</small>
                             </div>
                         </div>
                         <div class="form-group row mt-4 ">
@@ -81,5 +104,12 @@
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
             crossorigin="anonymous"
         ></script>
+
+        <script>
+            var alertList = document.querySelectorAll(".alert");
+            alertList.forEach(function (alert) {
+                new bootstrap.Alert(alert);
+            });
+        </script>
     </body>
 </html>

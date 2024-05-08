@@ -3,8 +3,8 @@ from django.db import models
 class Workers(models.Model):
     name = models.CharField(max_length=20, blank=True)
     surname = models.CharField(max_length=20)
-    dni = models.CharField(max_length=8)
-    email = models.EmailField()
+    dni = models.CharField(max_length=8, unique=True)
+    email = models.EmailField(unique=True)
     phone_number = models.CharField(max_length=10, blank=True)
     birth_day = models.DateField(blank=True)
     password = models.CharField(max_length=8)
@@ -14,8 +14,8 @@ class Reputation(models.Model) :
 
 class Affiliate (models.Model): 
     reputation_id = models.ForeignKey(Reputation, on_delete=models.CASCADE)
-    dni = models.CharField(max_length=8)
-    email = models.EmailField()
+    dni = models.CharField(max_length=8, unique=True)
+    email = models.EmailField(unique=True)
     name = models.CharField(max_length=20)
     surname = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=10)
@@ -52,7 +52,7 @@ class Affiliate_Product(models.Model) :
 class ExchangePost(models.Model) : 
     affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
-    tittle = models.CharField(max_length=20)
+    title = models.CharField(max_length=20)
     image = models.ImageField()
     description = models.TextField(max_length=300)
     timestamp = models.DateTimeField()
@@ -60,7 +60,7 @@ class ExchangePost(models.Model) :
 
 class EcommercePost(models.Model) :
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
-    tittle = models.CharField(max_length=20)
+    title = models.CharField(max_length=20)
     image = models.ImageField()
     description = models.TextField(max_length=300)
     point_cost = models.IntegerField()
