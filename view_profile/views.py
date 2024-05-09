@@ -2,7 +2,7 @@ from pyexpat.errors import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from data_base.models import Affiliate, ExchangePost, Affiliate_Product, Products
+from data_base.models import Affiliate, ExchangePost, Affiliate_Need_Product, Products
 
 # Create your views here.
 
@@ -10,7 +10,7 @@ from data_base.models import Affiliate, ExchangePost, Affiliate_Product, Product
 def profile(request, id):
     user = Affiliate.objects.get(id=id)
     post = ExchangePost.objects.filter(affiliate_id=id, is_active=True)
-    need_list = Affiliate_Product.objects.filter(affiliate_id=id)
+    need_list = Affiliate_Need_Product.objects.filter(affiliate_id=id)
     products = (
         []
     )  # Inicializar una lista vacía para almacenar los productos asociados al afiliado
