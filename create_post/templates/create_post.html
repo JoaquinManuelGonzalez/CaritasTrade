@@ -140,7 +140,6 @@
     <script>
         document.getElementById("{{ form.image.id_for_label }}").addEventListener("change", function () {
             const image = document.getElementById("preview");
-            // Cambia "image" a "{{ form.image.id_for_label }}"
             image.src = URL.createObjectURL(document.getElementById("{{ form.image.id_for_label }}").files[0]);
         });
         

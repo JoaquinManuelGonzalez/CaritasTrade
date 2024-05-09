@@ -53,15 +53,16 @@ class ExchangePost(models.Model) :
     affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    image = models.ImageField()
+    image = models.BinaryField()
     description = models.TextField(max_length=300)
     timestamp = models.DateTimeField()
     is_active = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
 
 class EcommercePost(models.Model) :
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    image = models.ImageField()
+    image = models.BinaryField()
     description = models.TextField(max_length=300)
     point_cost = models.IntegerField()
     stock = models.IntegerField()

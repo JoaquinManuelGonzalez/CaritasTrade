@@ -24,7 +24,7 @@ from create_post import views as create_post_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration_form/', affiliate_registration_views.registration_form, name='registration_form'),
-    path('landing_page/', landing_page_views.landing_page, name='landing_page'),
+    path('', landing_page_views.landing_page, name='landing_page'),
     path('see_post/<int:id>/', see_post_views.see_post, name='see_post'),
     path('create_post/',create_post_views.create_post, name='create_post'),
 ]
