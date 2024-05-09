@@ -1,0 +1,93 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Title</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-body-secondary ">
+            <div class="container-fluid ">
+              <a class="navbar-brand" href="#">
+                <img src="{% static 'logo_caritasTrade.png' %}" alt="Logo" width="165" height="75" class="d-inline-block align-text-top">
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto"> {# sacar MS-AUTO para poner a la izquierda #}
+                  <li class="nav-item">
+                    <a class="nav-link active fs-4" aria-current="page" href="#">Home <i class="bi bi-shop"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link fs-4" href="#">Ver Ecommerce <i class="bi bi-cart3"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link fs-4" href="#">Editar Perfil <i class="bi bi-gear"></i></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link fs-4" href="#" onclick="confirmarCierreSesion()">Cerrar Sesión <i class="bi bi-signpost-2"></i></a>
+                  </li>
+
+                  <script>
+                    function confirmarCierreSesion() {
+                      // Mostrar cuadro de diálogo de confirmación
+                      if (confirm("¿Estás seguro de que deseas cerrar la sesión?")) {
+                          // Realizar petición AJAX para confirmar el cierre de sesión
+                          fetch('{% url "confirm_sign_off" %}', {
+                              method: 'POST',
+                              headers: {
+                                  'X-CSRFToken': '{{ csrf_token }}'
+                              }
+                          }).then(response => {
+                              if (response.ok) {
+                                  // Redirigir al usuario a la página de inicio de sesión
+                                  window.location.href = "{% url 'confirm_sign_off' %}";
+                              } else {
+                                  // Manejar errores, si es necesario
+                                  console.error('Error al cerrar sesión:', response.statusText);
+                              }
+                          }).catch(error => {
+                              console.error('Error al cerrar sesión:', error);
+                          });
+                      }
+                  }
+                </script>
+                </ul>
+              </div>
+            </div>
+        </nav>
+        <main class="container">
+            {% block content %}
+    
+            {% endblock %}
+        </main>
+
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

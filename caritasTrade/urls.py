@@ -16,8 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from landing_page import views as landing_page_views
+from affiliate_registration import views as affiliate_registration_views
+from see_post import views as see_post_views
+from create_post import views as create_post_views
+from log_in import views as log_in_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("recovery_email.urls"))
+    path('registration_form/', affiliate_registration_views.registration_form, name='registration_form'),
+    path('', landing_page_views.landing_page, name='landing_page'),
+    path('see_post/<int:id>/', see_post_views.see_post, name='see_post'),
+    path('create_post/',create_post_views.create_post, name='create_post'),
+    path('log_in/', log_in_views.login_view, name='log_in'),
+    path('edit_profile/', include('edit_profile.urls'),name='edit_profile'),
+    path('list_exchange_products/', include('list_exchange_products.urls'),name='list_exchange_products'),
+    path('view_profile/', include('view_profile.urls'),name='view_profile'),
+    path("recovery_email/", include("recovery_email.urls"), name="recovery_email")
 ]
