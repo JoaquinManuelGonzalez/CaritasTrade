@@ -39,7 +39,7 @@ class Workers_AccountBlock (models.Model):
     timestamp = models.DateTimeField()
 
 class ProductCategory(models.Model) : 
-    name = name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20)
 
 class Products(models.Model) : 
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
@@ -53,7 +53,7 @@ class ExchangePost(models.Model) :
     affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    image = models.ImageField()
+    image = models.BinaryField()
     description = models.TextField(max_length=300)
     timestamp = models.DateTimeField()
     is_active = models.BooleanField(default=False)
@@ -61,7 +61,7 @@ class ExchangePost(models.Model) :
 class EcommercePost(models.Model) :
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    image = models.ImageField()
+    image = models.BinaryField()
     description = models.TextField(max_length=300)
     point_cost = models.IntegerField()
     stock = models.IntegerField()
