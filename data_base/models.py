@@ -39,7 +39,7 @@ class Workers_AccountBlock (models.Model):
     timestamp = models.DateTimeField()
 
 class ProductCategory(models.Model) : 
-    name = name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20)
 
 class Products(models.Model) : 
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)

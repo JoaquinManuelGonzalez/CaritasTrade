@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Registra tu Cuenta</title>
+        <title>Iniciar Sesion</title>
         <meta charset="utf-8" />
         <meta
             name="viewport"
@@ -31,43 +31,13 @@
         <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; width: 35%;">
             <div class="card shadow-lg">
                 <div class="card-body">
-                    <h5 class="card-title text-center mb-2">Registra tu Cuenta</h5>
+                    <h5 class="card-title text-center mb-2">Inicia tu Sesión</h5>
                     <form method="POST">
                         {% csrf_token %}
                         <div class="form-group row">
-                            <label for="{{ form.name.id_for_label }}" class="col-sm-9 col-form-label">Nombre</label>
+                            <label for="{{ form.username.id_for_label }}" class="col-sm-9 col-form-label">Nombre de Usuario</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" placeholder="Ingrese su Nombre/s" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.surname.id_for_label }}" class="col-sm-9 col-form-label">Apellido</label>
-                            <div class="col-sm-15">
-                                <input type="text" class="form-control" id="{{ form.surname.id_for_label }}" name="{{ form.surname.html_name }}" placeholder="Ingrese su Apellido/s" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.dni.id_for_label }}" class="col-sm-9 col-form-label">D.N.I</label>
-                            <div class="col-sm-15">
-                                <input type="text" class="form-control" id="{{ form.dni.id_for_label }}" name="{{ form.dni.html_name }}" placeholder="Ingrese su DNI" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.phone_number.id_for_label }}" class="col-sm-9 col-form-label">Teléfono</label>
-                            <div class="col-sm-15">
-                                <input type="tel" class="form-control" id="{{ form.phone_number.id_for_label }}" name="{{ form.phone_number.html_name }}" placeholder="Ingrese su número de Teléfono" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.birth_day.id_for_label }}" class="col-sm-9 col-form-label">Fecha de Nacimiento</label>
-                            <div class="col-sm-15">
-                                <input type="date" class="form-control" id="{{ form.birth_day.id_for_label }}" name="{{ form.birth_day.html_name }}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.email.id_for_label }}" class="col-sm-9 col-form-label">Email</label>
-                            <div class="col-sm-15">
-                                <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="Ingrese su email" required>
+                                <input type="email" class="form-control" id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" placeholder="Ingrese su email" required>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -79,12 +49,11 @@
                                         <i id="password_icon" class="bi bi-eye"></i>
                                     </button>
                                 </div>
-                                <small id="passwordHelp" class="form-text text-muted">La contraseña debe tener 8 caracteres y combinar letras, números y caracteres especiales</small>
                             </div>
                         </div>
                         <div class="form-group row mt-4 ">
                             <div class="col-sm-6 ">
-                                <button type="submit" class="btn btn-danger fw-bold  btn-block">Registrar Cuenta</button>
+                                <button type="submit" class="btn btn-danger fw-bold  btn-block">Iniciar Sesión</button>
                             </div>
                             <div class="col-sm-6 text-end ">
                                   <button type="button" onclick="window.history.back();" class="btn btn-link">Volver</button>
