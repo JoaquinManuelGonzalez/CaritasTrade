@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'affiliate_registration',
     'see_post',
     'create_post',
-    'log_in'
+    'log_in',
+    'view_profile',
 ]
 
 MIDDLEWARE = [
