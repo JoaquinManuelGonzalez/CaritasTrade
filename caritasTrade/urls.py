@@ -20,9 +20,9 @@ from landing_page import views as landing_page_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('landing_page/', landing_page_views.landing_page),
-    path('aprendiendo/', include('aprendiendo.urls')),
+    path('landing_page/', landing_page_views.landing_page, name='landing_page'),
     path('edit_profile/', include('edit_profile.urls')),
-    path('sign_off/', include('sign_off.urls')),
+    path('aprendiendo/', include('aprendiendo.urls')),
     path('list_exchange_products/', include('list_exchange_products.urls')),
+    path('view_profile/', include('view_profile.urls')),
 ]
