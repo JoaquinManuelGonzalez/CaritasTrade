@@ -57,6 +57,7 @@ class ExchangePost(models.Model) :
     description = models.TextField(max_length=300)
     timestamp = models.DateTimeField()
     is_active = models.BooleanField(default=False)
+    is_rejected = models.BooleanField(default=False)
 
 class EcommercePost(models.Model) :
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
