@@ -21,6 +21,7 @@ class Affiliate (models.Model):
     phone_number = models.CharField(max_length=10)
     birth_day = models.DateField(blank=True)
     password = models.CharField(max_length=8)
+    points = models.IntegerField(default=0)
 
 class Branches (models.Model): 
     worker_id = models.ForeignKey(Workers, on_delete=models.CASCADE)
@@ -45,7 +46,7 @@ class Products(models.Model) :
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
 
-class Affiliate_Product(models.Model) : 
+class Affiliate_Need_Product(models.Model) : 
     affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
 
@@ -53,7 +54,7 @@ class ExchangePost(models.Model) :
     affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    image = models.BinaryField()
+    image = models.BinaryField(null=True, blank=True)
     description = models.TextField(max_length=300)
     timestamp = models.DateTimeField()
     is_active = models.BooleanField(default=False)
@@ -62,7 +63,7 @@ class ExchangePost(models.Model) :
 class EcommercePost(models.Model) :
     product_category_id = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    image = models.BinaryField()
+    image = models.BinaryField(null=True, blank=True)
     description = models.TextField(max_length=300)
     point_cost = models.IntegerField()
     stock = models.IntegerField()

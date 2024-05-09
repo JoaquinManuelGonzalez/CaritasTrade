@@ -18,21 +18,46 @@ def create_post(request):
         )
     elif request.method == "POST" and request.sesssion.get("id"):
         form = ExchangeForm(request.POST, request.FILES)
-        if form.is_valid():
-            print(form.cleaned_data)
+        affiliate = Affiliate.objects.get(id=request.session.get("id"))
+        num_posts = ExchangePost.objects.filter(
+            affiliate_id=affiliate, is_rejected=False, is_active=False
+        ).count()
+        if form.is_valid() and num_posts < 5:
+            print("Es valido?")
             post = ExchangePost(
                 title=form.cleaned_data["title"],
                 product_category_id=form.cleaned_data["category"],
                 description=form.cleaned_data["description"],
-                image=form.cleaned_data["image"].read(),
+                image=(
+                    form.cleaned_data["image"].read()
+                    if form.cleaned_data["image"]
+                    else form.cleaned_data["image"]
+                ),
                 timestamp=datetime.datetime.now(),
                 is_active=False,
                 is_rejected=False,
                 affiliate_id=Affiliate.objects.get(id=request.session["id"]),
             )
             post.save()
+            return render(
+                request,
+                "create_post.html",
+                {
+                    "form": form,
+                    "categories": ProductCategory.objects.all(),
+                    "success_message": "La publicación que creaste está ahora en estado pendiente. Nuestro equipo de trabajo la revisará y te notificará vía mail si fue aprobada o no.",
+                },
+            )
         else:
-            print(form.errors)
-        return redirect("landing_page")
+            if not form.errors and num_posts >= 5:
+                form.add_error(None, "Limite de publicaciones alcanzado")
+            return render(
+                request,
+                "create_post.html",
+                {
+                    "form": form,
+                    "categories": ProductCategory.objects.all(),
+                },
+            )
     else:
         return redirect("landing_page")

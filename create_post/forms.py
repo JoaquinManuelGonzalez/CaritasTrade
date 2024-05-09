@@ -5,11 +5,32 @@ from django import forms
 from django.core.exceptions import ValidationError
 from data_base.models import ProductCategory
 
+
 class ExchangeForm(forms.Form):
-    title = forms.CharField(label="Titulo")
-    description = forms.CharField(label="Descripcion")
-    image = forms.ImageField(label="Imagen", required=True)
-    category = forms.ModelChoiceField(queryset=ProductCategory.objects.all(), label='Categoria')
+    title = forms.CharField(
+        label="Titulo",
+        error_messages={
+            "required": "Ingresar el titulo de la publicacion, por favor",
+            "invalid": "Ingresar el titulo de la publicacion, por favor",
+        },
+    )
+    description = forms.CharField(label="Descripcion",
+        error_messages={
+            "required": "Ingresar la descripcion de la publicacion, por favor",
+            "invalid": "Ingresar la descripcion de la publicacion, por favor",
+        },)
+    image = forms.ImageField(label="Imagen", required=False,
+        error_messages={
+            "required": "Ingresar el titulo de la publicacion, por favor",
+            "invalid": "Ingresar el titulo de la publicacion, por favor",
+        },)
+    category = forms.ModelChoiceField(
+        queryset=ProductCategory.objects.all(), label="Categoria",
+        error_messages={
+            "required": "Seleccionar la categoria de la publicacion, por favor",
+            "invalid": "Seleccionar la categoria de la publicacion, por favor",
+        },
+    )
 
     def clean_title(self):
         title = self.cleaned_data.get("title")
