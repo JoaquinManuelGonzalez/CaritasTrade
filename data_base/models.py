@@ -20,7 +20,7 @@ class Affiliate(models.Model):
     birth_day = models.DateField(blank=True)
     password = models.CharField(max_length=8)
     points = models.IntegerField(default=0)
-
+    login_attemps = models.IntegerField(default=0) 
 
 class Reputation(models.Model):
     reputation = models.FloatField(default=3.0)
