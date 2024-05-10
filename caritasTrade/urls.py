@@ -27,4 +27,5 @@ urlpatterns = [
     path('', landing_page_views.landing_page, name='landing_page'),
     path('see_post/<int:id>/', see_post_views.see_post, name='see_post'),
     path('create_post/',create_post_views.create_post, name='create_post'),
+    path('about_us/', landing_page_views.about_us, name='about_us'),
 ]
