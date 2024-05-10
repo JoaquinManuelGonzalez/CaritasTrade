@@ -1,8 +1,10 @@
+import base64
 from pyexpat.errors import messages
+from tkinter import image_names
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from data_base.models import Affiliate, ExchangePost, Affiliate_Product, Products
+from data_base.models import Affiliate, ExchangePost, Affiliate_Need_Product, Products
 
 # Create your views here.
 
@@ -10,25 +12,35 @@ from data_base.models import Affiliate, ExchangePost, Affiliate_Product, Product
 def profile(request, id):
     user = Affiliate.objects.get(id=id)
     post = ExchangePost.objects.filter(affiliate_id=id, is_active=True)
-    need_list = Affiliate_Product.objects.filter(affiliate_id=id)
-    products = (
-        []
-    )  # Inicializar una lista vacía para almacenar los productos asociados al afiliado
-    for need in need_list:  # Iterar sobre la lista de necesidades
-        product = Products.objects.get(
-            id=need.product_id
-        )  # Filtrar la tabla de productos por el ID
+    # decodifico las imagenes
+    decoded_images = []
+    for p in post:
+        if p.image:
+            image_data = base64.b64encode(p.image).decode('utf-8')
+            decoded_images.append(image_data)
+        else:
+            decoded_images.append(None)
+    
+    combined_data = zip(decoded_images, post)
+    #armo la lista de deseos
+    need_list = Affiliate_Need_Product.objects.filter(affiliate_id=id)
+    products = []  
+    for need in need_list: 
+        product = Products.objects.get(id=need.id)  # Filtrar la tabla de productos por el ID
         products.append(product)  # Agregar el producto a la lista de productos
-    user_session = True #False
+    
+    
     if request.session.get("id") == id:
         user_session = True
+    else:
+        user_session = False #Sesion de usuario inicializada en == False
     return render(
         request,
         "profile.html",
         {
             "user_session": user_session,
-            "user": user,
-            "post": post,
+            "user" : user,
+            "combined_data": combined_data,
             "need_products": products,
         },
     )

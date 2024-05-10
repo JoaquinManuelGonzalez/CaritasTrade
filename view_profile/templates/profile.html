@@ -27,34 +27,46 @@
         {% endif %}    
 
         {% block content %}
-
-        <h1><strong>Nombre:</strong> {{ user.name }} </h1>
-        {% if user_session %}
-            <p><strong>Apellido:</strong> {{ user.surname }}</p>
-            <p><strong>Email:</strong> {{ user.email  }}</p>
-            <button>
-                Editar perfil
-            </button>
-            <button>
-                Cerrar sesion
-            </button>
         
+        <h5><strong>Nombre del usuario:</strong> {{ user.name }} </h5>
+        {% if user_session %}
+            <h5><p><strong>Apellido:</strong> {{ user.surname }}</p></h5>
+            <h5><p><strong>Email:</strong> {{ user.email  }}</p></h5>
         {% endif %}
 
-        {% if post %}
-            {% for elem in post %}
-                <article class = "card">
-                    <a href="">
-                        <h1> {{ elem.image }} {{ elem.title }} {{ elem.description }}</h1>
-                    </a>
-                </article>
-            {% endfor %}
+        {% if combined_data %}
+            <h5><strong>Publicaciones activas:</strong></h5>
+            <div class="row">
+                {% for image_data, post_data in combined_data %}
+                    <div class="col-md-4 mb-4"> <!-- Utilizamos col-md-4 para dividir en 3 columnas en pantallas medianas y superiores -->
+                        <div class="card" >
+                            <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top" alt="Imagen" s{# tyle="height: 400px; #}>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ post_data.title }}</h5>
+                                <p class="card-text">{{ post_data.description }}</p>
+                                <a href="#" class="btn btn-primary">Ir a algún lugar</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if forloop.counter|divisibleby:3 and forloop.counter < combined_data|length %}
+                        </div><div class="row">
+                    {% endif %}
+                {% endfor %}
+
+            </div>
         {% endif %}
 
+        {% comment %} Lista de necesidades {% endcomment %}
         {% if need_products %}
-            {% for product in need_products %}
-                <p>{{ product.name }}</p>
-            {% endfor %}
+            <h5><strong>Lista de deseos: </strong></h5>
+            <ol class="list-group list-group-numbered p-4">
+                {% for product in need_products %}
+                    <li class="list-group-item w-25 p-3 ">{{ product.name }}</li>
+                {% comment %} <div style="margin-left: 150px;"> {% endcomment %}
+                    {% comment %} <p>{{ product.name }}</p> {% endcomment %}
+                    {% comment %} </div> {% endcomment %}
+                {% endfor %}
+            </ol>   
         {% endif %}
         {% endblock %}
 
