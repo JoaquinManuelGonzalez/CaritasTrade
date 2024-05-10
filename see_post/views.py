@@ -7,23 +7,29 @@ from django.db.models import Avg
 def see_post(request, id):
     if request.method == "GET" and request.session.get("id"):
         post = ExchangePost.objects.get(id=id)
-        post_image = post.image.decode("utf-8")
-        reputation = (
-            Reputation.objects.filter(affiliate_id=post.affiliate_id)
-            .aggregate(promedio=Avg("reputation"))
-            .get("promedio")
-        )
-        category = ProductCategory.objects.filter(id=post.product_category_id).first()
-        return render(
-            request,
-            "see_post.html",
-            {
-                "post": post,
-                "post_image": post_image,
-                "reputation": reputation,
-                "reputation_percentage": (reputation * 100) / 5,
-                "category": category,
-            },
-        )
+        if post.is_active:
+            post_image = post.image.decode("utf-8")
+            reputation = (
+                Reputation.objects.filter(affiliate_id=post.affiliate_id)
+                .aggregate(promedio=Avg("reputation"))
+                .get("promedio")
+            )
+            category = ProductCategory.objects.filter(id=post.product_category_id).first()
+            return render(
+                request,
+                "see_post.html",
+                {
+                    "post": post,
+                    "post_image": post_image,
+                    "reputation": reputation,
+                    "reputation_percentage": (reputation * 100) / 5,
+                    "category": category,
+                },
+            )
+        else:
+            return render(
+                request,
+                "see_post.html"
+            )
     else:
         return redirect("landing_page")
