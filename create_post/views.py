@@ -1,3 +1,4 @@
+import base64
 import datetime
 from django.shortcuts import redirect, render
 from data_base.models import ExchangePost, ProductCategory, Affiliate
@@ -16,27 +17,26 @@ def create_post(request):
                 "form": form,
             },
         )
-    elif request.method == "POST" and request.sesssion.get("id"):
+    elif request.method == "POST" and request.session.get("id"):
         form = ExchangeForm(request.POST, request.FILES)
         affiliate = Affiliate.objects.get(id=request.session.get("id"))
         num_posts = ExchangePost.objects.filter(
             affiliate_id=affiliate, is_rejected=False, is_active=False
         ).count()
         if form.is_valid() and num_posts < 5:
-            print("Es valido?")
             post = ExchangePost(
                 title=form.cleaned_data["title"],
-                product_category_id=form.cleaned_data["category"],
+                product_category_id=form.cleaned_data["category"].id,
                 description=form.cleaned_data["description"],
                 image=(
-                    form.cleaned_data["image"].read()
+                    base64.b64encode(form.cleaned_data["image"].read())
                     if form.cleaned_data["image"]
                     else form.cleaned_data["image"]
                 ),
                 timestamp=datetime.datetime.now(),
                 is_active=False,
                 is_rejected=False,
-                affiliate_id=Affiliate.objects.get(id=request.session["id"]),
+                affiliate_id=request.session["id"],
             )
             post.save()
             return render(
