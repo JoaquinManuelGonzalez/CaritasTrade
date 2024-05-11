@@ -3,6 +3,7 @@ from data_base.models import ExchangePost, Reputation, ProductCategory
 from django.db.models import Avg
 
 
+
 # Create your views here.
 def see_post(request, id):
     if request.method == "GET" and request.session.get("id"):
