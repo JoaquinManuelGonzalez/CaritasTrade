@@ -60,9 +60,4 @@ def create_post(request):
                 },
             )
     else:
-        id_de_afiliados_con_mayor = Reputation.objects.filter(reputation__gt=numero).values_list('affiliate_id', flat=True)
-        afiliados_con_reputacion_mayor = Affiliate.objects.filter(id__in=id_de_afiliados_con_mayor)
-        posteos_coincidentes = ExchangePost.objects.filter(
-            affiliate_id__in=afiliados_con_reputacion_mayor, is_rejected=False, is_active=True
-        )
         return redirect("landing_page")
