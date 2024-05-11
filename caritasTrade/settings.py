@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'create_post',
     'log_in',
     'view_profile',
-]
+    'edit_profile',
+    'list_exchange_products',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

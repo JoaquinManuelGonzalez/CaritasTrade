@@ -29,8 +29,8 @@ urlpatterns = [
     path('see_post/<int:id>/', see_post_views.see_post, name='see_post'),
     path('create_post/',create_post_views.create_post, name='create_post'),
     path('log_in/', include('log_in.urls'), name='log_in_form'),
-    path('edit_profile/', include('edit_profile.urls'),name='edit_profile'),
     path('list_exchange_products/', include('list_exchange_products.urls'),name='list_exchange_products'),
+    path('edit_profile/', include('edit_profile.urls'),name='edit_profile'),
     path('view_profile/', include('view_profile.urls'),name='view_profile'),
     path('about_us/', landing_page_views.about_us, name='about_us')
 ]

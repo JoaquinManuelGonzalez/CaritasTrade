@@ -5,15 +5,13 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Affiliate',
+            name="Affiliate",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('dni', models.CharField(max_length=8, unique=True)),
@@ -28,15 +26,23 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Donation',
+            name="Donation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.FloatField()),
-                ('timestamp', models.DateTimeField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.FloatField()),
+                ("timestamp", models.DateTimeField()),
             ],
         ),
         migrations.CreateModel(
-            name='EcommercePost',
+            name="EcommercePost",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=20)),
@@ -47,14 +53,22 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='ProductCategory',
+            name="ProductCategory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=20)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=20)),
             ],
         ),
         migrations.CreateModel(
-            name='Workers',
+            name="Workers",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(blank=True, max_length=20)),
@@ -67,7 +81,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='AccountBlock',
+            name="AccountBlock",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('is_permanent', models.BooleanField(default=False)),
@@ -76,7 +90,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Affiliate_EcommercePost',
+            name="Affiliate_EcommercePost",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('total_amount', models.IntegerField()),
@@ -86,7 +100,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='ExchangePost',
+            name="ExchangePost",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=20)),
@@ -100,18 +114,46 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='ExchangeSolicitude',
+            name="ExchangeSolicitude",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('denied', models.BooleanField(default=False)),
-                ('timestamp', models.DateTimeField()),
-                ('affiliate_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='data_base.affiliate')),
-                ('exchange_post_for_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='exchange_post_for_id', to='data_base.exchangepost')),
-                ('in_exchange_post_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='in_exchange_post_id', to='data_base.exchangepost')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("denied", models.BooleanField(default=False)),
+                ("timestamp", models.DateTimeField()),
+                (
+                    "affiliate_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="data_base.affiliate",
+                    ),
+                ),
+                (
+                    "exchange_post_for_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="exchange_post_for_id",
+                        to="data_base.exchangepost",
+                    ),
+                ),
+                (
+                    "in_exchange_post_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="in_exchange_post_id",
+                        to="data_base.exchangepost",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Exchange',
+            name="Exchange",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('code1', models.CharField(max_length=5)),
@@ -128,7 +170,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='data_base.productcategory'),
         ),
         migrations.CreateModel(
-            name='Products',
+            name="Products",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=20)),
@@ -152,7 +194,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Branches',
+            name="Branches",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=20)),
@@ -162,7 +204,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Workers_AccountBlock',
+            name="Workers_AccountBlock",
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('timestamp', models.DateTimeField()),
