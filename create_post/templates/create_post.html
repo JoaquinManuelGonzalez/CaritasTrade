@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Creacion de intercambio</title>
-        <!-- Required meta tags -->
+        <title>Crear post</title>
+        <!--  meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -12,55 +12,39 @@
               rel="stylesheet"
               integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
               crossorigin="anonymous" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+              rel="stylesheet">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg bg-body-secondary">
-            <div class="container-fluid ">
-                <a class="navbar-brand" href="#">
-                    <img src="{% static 'logo_caritasTrade.png' %}"
-                         alt="Logo"
-                         width="165"
-                         height="75"
-                         class="d-inline-block align-text-top">
-                </a>
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarNavDropdown"
-                        aria-controls="navbarNavDropdown"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse  " id="navbarNavDropdown">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link fs-4" href="#">Donar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link fs-4" href="{% url 'registration_form' %}">Registrarse</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link fs-4" href="#">Iniciar sesion</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link fs-4" href="#">Ver filiales</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        {% if form.errors %}
-            <div class="alert alert-danger alert-dismissible show" role="alert">
+        {% include 'navbar.html' %}
+        {% if success_message %}
+            <div class="m-5 alert alert-success alert-dismissible show" role="alert">
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="alert"
                         aria-label="Close"></button>
-                <strong>Error:
+                <strong>{{ success_message }}</strong>
+            </div>
+        {% endif %}
+        {% if form.errors %}
+            <div class="m-5 alert alert-danger alert-dismissible show" role="alert">
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                <strong>
                     {% for field, errors in form.errors.items %}
                         {% if forloop.first %}{{ errors.0 }}{% endif %}
                     {% endfor %}
                 </strong>
+            </div>
+        {% elif form.non_field_errors %}
+            <div class="m-5 alert alert-danger alert-dismissible show" role="alert">
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                <strong>{{ form.non_field_errors.0 }}</strong>
             </div>
         {% endif %}
         <main class="p-5 m-5 shadow rounded-5">
@@ -77,8 +61,7 @@
                         <input type="text"
                                class="form-control"
                                id="{{ form.title.id_for_label }}"
-                               name="{{ form.title.html_name }}"
-                               required />
+                               name="{{ form.title.html_name }}" />
                         <div id="fileHelpId" class="form-text">20 caracteres máximo</div>
                     </div>
                     <div class="w-50 p-1 ">
@@ -89,8 +72,7 @@
                                    name="{{ form.image.html_name }}"
                                    accept="image/*"
                                    id="{{ form.image.id_for_label }}"
-                                    aria-describedby="fileHelpId"
-                                    required />
+                                   aria-describedby="fileHelpId" />
                             <div id="fileHelpId" class="form-text">Imagen seleccionada:</div>
                             <img src="{% static 'Imagen no hallada.png' %}"
                                  id="preview"
@@ -101,13 +83,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-100 p-1 ">
+                <div class="w-100 p-1 pl-2">
                     <label for="{{ form.description.id_for_label }}" class="form-label">Descripcion</label>
-                    <input type="text-area"
-                           class="form-control"
-                           id="{{ form.description.id_for_label }}"
-                           name="{{ form.description.html_name }}"
-                           required />
+                    <textarea type="text-area"
+                              class="form-control"
+                              id="{{ form.description.id_for_label }}"
+                              name="{{ form.description.html_name }}"></textarea>
                     <div id="fileHelpId" class="form-text">300 caracteres máximo</div>
                 </div>
                 <div>
@@ -120,7 +101,9 @@
                         </select>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-danger fw-bold " id="submit">Subir publicación</button>
+                <button type="submit" class="btn btn-danger fw-bold " id="submit">
+                    Subir publicación <i class="bi bi-upload"></i>
+                </button>
             </form>
             <script>
                 var alertList = document.querySelectorAll(".alert");
