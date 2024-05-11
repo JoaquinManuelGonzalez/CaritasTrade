@@ -21,7 +21,6 @@ def registration_form(request):
             phone_number = registration_form.cleaned_data['phone_number']
             birth_day = registration_form.cleaned_data['birth_day']
             password = registration_form.cleaned_data['password']
-            new_reputation = Reputation.objects.create()
             new_affiliate = Affiliate.objects.create(
                 dni=dni,
                 email=email,
@@ -30,7 +29,9 @@ def registration_form(request):
                 phone_number=phone_number,
                 birth_day=birth_day,
                 password=password,
-                reputation_id=new_reputation
+            )
+            new_reputation = Reputation.objects.create(
+                affiliate_id = new_affiliate.id
             )
             return render(request, "success_message.html")
         else:

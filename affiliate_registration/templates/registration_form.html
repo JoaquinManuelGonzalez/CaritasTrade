@@ -16,7 +16,7 @@
         <!-- Bootstrap Icons CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     </head>
-    <body class="bg-bg-body-tertiary">
+    <body class="bg-body-tertiary">
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-success alert-dismissible show" role="alert">
@@ -27,7 +27,7 @@
         {% endif %}
 
         {% if form.errors %}
-            <div class="alert alert-danger alert-dismissible show" role="alert">
+            <div class="alert alert-danger alert-dismissible show m-2 " role="alert">
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 <strong>Error: {% for field, errors in form.errors.items %}
                                     {% if forloop.first %}
@@ -37,8 +37,7 @@
             </div>
         {% endif %}
 
-        <br>
-        <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; width: 35%;">
+        <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 130vh; width: 40%;">
             <div class="card shadow-lg">
                 <div class="card-body">
                     <h5 class="card-title text-center mb-2">Registra tu Cuenta</h5>
@@ -59,14 +58,16 @@
                         <div class="form-group row">
                             <label for="{{ form.dni.id_for_label }}" class="col-sm-9 col-form-label">D.N.I</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="{{ form.dni.id_for_label }}" name="{{ form.dni.html_name }}" placeholder="Ingrese su DNI" required>
+                                <input type="text" class="form-control" id="{{ form.dni.id_for_label }}" name="{{ form.dni.html_name }}" placeholder="Ingrese su D.N.I" required>
                             </div>
+                            <small id="DNIHelp" class="form-text text-muted">El D.N.I debe ser de 8 dígitos.</small>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.phone_number.id_for_label }}" class="col-sm-9 col-form-label">Teléfono</label>
                             <div class="col-sm-15">
-                                <input type="tel" class="form-control" id="{{ form.phone_number.id_for_label }}" name="{{ form.phone_number.html_name }}" placeholder="Ingrese su número de Teléfono" required>
+                                <input type="tel" class="form-control" id="{{ form.phone_number.id_for_label }}" name="{{ form.phone_number.html_name }}" placeholder="Ingrese su Número de Teléfono" required>
                             </div>
+                            <small id="phoneNumberHelp" class="form-text text-muted">El Número de Teléfono debe ser de 10 dígitos.</small>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.birth_day.id_for_label }}" class="col-sm-9 col-form-label">Fecha de Nacimiento</label>
@@ -77,26 +78,27 @@
                         <div class="form-group row">
                             <label for="{{ form.email.id_for_label }}" class="col-sm-9 col-form-label">Email</label>
                             <div class="col-sm-15">
-                                <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="Ingrese su email" required>
+                                <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="Ingrese su Email" required>
                             </div>
+                            <small id="emailHelp" class="form-text text-muted">El Email ingresado será utilizado como su Nombre de Usuario.</small>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.password.id_for_label }}" class="col-sm-9 col-form-label">Contraseña</label>
                             <div class="col-sm-15">
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="Ingrese su contraseña" required>
+                                    <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="Ingrese su Contraseña" required>
                                     <button class="btn btn-outline-secondary" type="button" id="showPasswordToggle">
                                         <i id="password_icon" class="bi bi-eye"></i>
                                     </button>
                                 </div>
-                                <small id="passwordHelp" class="form-text text-muted">La contraseña debe poseer 8 caracteres como mínimo y combinar letras, números y caracteres especiales</small>
+                                <small id="passwordHelp" class="form-text text-muted">La Contraseña debe poseer 8 caracteres como mínimo y combinar letras, números y caracteres especiales.</small>
                             </div>
                         </div>
                         <div class="form-group row mt-4 ">
                             <div class="col-sm-6 ">
                                 <button type="submit" class="btn btn-danger fw-bold btn-block">Registrar Cuenta</button>
                             </div>
-                            <div class="col-sm-6 text-end ">
+                            <div class="col-sm-6 text-end">
                                 <a href="{% url 'landing_page' %}" class="btn btn-primary fw-bold mx-2">Volver</a>
                             </div>
                         </div>

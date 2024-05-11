@@ -16,9 +16,9 @@
         <!-- Bootstrap Icons CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     </head>
-    <body class="bg-bg-body-tertiary">
+    <body class="bg-body-tertiary">
         {% if form.errors %}
-            <div class="alert alert-danger alert-dismissible show" role="alert">
+            <div class="alert alert-danger alert-dismissible show m-2 " role="alert">
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 <strong>Error: {% for field, errors in form.errors.items %}
                                     {% if forloop.first %}
@@ -27,7 +27,6 @@
                                 {% endfor %} </strong>
             </div>
         {% endif %}
-        <br>
         <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; width: 35%;">
             <div class="card shadow-lg">
                 <div class="card-body">

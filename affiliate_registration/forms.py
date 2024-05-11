@@ -17,14 +17,20 @@ class Register_Form(forms.Form):
         new_name = self.cleaned_data.get('name')
         if (len(new_name) > 20):
             raise ValidationError(
-                "El/Los Nombre/s ingresado es inválido. Tamaño erróneo.")
+                "El Nombre ingresado es inválido. Tamaño erróneo.")
+        if not re.fullmatch(r'[a-zA-Z ]+', new_name):
+            raise ValidationError(
+                "El Nombre ingresado es inválido. Un Nombre no puede poseer números.")
         return new_name
 
     def clean_surname(self):
         new_surname = self.cleaned_data.get('surname')
         if (len(new_surname) > 20):
             raise ValidationError(
-                "El/Los Apellido/s ingresado es inválido. Tamaño erróneo.")
+                "El Apellido ingresado es inválido. Tamaño erróneo.")
+        if not re.fullmatch(r'[a-zA-Z ]+', new_surname):
+            raise ValidationError(
+                "El Apellido ingresado es inválido. Un Apellido no puede poseer números.")
         return new_surname
 
     def clean_phone_number(self):
@@ -32,6 +38,9 @@ class Register_Form(forms.Form):
         if (len(new_phone_number) != 10):
             raise ValidationError(
                 "El Número Telefónico ingresado es inválido. Tamaño erróneo.")
+        if (not re.match(r'^\d{10}$', new_phone_number)):
+            raise ValidationError(
+                "El Número Telefónico ingresado debe estar conformado por números unicamente.")
         if not new_phone_number.startswith("221"):
             raise ValidationError(
                 "El número telefónico ingresado es inválido. Debe ser un número telefónico proveniente de La Plata")
@@ -42,6 +51,9 @@ class Register_Form(forms.Form):
         if (len(new_dni) != 8):
             raise ValidationError(
                 "El D.N.I ingresado es inválido. Tamaño erróneo.")
+        if (not re.match(r'^\d{8}$', new_dni)):
+            raise ValidationError(
+                "El D.N.I ingresado debe estar conformado por números unicamente.")
         if(Affiliate.objects.filter(dni=new_dni).exists()):
             raise ValidationError(
                 "El D.N.I ingresado ya se encuentra registrado en el sistema.")
