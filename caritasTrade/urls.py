@@ -29,7 +29,7 @@ urlpatterns = [
     path('see_post/<int:id>/', see_post_views.see_post, name='see_post'),
     path('create_post/',create_post_views.create_post, name='create_post'),
     path('log_in/', log_in_views.login_view, name='log_in'),
-    path('edit_profile/', include('edit_profile.urls'),name='edit_profile'),
     path('list_exchange_products/', include('list_exchange_products.urls'),name='list_exchange_products'),
+    path('edit_profile/', include('edit_profile.urls'),name='edit_profile'),
     path('view_profile/', include('view_profile.urls'),name='view_profile')
 ]

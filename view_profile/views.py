@@ -21,7 +21,7 @@ def profile(request, id):
         else:
             decoded_images.append(None)
     
-    combined_data = zip(decoded_images, post)
+    combined_data = list(zip(decoded_images, post))
     #armo la lista de deseos
     need_list = Affiliate_Need_Product.objects.filter(affiliate_id=id)
     products = []  
@@ -29,15 +29,15 @@ def profile(request, id):
         product = Products.objects.get(id=need.id)  # Filtrar la tabla de productos por el ID
         products.append(product)  # Agregar el producto a la lista de productos
     
-    
-    if request.session.get("id") == id:
-        user_session = True
-    else:
-        user_session = False #Sesion de usuario inicializada en == False
+    request.session['id'] = 1 # BORRARLO
+
+    session_id = request.session.get("id")
+    user_session = session_id == id
     return render(
         request,
         "profile.html",
         {
+            "session_id" : session_id,
             "user_session": user_session,
             "user" : user,
             "combined_data": combined_data,

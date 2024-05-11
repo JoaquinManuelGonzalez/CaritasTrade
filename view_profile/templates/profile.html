@@ -19,67 +19,64 @@
         />
     </head>
 
-    <body
-        {% if user_session %}
-            {% include 'user_navbar_with_edit_and_close.html' %}
-        {% else %}
-            {% include 'user_navbar.html' %}
-        {% endif %}    
-
-        {% block content %}
+    <body class="bg-body-tertiary">
+        {# Incluimos la navbar #}
+        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
         
-        <h5><strong>Nombre del usuario:</strong> {{ user.name }} </h5>
-        {% if user_session %}
-            <h5><p><strong>Apellido:</strong> {{ user.surname }}</p></h5>
-            <h5><p><strong>Email:</strong> {{ user.email  }}</p></h5>
-        {% endif %}
+        {% block content %}    
+        <div class="p-5">
+            <h5><strong>Nombre del afiliado:</strong> {{ user.name }} </h5>
+            {% if user_session %}
+                <h5><p><strong>Apellido:</strong> {{ user.surname }}</p></h5>
+                <h5><p><strong>Email:</strong> {{ user.email  }}</p></h5>
+            {% endif %}
 
-        {% if combined_data %}
             <h5><strong>Publicaciones activas:</strong></h5>
-            <div class="row">
-                {% for image_data, post_data in combined_data %}
-                    <div class="col-md-4 mb-4"> <!-- Utilizamos col-md-4 para dividir en 3 columnas en pantallas medianas y superiores -->
-                        <div class="card" >
-                            <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top" alt="Imagen" s{# tyle="height: 400px; #}>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ post_data.title }}</h5>
-                                <p class="card-text">{{ post_data.description }}</p>
-                                <a href="#" class="btn btn-primary">Ir a algún lugar</a>
+            {% if combined_data %}
+                <div class="row">
+                    {% for image_data, post_data in combined_data %}
+                        <div class="col-md-4 mb-4" style="text-align: center;"> <!-- Utilizamos col-md-4 para dividir en 3 columnas en pantallas medianas y superiores -->
+                            <div class="card" style="height: 400px; width: 300px" >
+                                <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top" alt="Imagen" style="height: 250px; width: 250px allign-center"/>        
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ post_data.title }}</h5>
+                                    <p class="card-text">{{ post_data.description }}</p>
+                                    <a href="#" class="btn btn-primary">Ir a algún lugar</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    {% if forloop.counter|divisibleby:3 and forloop.counter < combined_data|length %}
-                        </div><div class="row">
-                    {% endif %}
-                {% endfor %}
+                        {% if forloop.counter|divisibleby:3 and forloop.counter < combined_data|length %}
+                            </div><div class="row">
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h5>Este usuario no posee Publicaciones Activas actualmente</h5>
+            {% endif %}
 
-            </div>
-        {% endif %}
+            <h5><strong>Lista de Necesidades: </strong></h5>
+            {% if need_products %}
+                <ol class="list-group list-group-numbered p-4">
+                    {% for product in need_products %}
+                        <li class="list-group-item w-25 p-3 ">{{ product.name }}</li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <h5>Este usuario no posee una Lista de Necesidades actualmente</h5>
+            {% endif %}
+            {% endblock %}
+        </div>
 
-        {% comment %} Lista de necesidades {% endcomment %}
-        {% if need_products %}
-            <h5><strong>Lista de deseos: </strong></h5>
-            <ol class="list-group list-group-numbered p-4">
-                {% for product in need_products %}
-                    <li class="list-group-item w-25 p-3 ">{{ product.name }}</li>
-                {% comment %} <div style="margin-left: 150px;"> {% endcomment %}
-                    {% comment %} <p>{{ product.name }}</p> {% endcomment %}
-                    {% comment %} </div> {% endcomment %}
-                {% endfor %}
-            </ol>   
-        {% endif %}
-        {% endblock %}
+            <script
+                src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"
+            ></script>
 
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"
+            ></script>
     </body>
 </html>
