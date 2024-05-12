@@ -46,52 +46,53 @@
                         <div class="form-group row">
                             <label for="{{ form.name.id_for_label }}" class="col-sm-9 col-form-label">Nombre</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" placeholder="Ingrese su Nombre/s" required>
+                                <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" value="{{ request.POST.name }}" placeholder="Ingrese su Nombre/s" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.surname.id_for_label }}" class="col-sm-9 col-form-label">Apellido</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="{{ form.surname.id_for_label }}" name="{{ form.surname.html_name }}" placeholder="Ingrese su Apellido/s" required>
+                                <input type="text" class="form-control" id="{{ form.surname.id_for_label }}" name="{{ form.surname.html_name }}" value="{{ request.POST.surname }}" placeholder="Ingrese su Apellido/s" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.dni.id_for_label }}" class="col-sm-9 col-form-label">D.N.I</label>
                             <div class="col-sm-15">
-                                <input type="text" class="form-control" id="{{ form.dni.id_for_label }}" name="{{ form.dni.html_name }}" placeholder="Ingrese su D.N.I" required>
+                                <input type="text" class="form-control" id="{{ form.dni.id_for_label }}" name="{{ form.dni.html_name }}" value="{{ request.POST.dni }}" placeholder="Ingrese su D.N.I" required>
                             </div>
-                            <small id="DNIHelp" class="form-text text-muted">El D.N.I debe ser de 8 dígitos.</small>
+                            <small id="DNIHelp" class="form-text text-muted">El D.N.I que ingrese debe ser de 8 dígitos.</small>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.phone_number.id_for_label }}" class="col-sm-9 col-form-label">Teléfono</label>
                             <div class="col-sm-15">
-                                <input type="tel" class="form-control" id="{{ form.phone_number.id_for_label }}" name="{{ form.phone_number.html_name }}" placeholder="Ingrese su Número de Teléfono" required>
+                                <input type="tel" class="form-control" id="{{ form.phone_number.id_for_label }}" name="{{ form.phone_number.html_name }}" value="{{ request.POST.phone_number }}" placeholder="Ingrese su Número de Teléfono" required>
                             </div>
-                            <small id="phoneNumberHelp" class="form-text text-muted">El Número de Teléfono debe ser de 10 dígitos.</small>
+                            <small id="phoneNumberHelp" class="form-text text-muted">El Número de Teléfono que ingrese debe ser de 10 dígitos y no debe contener "-".</small>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.birth_day.id_for_label }}" class="col-sm-9 col-form-label">Fecha de Nacimiento</label>
                             <div class="col-sm-15">
-                                <input type="date" class="form-control" id="{{ form.birth_day.id_for_label }}" name="{{ form.birth_day.html_name }}" required>
+                                <input type="date" class="form-control" id="{{ form.birth_day.id_for_label }}" name="{{ form.birth_day.html_name }}" value="{{ request.POST.birth_day }}" required>
                             </div>
+                            <small id="phoneNumberHelp" class="form-text text-muted">La Fecha de Nacimiento que ingrese debe corresponder a la de una persona de mínimo 18 años de edad.</small>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.email.id_for_label }}" class="col-sm-9 col-form-label">Email</label>
                             <div class="col-sm-15">
-                                <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="Ingrese su Email" required>
+                                <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" value="{{ request.POST.email }}" placeholder="Ingrese su Email" required>
                             </div>
-                            <small id="emailHelp" class="form-text text-muted">El Email ingresado será utilizado como su Nombre de Usuario.</small>
+                            <small id="emailHelp" class="form-text text-muted">El Email que ingrese será utilizado como su Nombre de Usuario.</small>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.password.id_for_label }}" class="col-sm-9 col-form-label">Contraseña</label>
                             <div class="col-sm-15">
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="Ingrese su Contraseña" required>
+                                    <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" value="{{ request.POST.password }}" placeholder="Ingrese su Contraseña" required>
                                     <button class="btn btn-outline-secondary" type="button" id="showPasswordToggle">
                                         <i id="password_icon" class="bi bi-eye"></i>
                                     </button>
                                 </div>
-                                <small id="passwordHelp" class="form-text text-muted">La Contraseña debe poseer 8 caracteres como mínimo y combinar letras, números y caracteres especiales.</small>
+                                <small id="passwordHelp" class="form-text text-muted">La Contraseña que ingrese debe poseer 8 caracteres como mínimo y combinar letras, números y caracteres especiales.</small>
                             </div>
                         </div>
                         <div class="form-group row mt-4 ">

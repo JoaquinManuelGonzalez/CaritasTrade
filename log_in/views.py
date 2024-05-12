@@ -128,7 +128,7 @@ def login_view(request):
                     affiliate_id = is_Affiliate(username, password)
                     request.session['id'] = affiliate_id
                     request.session['role'] = "user"
-                    return HttpResponseRedirect(reverse("landing_page"))
+                    return HttpResponseRedirect(reverse("list_products"))
             except ValidationError as e:
                 login_form.add_error(
                     None, e.message
@@ -159,7 +159,7 @@ def confirm_session_view(request):
                     "form" : confirm_session_form
                 })
             else:
-                return HttpResponseRedirect(reverse("landing_page"))
+                return HttpResponseRedirect(reverse("list_products"))
         else:
             return render(request, "confirm_log_in.html",{
                 "form" : confirm_session_form
