@@ -32,5 +32,6 @@ urlpatterns = [
     path('edit_profile/', include('edit_profile.urls'),name='edit_profile'),
     path('list_exchange_products/', include('list_exchange_products.urls'),name='list_exchange_products'),
     path('view_profile/', include('view_profile.urls'),name='view_profile'),
-    path("recovery_email/", include("recovery_email.urls"), name="recovery_email")
+    path("recovery_email/", include("recovery_email.urls"), name="recovery_email"),
+    path("validate_post/", include("validate_post.urls"), name="validate_post"),
 ]

@@ -23,8 +23,14 @@ class Affiliate(models.Model):
     surname = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=10)
     birth_day = models.DateField(blank=True)
-    points = models.IntegerField(default=0)
     password = models.CharField(max_length=8)
+    points = models.IntegerField(default=0)
+
+
+class Tokens(models.Model):
+    affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    token = models.CharField(max_length=16, unique=True)
+    expiration_date = models.DateTimeField()
 
 
 class Branches(models.Model):
