@@ -25,6 +25,11 @@ def craft_need_list(id):
         product = Products.objects.get(
             id=need.id
         )  # Filtrar la tabla de productos por el ID
+    products = []
+    for need in need_list:
+        product = Products.objects.get(
+            id=need.id
+        )  # Filtrar la tabla de productos por el ID
         products.append(product)  # Agregar el producto a la lista de productos
     return products
 
@@ -67,6 +72,7 @@ def profile(request, id):
 
 
 def confirm_sign_off(request):
+    request.session["id"] = None
     request.session["id"] = None
     return HttpResponseRedirect(reverse("landing_page"))
     
