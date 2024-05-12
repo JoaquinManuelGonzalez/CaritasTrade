@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'view_profile',
     'edit_profile',
     'list_exchange_products',
-    'delete_post',
     ]
 
 MIDDLEWARE = [

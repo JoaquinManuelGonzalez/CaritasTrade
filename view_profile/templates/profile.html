@@ -16,6 +16,23 @@
     <body class="bg-body-tertiary">
         {# Incluimos la navbar #}
         {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+        
+        <script>
+            var alertList = document.querySelectorAll(".alert");
+            alertList.forEach(function (alert) {
+                new bootstrap.Alert(alert);
+            });
+        </script>
+        
+        {% if success_message %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                <strong>{{ success_message }}</strong>
+            </div>
+        {% endif %}
         {% block content %}
             <div class="p-5">
                 <h5>
@@ -55,7 +72,9 @@
                                             {% if user_session %}
                                                 <form action="{% url 'delete_post' id=post_data.id %}" method="post">
                                                     {% csrf_token %}
-                                                    <button type="submit" href="{% url 'see_post' id=post_data.id %}" class="btn btn-danger">
+                                                    <button type="submit"
+                                                            href="{% url 'see_post' id=post_data.id %}"
+                                                            class="btn btn-danger">
                                                         Eliminar <i class="bi bi-trash-fill"></i>
                                                     </button>
                                                 </form>
