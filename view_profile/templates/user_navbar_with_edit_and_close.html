@@ -1,62 +1,71 @@
 {% load static %}
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Title</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg bg-body-secondary ">
-            <div class="container-fluid ">
-              <a class="navbar-brand" href="{% url 'list_products' %}">
-                <img src="{% static 'logo_caritasTrade.png' %}" alt="Logo" width="165" height="75" class="d-inline-block align-text-top" >
-              </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ms-auto"> {# sacar MS-AUTO para poner a la izquierda #}
-                  <li class="nav-item">
-                    <a class="nav-link fs-4" href="{% url 'list_products' %}"><i class="bi bi-shop"></i>Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link fs-4" href="#"><i class="bi bi-cart3"></i>Ver Ecommerce</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link fs-4" href="{% url 'create_post' %}"><i class="bi bi-pencil-square"></i>Crear intercambio</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link fs-4" href="#"><i class="bi bi-envelope-exclamation"></i>Ver Solicitudes de Intercambio</a>
-                  </li>
-                  {% if not user_session %}
-                    <li class="nav-item">
-                      <a class="nav-link fs-4" href="{% url 'perfil_usuario' id=session_id %}"><i class="bi bi-person-bounding-box"></i>Ver perfil</a>
-                    </li>
-                  {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link fs-4" href="{% url 'editar_perfil_usuario' %}"><i class="bi bi-gear"></i>Editar Perfil </a>
-                    </li>
-                    <li class="nav-item">
-                      <form class="nav-link fs-4" id='form' action="{% url 'confirm_sign_off' %}"><div type= 'submit' id='submit'> <i class="bi bi-signpost-2"></i>Cerrar Sesión</div></form>
-                    </li>
-                  {% endif %}
-                  
-                  <script>
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+          rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-secondary ">
+      <div class="container-fluid ">
+        <a class="navbar-brand" href="{% url 'list_products' %}">
+          <img src="{% static 'logo_caritasTrade.png' %}"
+               alt="Logo"
+               width="165"
+               height="75"
+               class="d-inline-block align-text-top">
+        </a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ms-auto">
+            {# sacar MS-AUTO para poner a la izquierda #}
+            <li class="nav-item">
+              <a class="nav-link fs-4" href="{% url 'list_products' %}"><i class="bi bi-shop"></i>Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-4" href="#"><i class="bi bi-cart3"></i>Ver Ecommerce</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-4" href="{% url 'create_post' %}"><i class="bi bi-plus-square"></i></i>Crear Publicación</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-4" href="#"><i class="bi bi-envelope-exclamation"></i>Ver Solicitudes de Intercambio</a>
+            </li>
+            {% if not user_session %}
+              <li class="nav-item">
+                <a class="nav-link fs-4" href="{% url 'view_profile' id=session_id %}"><i class="bi bi-person-bounding-box"></i>Ver perfil</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link fs-4" href="{% url 'editar_perfil_usuario' %}"><i class="bi bi-gear"></i>Editar Perfil </a>
+              </li>
+              <li class="nav-item">
+                <form class="nav-link fs-4" id='form' action="{% url 'confirm_sign_off' %}">
+                  <div type= 'submit' id='submit'>
+                    <i class="bi bi-signpost-2"></i>Cerrar Sesión
+                  </div>
+                </form>
+              </li>
+            {% endif %}
+            <script>
                     function confirmarCierreSesion() {
                         // Mostrar cuadro de diálogo de confirmación
                         if (confirm("¿Estás seguro de que deseas cerrar la sesión?")) {
@@ -65,27 +74,19 @@
                         }
                     }
                     document.getElementById('submit').addEventListener('click', confirmarCierreSesion)
-                </script>
-                </ul>
-              </div>
-            </div>
-        </nav>
-        <main class="container">
-            {% block content %}
-    
-            {% endblock %}
-        </main>
-
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            </script>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
             integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
             integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-    </body>
+            crossorigin="anonymous"></script>
+  </body>
 </html>

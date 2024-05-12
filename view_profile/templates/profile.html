@@ -1,82 +1,95 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Title</title>
+        <title>Perfil de {{ user.name }}</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous" />
     </head>
-
     <body class="bg-body-tertiary">
         {# Incluimos la navbar #}
         {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
-        
-        {% block content %}    
-        <div class="p-5">
-            <h5><strong>Nombre del afiliado:</strong> {{ user.name }} </h5>
-            {% if user_session %}
-                <h5><p><strong>Apellido:</strong> {{ user.surname }}</p></h5>
-                <h5><p><strong>Email:</strong> {{ user.email  }}</p></h5>
-            {% endif %}
-
-            <h5><strong>Publicaciones activas:</strong></h5>
-            {% if combined_data %}
-                <div class="row">
-                    {% for image_data, post_data in combined_data %}
-                        <div class="col-md-4 mb-4" style="text-align: center;"> <!-- Utilizamos col-md-4 para dividir en 3 columnas en pantallas medianas y superiores -->
-                            <div class="card" style="height: 400px; width: 300px" >
-                                <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top" alt="Imagen" style="height: 250px; width: 250px allign-center"/>        
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ post_data.title }}</h5>
-                                    <p class="card-text">{{ post_data.description }}</p>
-                                    <a href="{% url 'see_post' id=post_data.id %}" class="btn btn-primary">Ir a algún lugar</a>
+        {% block content %}
+            <div class="p-5">
+                <h5>
+                    <strong>Nombre del afiliado:</strong> {{ user.name }}
+                </h5>
+                {% if user_session %}
+                    <h5>
+                        <p>
+                            <strong>Apellido:</strong> {{ user.surname }}
+                        </p>
+                    </h5>
+                    <h5>
+                        <p>
+                            <strong>Email:</strong> {{ user.email }}
+                        </p>
+                    </h5>
+                {% endif %}
+                <h5>
+                    <strong>Publicaciones activas:</strong>
+                </h5>
+                {% if combined_data %}
+                    <div class="row">
+                        {% for image_data, post_data in combined_data %}
+                            <div class="col-md-4 mb-4" style="text-align: center;">
+                                <!-- Utilizamos col-md-4 para dividir en 3 columnas en pantallas medianas y superiores -->
+                                <div class="card" style="height: 400px; width: 300px">
+                                    <img src="data:image/jpeg;base64,{{ image_data }}"
+                                         class="card-img-top"
+                                         alt="Imagen"
+                                         style="height: 250px;
+                                                width: 250px allign-center" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ post_data.title }}</h5>
+                                        <p class="card-text">{{ post_data.description }}</p>
+                                        <div class="d-flex justify-content-evenly">
+                                            <a href="{% url 'see_post' id=post_data.id %}" class="btn btn-primary">Ver <i class="bi bi-eye-fill"></i></a>
+                                            {% if user_session %}
+                                                <form action="{% url 'delete_post' id=post_data.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" href="{% url 'see_post' id=post_data.id %}" class="btn btn-danger">
+                                                        Eliminar <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {% if forloop.counter|divisibleby:3 and forloop.counter < combined_data|length %}
-                            </div><div class="row">
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% else %}
-                <h5>Este usuario no posee Publicaciones Activas actualmente</h5>
-            {% endif %}
-
-            <h5><strong>Lista de Necesidades: </strong></h5>
-            {% if need_products %}
-                <ol class="list-group list-group-numbered p-4">
-                    {% for product in need_products %}
-                        <li class="list-group-item w-25 p-3 ">{{ product.name }}</li>
-                    {% endfor %}
-                </ol>
-            {% else %}
-                <h5>Este usuario no posee una Lista de Necesidades actualmente</h5>
-            {% endif %}
+                            {% if forloop.counter|divisibleby:3 and forloop.counter < combined_data|length %}
+                            </div>
+                            <div class="row">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h5>Este usuario no posee Publicaciones Activas actualmente</h5>
+                {% endif %}
+                <h5>
+                    <strong>Lista de Necesidades:</strong>
+                </h5>
+                {% if need_products %}
+                    <ol class="list-group list-group-numbered p-4">
+                        {% for product in need_products %}<li class="list-group-item w-25 p-3 ">{{ product.name }}</li>{% endfor %}
+                    </ol>
+                {% else %}
+                    <h5>Este usuario no posee una Lista de Necesidades actualmente</h5>
+                {% endif %}
             {% endblock %}
         </div>
-
-            <script
-                src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
                 integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-                crossorigin="anonymous"
-            ></script>
-
-            <script
-                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
                 integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-                crossorigin="anonymous"
-            ></script>
+                crossorigin="anonymous"></script>
     </body>
 </html>
