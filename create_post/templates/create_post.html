@@ -16,7 +16,7 @@
               rel="stylesheet">
     </head>
     <body>
-        {% include 'navbar.html' %}
+        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
         {% if success_message %}
             <div class="m-5 alert alert-success alert-dismissible show" role="alert">
                 <button type="button"
