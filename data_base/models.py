@@ -28,6 +28,12 @@ class Reputation(models.Model):
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
 
 
+class Tokens(models.Model):
+    affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    token = models.CharField(max_length=16, unique=True)
+    expiration_date = models.DateTimeField()
+
+
 class Branches(models.Model):
     worker = models.ForeignKey(Workers, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
