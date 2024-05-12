@@ -38,6 +38,9 @@
                     <a class="nav-link fs-4" href="#"><i class="bi bi-cart3"></i>Ver Ecommerce</a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link fs-4" href="{% url 'create_post' %}"><i class="bi bi-pencil-square"></i>Crear intercambio</a>
+                  </li>
+                  <li class="nav-item">
                     <a class="nav-link fs-4" href="#"><i class="bi bi-envelope-exclamation"></i>Ver Solicitudes de Intercambio</a>
                   </li>
                   {% if not user_session %}
