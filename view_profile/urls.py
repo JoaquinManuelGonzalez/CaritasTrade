@@ -21,6 +21,6 @@ from . import views
 
 
 urlpatterns = [
-    path("user/<int:id>", views.profile, name="perfil_usuario"),
+    path("user/<int:id>", views.profile, name="view_profile"),
     path('confirm_sign_off/', views.confirm_sign_off, name='confirm_sign_off'),
 ]

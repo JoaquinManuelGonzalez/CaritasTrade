@@ -31,6 +31,6 @@ urlpatterns = [
     path('log_in/', include('log_in.urls'), name='log_in_form'),
     path('list_exchange_products/', include('list_exchange_products.urls'),name='list_exchange_products'),
     path('edit_profile/', include('edit_profile.urls'),name='edit_profile'),
-    path('view_profile/', include('view_profile.urls'),name='view_profile'),
+    path('view_profile/', include('view_profile.urls')),
     path('about_us/', landing_page_views.about_us, name='about_us')
 ]

@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Title</title>
+        <title>Perfil de Afiliado</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta
@@ -37,7 +37,7 @@
                     {% for image_data, post_data in combined_data %}
                         <div class="col-md-4 mb-4" style="text-align: center;"> <!-- Utilizamos col-md-4 para dividir en 3 columnas en pantallas medianas y superiores -->
                             <div class="card" style="height: 400px; width: 300px" >
-                                <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top" alt="Imagen" style="height: 250px; width: 250px allign-center"/>        
+                                <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top" alt="{{ post_data.description }}" style="height: 250px; width: 250px allign-center"/>        
                                 <div class="card-body">
                                     <h5 class="card-title">{{ post_data.title }}</h5>
                                     <p class="card-text">{{ post_data.description }}</p>

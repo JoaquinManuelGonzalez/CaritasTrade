@@ -20,7 +20,13 @@
     </head>
 
     <body>
-        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+        {% if role == "admin" %}
+            {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
+        {% elif role == "user"%}
+            {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+        {% else %}
+            {% include 'worker_navbar.html' with user_session=user_session session_id=session_id %}
+        {% endif %}
 
         {% block content %}
             <div class="p-3">
@@ -50,7 +56,7 @@
                             {% for image_data, post_data in combined_data %}
                                 <div class="col-md-4 mb-4" style="text-align: center;"> <!-- Utilizamos col-md-4 para   dividir en 3 columnas en pantallas medianas y superiores -->
                                     <div class="card" style="height: 400px; width: 300px" >
-                                        <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top"     alt="Imagen" style="height: 250px; width: 250px allign-center"/>        
+                                        <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top"     alt="{{ post_data.description }}" style="height: 250px; width: 250px allign-center"/>        
                                         <div class="card-body">
                                             <h5 class="card-title">{{ post_data.title }}</h5>
                                             <p class="card-text">{{ post_data.description }}</p>

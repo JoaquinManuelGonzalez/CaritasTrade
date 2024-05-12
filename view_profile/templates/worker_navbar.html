@@ -3,7 +3,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>USER NAVBAR</title>
+        <title>NavBar de Ayudantes</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta
@@ -40,19 +40,13 @@
                     <a class="nav-link fs-4" href="#"><i class="bi bi-cart3" style="margin-right: 5px;"></i> Ver Ecommerce</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link fs-4" href="{% url 'create_post' %}"><i class="bi bi-plus-square" style="margin-right: 5px;"></i> Crear Publicación</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link fs-4" href="#"><i class="bi bi-envelope-exclamation" style="margin-right: 5px;"></i> Ver Solicitudes de Intercambio</a>
+                    <a class="nav-link fs-4" href="#"{#% url 'validate_post' %#}><i class="bi bi-card-checklist" style="margin-right: 5px;"></i> Validar Publicación </a>
                   </li>
                   {% if not user_session %}
                     <li class="nav-item">
                       <a class="nav-link fs-4" href="{% url 'view_profile' id=session_id %}"><i class="bi bi-person-bounding-box" style="margin-right: 5px;"></i>Ver perfil</a>
                     </li>
                   {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link fs-4" href="{% url 'editar_perfil_usuario' %}"><i class="bi bi-gear" style="margin-right: 5px;"></i>Editar Perfil </a>
-                    </li>
                     <li class="nav-item">
                       <form class="nav-link fs-4" id='form' action="{% url 'confirm_sign_off' %}"><div type= 'submit' id='submit'> <i class="bi bi-signpost-2" style="margin-right: 5px;"></i>Cerrar Sesión</div></form>
                     </li>
