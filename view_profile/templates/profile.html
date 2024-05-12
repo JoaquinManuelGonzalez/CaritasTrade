@@ -41,7 +41,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ post_data.title }}</h5>
                                     <p class="card-text">{{ post_data.description }}</p>
-                                    <a href="#" class="btn btn-primary">Ir a algún lugar</a>
+                                    <a href="{% url 'see_post' id=post_data.id %}" class="btn btn-primary">Ir a algún lugar</a>
                                 </div>
                             </div>
                         </div>
