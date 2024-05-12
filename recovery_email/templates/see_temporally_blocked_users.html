@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+{% for user in users %}
+    <h1>
+        {{ user.name }}, {{ user.surname }}
+    </h1>
+    <form method="post" action="{% url 'send_email' %}">
+        {% csrf_token %}
+        <input type="hidden" name="email" value="{{ user.email }}">
+        <button onclick="mostrarAlerta('{{user.email}}')" type="submit">Enviar correo a {{ user.name }}</button>
+    </form>
+{% endfor %}
+<script>
+    function mostrarAlerta(email) {
+      alert("Correo enviado correctamente a " + email)
+    }
+  </script>
+{% endblock %}  
+
+
