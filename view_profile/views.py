@@ -11,6 +11,7 @@ def decode_images(post):
     for p in post:
         if p.image:
             image_data = p.image.decode("utf-8")
+            image_data = p.image.decode("utf-8")
             decoded_images.append(image_data)
         else:
             decoded_images.append(None)
