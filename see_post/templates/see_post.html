@@ -16,62 +16,76 @@
     </head>
     <body>
         <header>
-            {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
-        </header>
-        <main class="">
-            {% if post %}
-                <div class="container mt-5 shadow-lg rounded-5 ">
-                    <div class="row">
-                        <!-- Columna de la imagen -->
-                        <div class="col-md-4 text-center">
-                            <img src="data:image/png;base64,{{ post_image }}"
-                                 class="img-fluid m-5 rounded-5 shadow-sm"
-                                 style="border: 1px solid #ddd"
-                                 alt="Imagen">
-                        </div>
-                        <!-- Columna del título, descripción y categoría -->
-                        <div class="col-md-4 d-flex flex-column justify-content-between align-items-center text-center">
-                            <div>
-                                <h2 class="fw-bolder text-primary m-5">{{ post.title }}</h2>
-                                <p>{{ post.description }}</p>
-                                <h5 class="fw-bold ">Categoria:</h5>
-                                <p>{{ category.name }}</p>
+            {% if role == "admin" %}
+                {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
+            {% elif role == "user" %}
+                {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+            {% else %}
+                {% include 'worker_navbar.html' with user_session=user_session session_id=session_id %}
+            {% endif %}
+            <main class="">
+                {% if post %}
+                    <div class="container mt-5 shadow-lg rounded-5 ">
+                        <div class="row">
+                            <!-- Columna de la imagen -->
+                            <div class="col-md-4 text-center">
+                                <img src="data:image/png;base64,{{ post_image }}"
+                                     class="img-fluid m-5 rounded-5 shadow-sm"
+                                     style="border: 1px solid #ddd"
+                                     alt="Imagen">
                             </div>
-                            <button type="button" class="btn btn-danger m-5">
-                                Solicitar intercambio <i class="bi bi-send"></i>
-                            </button>
-                        </div>
-                        <!-- Columna de la reputación del usuario -->
-                        <div class="col-md-4 text-center">
-                            <h4 class="m-5">Reputación:</h4>
-                            <div class="progress "
-                                 role="progressbar"
-                                 aria-label="Danger example"
-                                 aria-valuenow="{{ reputation }}"
-                                 aria-valuemin="0"
-                                 aria-valuemax="100">
-                                <div class="progress-bar bg-primary"
-                                     style="width: {{ reputation_percentage }}%">{{ reputation }}</div>
+                            <!-- Columna del título, descripción y categoría -->
+                            <div class="col-md-4 d-flex flex-column justify-content-between align-items-center text-center">
+                                <div>
+                                    <h2 class="fw-bolder text-primary m-5">{{ post.title }}</h2>
+                                    <p>{{ post.description }}</p>
+                                    <h5 class="fw-bold ">Categoria:</h5>
+                                    <p>{{ category.name }}</p>
+                                </div>
+                                {% if role == "user" %}
+                                    <button type="button" class="btn btn-danger m-5">
+                                        Solicitar intercambio <i class="bi bi-send"></i>
+                                    </button>
+                                {% endif %}
+                            </div>
+                            <!-- Columna de la reputación del usuario -->
+                            <div class="col-md-4 text-center">
+                                <h4 class="m-5">Reputación:</h4>
+                                <div class="progress "
+                                     role="progressbar"
+                                     aria-label="Danger example"
+                                     aria-valuenow="{{ reputation }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100">
+                                    <div class="progress-bar bg-primary"
+                                         style="width: {{ reputation_percentage }}%">{{ reputation }}</div>
+                                </div>
+                                {% if role == "user" %}
+                                    <form action="{% url "view_profile" id=author_id %}"
+                                          method="get"
+                                          class="m-5">
+                                        <button type="submit" class="btn btn-outline-primary">Autor: {{ author_name }}</button>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-                </div>
-            {% else %}
-                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"
-                            aria-label="Close"></button>
-                    <strong>Esta publicación no se encuentra disponible por el momento. Intente más tarde.</strong>
-                </div>
-            {% endif %}
-        </main>
-        <!-- Bootstrap JavaScript Libraries -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-                crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-                crossorigin="anonymous"></script>
-    </body>
-</html>
+                {% else %}
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        <strong>Esta publicación no se encuentra disponible por el momento. Intente más tarde.</strong>
+                    </div>
+                {% endif %}
+            </main>
+            <!-- Bootstrap JavaScript Libraries -->
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                    crossorigin="anonymous"></script>
+        </body>
+    </html>

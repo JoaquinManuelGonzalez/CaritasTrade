@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from data_base.models import ExchangePost, Reputation, ProductCategory
+from data_base.models import ExchangePost, Reputation, ProductCategory, Affiliate
 from django.db.models import Avg
 
 
@@ -28,6 +28,9 @@ def see_post(request, id):
                     "category": category,
                     "user_session": False,
                     "session_id": request.session.get("id"),
+                    "role": request.session.get("role"),
+                    "author_id": post.affiliate_id,
+                    "author_name": Affiliate.objects.get(id=post.affiliate_id).name,
                 },
             )
         else:
