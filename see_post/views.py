@@ -1,7 +1,6 @@
 from django.shortcuts import redirect, render
-from data_base.models import ExchangePost, Reputation, ProductCategory
+from data_base.models import ExchangePost, Reputation, ProductCategory, Affiliate
 from django.db.models import Avg
-
 
 
 # Create your views here.
@@ -15,7 +14,9 @@ def see_post(request, id):
                 .aggregate(promedio=Avg("reputation"))
                 .get("promedio")
             )
-            category = ProductCategory.objects.filter(id=post.product_category_id).first()
+            category = ProductCategory.objects.filter(
+                id=post.product_category_id
+            ).first()
             return render(
                 request,
                 "see_post.html",
@@ -25,12 +26,19 @@ def see_post(request, id):
                     "reputation": reputation,
                     "reputation_percentage": (reputation * 100) / 5,
                     "category": category,
+                    "user_session": False,
+                    "session_id": request.session.get("id"),
+                    "role": request.session.get("role"),
+                    "author_id": post.affiliate_id,
+                    "author_name": Affiliate.objects.get(id=post.affiliate_id).name,
                 },
             )
         else:
             return render(
                 request,
-                "see_post.html"
+                "see_post.html",
+                {"user_session": False,
+                 "session_id": request.session.get("id")},
             )
     else:
         return redirect("landing_page")

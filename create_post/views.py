@@ -15,6 +15,8 @@ def create_post(request):
             {
                 "categories": ProductCategory.objects.all(),
                 "form": form,
+                "user_session": False,
+                "session_id": request.session.get("id"),
             },
         )
     elif request.method == "POST" and request.session.get("id"):
@@ -46,6 +48,8 @@ def create_post(request):
                     "form": form,
                     "categories": ProductCategory.objects.all(),
                     "success_message": "La publicación que creaste está ahora en estado pendiente. Nuestro equipo de trabajo la revisará y te notificará vía mail si fue aprobada o no.",
+                    "user_session": False,
+                    "session_id": request.session.get("id"),
                 },
             )
         else:
@@ -57,6 +61,8 @@ def create_post(request):
                 {
                     "form": form,
                     "categories": ProductCategory.objects.all(),
+                    "user_session": False,
+                    "session_id": request.session.get("id"),
                 },
             )
     else:

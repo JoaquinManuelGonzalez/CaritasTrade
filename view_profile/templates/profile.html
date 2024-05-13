@@ -2,86 +2,116 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Perfil de Afiliado</title>
+        <title>Perfil de {{ user.name }}</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta name="viewport"
               content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <!-- Bootstrap CSS v5.2.1 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
               rel="stylesheet"
-              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-              crossorigin="anonymous" />
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+              crossorigin="anonymous">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <body class="bg-body-tertiary">
-        {# Incluimos la navbar #}
-        {% include 'user_navbar_with_edit_and_close.html'
-        with user_session=user_session session_id=session_id %}
+        {# Including the navbar #}
+        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+        <script>
+            var alertList = document.querySelectorAll(".alert");
+            alertList.forEach(function (alert) {
+                new bootstrap.Alert(alert);
+            });
+        </script>
+        {% if success_message %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                <strong>{{ success_message }}</strong>
+            </div>
+        {% endif %}
         {% block content %}
-            <div class="p-5">
-                <h5>
-                    <strong>Nombre del afiliado:</strong> {{ user.name }}
-                </h5>
-                {% if user_session %}
-                    <h5>
-                        <p>
-                            <strong>Apellido:</strong> {{ user.surname }}
-                        </p>
-                    </h5>
-                    <h5>
-                        <p>
-                            <strong>Email:</strong> {{ user.email }}
-                        </p>
-                    </h5>
-                {% endif %}
-                <h5>
-                    <strong>Publicaciones activas:</strong>
-                </h5>
-                {% if combined_data %}
-                    <div class="row">
-                        {% for image_data, post_data in combined_data %}
-                            <div class="col-md-4 mb-4" style="text-align: center">
-                                <!-- Utilizamos col-md-4 para dividir en 3 columnas en pantallas medianas y superiores -->
-                                <div class="card" style="height: 400px; width: 300px">
-                                    <img src="data:image/jpeg;base64,{{ image_data }}"
-                                         class="card-img-top"
-                                         alt="{{ post_data.description }}"
-                                         style="height: 250px;
-                                                width: 250px allign-center" />
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ post_data.title }}</h5>
-                                        <p class="card-text">{{ post_data.description }}</p>
-                                        <a href="#" class="btn btn-primary">Ir a algún lugar</a>
-                                    </div>
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
+                        <div class="text-center mb-5">
+                            <h1 class="display-4 fw-bold">{{ user.name }}</h1>
+                            {% if user_session %}
+                                <p class="lead text-success ">¡Estás en tu perfil!</p>
+                            {% endif %}
+                        </div>
+                        {% if user_session %}
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    Información del Usuario
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"><strong>Nombre:</strong> {{ user.name }}</p>
+                                    <p class="card-text"><strong>Apellido:</strong> {{ user.surname }}</p>
+                                    <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
                                 </div>
                             </div>
-                            {% if forloop.counter|divisibleby:3 and forloop.counter <
-                                combined_data|length %}
+                        {% endif %}
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                Publicaciones Activas
                             </div>
-                            <div class="row">
-                            {% endif %}
-                        {% endfor %}
+                            <div class="card-body">
+                                <div class="row row-cols-1 row-cols-md-2 g-4">
+                                    {% if combined_data %}
+                                        {% for image_data, post_data in combined_data %}
+                                            <div class="col">
+                                                <div class="card h-100">
+                                                    <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top" alt="Imagen">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ post_data.title }}</h5>
+                                                        <p class="card-text">{{ post_data.description }}</p>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <a href="{% url 'see_post' id=post_data.id %}" class="btn btn-primary"><i class="bi bi-eye-fill" style="margin-right: 2px;"></i>Ver Publicación</a>
+                                                            {% if user_session %}
+                                                                <form action="{% url 'delete_post' id=post_data.id %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill" style="margin-right: 2px;"></i>Eliminar</button>
+                                                                </form>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="col">
+                                            <p class="text-muted">Este usuario no tiene publicaciones activas actualmente.</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                Lista de Necesidades
+                            </div>
+                            <div class="card-body">
+                                {% if need_products %}
+                                    <ol class="list-group list-group-numbered">
+                                        {% for product in need_products %}
+                                            <li class="list-group-item">{{ product.name }}</li>
+                                        {% endfor %}
+                                    </ol>
+                                {% else %}
+                                    <p class="text-muted">Este usuario no tiene necesidades registradas actualmente.</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                {% else %}
-                    <h5>Este usuario no posee Publicaciones Activas actualmente</h5>
-                {% endif %}
-                <h5>
-                    <strong>Lista de Necesidades:</strong>
-                </h5>
-                {% if need_products %}
-                    <ol class="list-group list-group-numbered p-4">
-                        {% for product in need_products %}<li class="list-group-item w-25 p-3">{{ product.name }}</li>{% endfor %}
-                    </ol>
-                {% else %}
-                    <h5>Este usuario no posee una Lista de Necesidades actualmente</h5>
-                {% endif %}
-            {% endblock %}
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-                crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-                crossorigin="anonymous"></script>
-    </body>
+                </div>
+            </div>
+        {% endblock %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    </body>    
 </html>
