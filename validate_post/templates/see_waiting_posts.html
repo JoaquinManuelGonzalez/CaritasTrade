@@ -1,0 +1,65 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+{% for post in posts %}
+<div style="display: flex; align-items: center;">
+    <div style="flex-grow: 1;">
+        <h1>Titulo: {{ post.title }}</h1>
+        <p>Descripción: {{ post.description }}</p>
+        <p>Categoría: {{ post.category }}</p>
+        {% if post.image %}
+            <img src="data:image/jpeg;base64,{{ post.image }}" style="max-width: 15%; height: auto;">
+        {% endif %}
+        <div style="display: flex;">
+            <form id="form_accept_{{ post.id }}" method="post" action="{% url 'accept' %}">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ post.id }}">
+                <button type="button" onclick="show_accept_post('{{ post.id }}')" style="margin-right: 10px;">Aceptar</button>
+            </form>
+            <form id="form_reject_{{ post.id }}" method="post" action="{% url 'reject' %}">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ post.id }}">
+                <button type="button" onclick="show_reject_post('{{ post.id }}', '{{ post.attempts }}')" style="margin-right: 10px;">Rechazar</button>
+            </form>
+            {% if role == "worker" %}
+                <form id="form_worker_block_{{ post.id }}" method="post" action="{% url 'block' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ post.id }}">
+                    <button type="submit" style="margin-right: 10px;">Bloquear worker</button>
+                </form>
+            {% else %}
+                <form id="form_admin_block_{{ post.id }}" method="post" action="{% url 'block' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ post.id }}">
+                    <button type="button" onclick="show_admin_block('{{ post.id }}')" style="margin-right: 10px;">Bloquear admin</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+<script>
+    function show_admin_block(id) {
+      if (confirm("¿Estás seguro de que deseas bloquear al usuario?")) {
+        alert("Usuario bloqueado exitosamente")
+        document.getElementById("form_admin_block_" + id).submit();
+      }
+    }
+    function show_accept_post(id) {
+      if (confirm("¿Estás seguro de que deseas aceptar la publicacion?")) {
+        alert("Publicacion aceptada con exito")
+        document.getElementById("form_accept_" + id).submit();
+      }
+    }
+    function show_reject_post(id, attempts) {
+      if (confirm("¿Estás seguro de que deseas rechazar la publicacion?")) {
+        if (attempts >= 4) {
+            alert("Publicacion rechazada con exito, la cuenta del usuario ha sido bloqueada temporalmente")
+        }
+        else {
+            alert("Publicacion rechazada con exito")
+        }
+        document.getElementById("form_reject_" + id).submit();
+      }
+    }
+</script>
+{% endblock %}

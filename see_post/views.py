@@ -31,6 +31,7 @@ def see_post(request, id):
                     "role": request.session.get("role"),
                     "author_id": post.affiliate_id,
                     "author_name": Affiliate.objects.get(id=post.affiliate_id).name,
+                    "own_post": post.affiliate_id == request.session.get("id"),
                 },
             )
         else:
