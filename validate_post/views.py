@@ -75,7 +75,7 @@ def reject(request):
         affiliate = post.affiliate
         affiliate.rejected_posts = affiliate.rejected_posts + 1
         affiliate.save()
-        if (affiliate.rejected_posts < 3):
+        if (affiliate.rejected_posts < 5):
             send_reject_email(affiliate.email)
         else:
             AccountBlock.objects.create(affiliate=affiliate, is_permanent=False).save()

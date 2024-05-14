@@ -42,7 +42,7 @@
                                     <h5 class="fw-bold ">Categoria:</h5>
                                     <p>{{ category.name }}</p>
                                 </div>
-                                {% if role == "user" %}
+                                {% if role == "user" and not own_post %}
                                     <button type="button" class="btn btn-danger m-5">
                                         <i class="bi bi-send" style="margin-right: 5px;"></i>Solicitar intercambio
                                     </button>

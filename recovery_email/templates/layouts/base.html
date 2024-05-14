@@ -10,7 +10,7 @@
 <body class="bg-body-tertiary ">
   <nav class="navbar navbar-expand-lg ">
     <div class="container-fluid ">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="{% url 'list_products' %}">
         <img src="{% static 'logo_caritasTrade.png' %}" alt="Logo" width="165" height="75" class="d-inline-block align-text-top">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link fs-4" href="{% url 'landing_page' %}">Volver</a>
+            <a class="nav-link fs-4" href="{% url 'list_products' %}">Volver</a>
           </li>
         </ul>
       </div>

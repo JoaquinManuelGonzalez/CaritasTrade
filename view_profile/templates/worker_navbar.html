@@ -30,7 +30,7 @@
           <a class="nav-link fs-4" href="#"><i class="bi bi-cart3" style="margin-right: 5px;"></i> Ver Ecommerce</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fs-4" href="#"{#% url 'validate_post' %#}><i class="bi bi-card-checklist" style="margin-right: 5px;"></i> Validar Publicación </a>
+          <a class="nav-link fs-4" href="{% url "see_waiting_posts" %}"><i class="bi bi-card-checklist" style="margin-right: 5px;"></i> Validar Publicación </a>
         </li>
         {% if not user_session %}
           <li class="nav-item">
