@@ -22,7 +22,7 @@
                 <form method="post" action="{% url 'recovery' %}">
                     {% csrf_token %}
                     <input type="hidden" name="token" value="{{ token }}">
-                    <button type="submit">Recuperar cuenta</button>
+                    <button type="submit" class="btn btn-primary  ">Recuperar cuenta</button>
                 </form>
             </div>
         </div>
