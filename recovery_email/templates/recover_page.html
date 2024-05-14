@@ -21,7 +21,8 @@
                 <hr>
                 <form method="post" action="{% url 'recovery' %}">
                     {% csrf_token %}
-                    <button type="submit">cuenta</button>
+                    <input type="hidden" name="token" value="{{ token }}">
+                    <button type="submit">Recuperar cuenta</button>
                 </form>
             </div>
         </div>

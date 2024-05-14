@@ -22,10 +22,17 @@ class Affiliate(models.Model):
     password = models.CharField(max_length=8)
     points = models.IntegerField(default=0)
     login_attemps = models.IntegerField(default=0) 
+    rejected_posts = models.IntegerField(default=0)
 
 class Reputation(models.Model):
     reputation = models.FloatField(default=3.0)
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+
+
+class Tokens(models.Model):
+    affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    token = models.CharField(max_length=16, unique=True)
+    expiration_date = models.DateTimeField()
 
 
 class Branches(models.Model):

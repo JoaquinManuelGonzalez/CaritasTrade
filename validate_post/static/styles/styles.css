@@ -1,0 +1,13 @@
+.captcha-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+#captcha {
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    padding: 10px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
