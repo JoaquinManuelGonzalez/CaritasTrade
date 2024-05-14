@@ -16,7 +16,7 @@
               rel="stylesheet">
     </head>
     <body>
-        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+        {% include 'navbar.html' %}
         {% if success_message %}
             <div class="m-5 alert alert-success alert-dismissible show" role="alert">
                 <button type="button"
@@ -112,6 +112,7 @@
                 });
             </script>
         </main>
+        
         <!-- Bootstrap JavaScript Libraries -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
                 integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -127,10 +128,12 @@
         });
         
 
-        document.getElementById("submit").addEventListener("click", function () {
+        document.getElementById("submit").addEventListener("click", function (event){
                 let respuesta = confirm("¿Quiere enviar esta publicación para revisión?");
                 if (respuesta) {
                     document.getElementById("form").submit();
+                } else {
+                    event.preventDefault();
                 }
             });
     </script>
