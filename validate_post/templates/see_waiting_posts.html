@@ -2,7 +2,7 @@
 <head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"></head>
 
 {% block content %}
-  {% if success_message_accept %}
+  {% if success_message %}
   <div
     class="alert alert-success alert-dismissible fade show"
     role="alert"
@@ -14,9 +14,9 @@
       aria-label="Close"
     ></button>
   
-    <strong>{{success_message_accept}}</strong>
+    <strong>{{success_message}}</strong>
   </div>
-  {% elif failure_message_accept %}
+  {% elif failure_message %}
   <div
     class="alert alert-danger alert-dismissible fade show"
     role="alert"
@@ -28,7 +28,7 @@
       aria-label="Close"
     ></button>
   
-    <strong>{{failure_message_accept}}</strong>
+    <strong>{{failure_message}}</strong>
   </div>
   {% endif %}
     <div class="d-flex flex-column  m-5 justify-content-evenly ">
@@ -110,7 +110,6 @@
     <script>
     function show_admin_block(id) {
       if (confirm("¿Estás seguro de que deseas bloquear al usuario?")) {
-        alert("Usuario bloqueado exitosamente")
         document.getElementById("form_admin_block_" + id).submit();
       }
     }
@@ -121,12 +120,6 @@
     }
     function show_reject_post(id, attempts) {
       if (confirm("¿Estás seguro de que deseas rechazar la publicacion?")) {
-        if (attempts >= 4) {
-            alert("Publicacion rechazada con exito, la cuenta del usuario ha sido bloqueada temporalmente")
-        }
-        else {
-            alert("Publicacion rechazada con exito")
-        }
         document.getElementById("form_reject_" + id).submit();
       }
     }
