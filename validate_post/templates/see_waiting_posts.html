@@ -1,6 +1,36 @@
 {% extends "layouts/base_validate.html" %}
 <head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"></head>
+
 {% block content %}
+  {% if success_message_accept %}
+  <div
+    class="alert alert-success alert-dismissible fade show"
+    role="alert"
+  >
+    <button
+      type="button"
+      class="btn-close m-2"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  
+    <strong>{{success_message_accept}}</strong>
+  </div>
+  {% elif failure_message_accept %}
+  <div
+    class="alert alert-danger alert-dismissible fade show"
+    role="alert"
+  >
+    <button
+      type="button"
+      class="btn-close m-2"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  
+    <strong>{{failure_message_accept}}</strong>
+  </div>
+  {% endif %}
     <div class="d-flex flex-column  m-5 justify-content-evenly ">
         {% for post in posts %}
             <div style="display: flex;
@@ -86,7 +116,6 @@
     }
     function show_accept_post(id) {
       if (confirm("¿Estás seguro de que deseas aceptar la publicacion?")) {
-        alert("Publicacion aceptada con exito")
         document.getElementById("form_accept_" + id).submit();
       }
     }
