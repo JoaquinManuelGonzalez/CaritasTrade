@@ -33,7 +33,8 @@ def send_email(request):
         [email],
         fail_silently=False,
     )
-    return redirect('see_users')
+    users = Affiliate.objects.filter(accountblock__is_permanent=False)
+    return render(request, "see_temporally_blocked_users.html", {"users": users, "success_message":"Email de recuperacion enviado"})
 
 def recover_page(request, token):
     return render(request, "recover_page.html", {"token": token})

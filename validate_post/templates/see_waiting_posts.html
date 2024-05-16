@@ -1,65 +1,127 @@
-{% extends "layouts/base.html" %}
+{% extends "layouts/base_validate.html" %}
+<head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"></head>
+
 {% block content %}
-{% for post in posts %}
-<div style="display: flex; align-items: center;">
-    <div style="flex-grow: 1;">
-        <h1>Titulo: {{ post.title }}</h1>
-        <p>Descripción: {{ post.description }}</p>
-        <p>Categoría: {{ post.category }}</p>
-        {% if post.image %}
-            <img src="data:image/jpeg;base64,{{ post.image }}" style="max-width: 15%; height: auto;">
-        {% endif %}
-        <div style="display: flex;">
-            <form id="form_accept_{{ post.id }}" method="post" action="{% url 'accept' %}">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ post.id }}">
-                <button type="button" onclick="show_accept_post('{{ post.id }}')" style="margin-right: 10px;">Aceptar</button>
-            </form>
-            <form id="form_reject_{{ post.id }}" method="post" action="{% url 'reject' %}">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ post.id }}">
-                <button type="button" onclick="show_reject_post('{{ post.id }}', '{{ post.attempts }}')" style="margin-right: 10px;">Rechazar</button>
-            </form>
-            {% if role == "worker" %}
-                <form id="form_worker_block_{{ post.id }}" method="post" action="{% url 'block' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="id" value="{{ post.id }}">
-                    <button type="submit" style="margin-right: 10px;">Bloquear worker</button>
-                </form>
-            {% else %}
-                <form id="form_admin_block_{{ post.id }}" method="post" action="{% url 'block' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="id" value="{{ post.id }}">
-                    <button type="button" onclick="show_admin_block('{{ post.id }}')" style="margin-right: 10px;">Bloquear admin</button>
-                </form>
-            {% endif %}
-        </div>
+  {% if success_message %}
+  <div
+    class="alert alert-success alert-dismissible fade show"
+    role="alert"
+  >
+    <button
+      type="button"
+      class="btn-close m-2"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  
+    <strong>{{success_message}}</strong>
+  </div>
+  {% elif failure_message %}
+  <div
+    class="alert alert-danger alert-dismissible fade show"
+    role="alert"
+  >
+    <button
+      type="button"
+      class="btn-close m-2"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  
+    <strong>{{failure_message}}</strong>
+  </div>
+  {% endif %}
+    <div class="d-flex flex-column  m-5 justify-content-evenly ">
+        {% for post in posts %}
+            <div style="display: flex;
+                        align-items: center"
+                 class="bg-body-tertiary p-5 shadow m-1 rounded-5  ">
+                <div style="flex-grow: 1;" class="d-flex flex-row justify-content-between    ">
+                    <div class="w-50 ">
+                        <h1><strong>Titulo: </strong>{{ post.title }}</h1>
+                        <p><strong>Descripción:</strong> {{ post.description }}</p>
+                        <p><strong>Categoría: </strong>{{ post.category }}</p>
+                        {% if post.image %}
+                            <img src="data:image/jpeg;base64,{{ post.image }}"
+                                 style="width: 100%;
+                                        height: auto"
+                                        class="rounded-5 ratio-16x9 ">
+                        {% endif %}
+                    </div>
+                    <div style="display: flex;" class="flex-column justify-content-center align-items-end ">
+                        <form id="form_accept_{{ post.id }}"
+                              method="post"
+                              class="m-2"
+                              action="{% url 'accept' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ post.id }}">
+                            <button type="button"
+                                    class="btn btn-success "
+                                    onclick="show_accept_post('{{ post.id }}')"
+                                    style="margin-right: 10px">Aceptar publicación <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                        <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
+                                      </svg></button>
+                        </form>
+                        <form id="form_reject_{{ post.id }}"
+                              method="post" class="m-2"
+                              action="{% url 'reject' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ post.id }}">
+                            <button type="button"
+                                    onclick="show_reject_post('{{ post.id }}', '{{ post.attempts }}')"
+                                    class="btn btn-danger  "
+                                    style="margin-right: 10px;">Rechazar publicación <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                      </svg></button>
+                        </form>
+                        {% if role == "worker" %}
+                            <form id="form_worker_block_{{ post.id }}"
+                                  method="post" class="m-2"
+                                  action="{% url 'block' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ post.id }}">
+                                <button type="submit"
+                                        class="btn btn-dark " 
+                                        style="margin-right: 10px">Bloquear permanente <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-slash" viewBox="0 0 16 16">
+                                            <path d="M13.879 10.414a2.501 2.501 0 0 0-3.465 3.465zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465m-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                                          </svg></button>
+                            </form>
+                        {% else %}
+                            <form id="form_admin_block_{{ post.id }}"
+                                  method="post"
+                                  action="{% url 'block' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" value="{{ post.id }}">
+                                <button type="button"
+                                        class="btn btn-dark "
+                                        onclick="show_admin_block('{{ post.id }}')"
+                                        style="margin-right: 10px">Bloquear permanente <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-slash" viewBox="0 0 16 16">
+                                            <path d="M13.879 10.414a2.501 2.501 0 0 0-3.465 3.465zm.707.707-3.465 3.465a2.501 2.501 0 0 0 3.465-3.465m-4.56-1.096a3.5 3.5 0 1 1 4.949 4.95 3.5 3.5 0 0 1-4.95-4.95ZM11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m.256 7a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+                                          </svg></button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
-</div>
-{% endfor %}
-<script>
+    <script>
     function show_admin_block(id) {
       if (confirm("¿Estás seguro de que deseas bloquear al usuario?")) {
-        alert("Usuario bloqueado exitosamente")
         document.getElementById("form_admin_block_" + id).submit();
       }
     }
     function show_accept_post(id) {
       if (confirm("¿Estás seguro de que deseas aceptar la publicacion?")) {
-        alert("Publicacion aceptada con exito")
         document.getElementById("form_accept_" + id).submit();
       }
     }
     function show_reject_post(id, attempts) {
       if (confirm("¿Estás seguro de que deseas rechazar la publicacion?")) {
-        if (attempts >= 4) {
-            alert("Publicacion rechazada con exito, la cuenta del usuario ha sido bloqueada temporalmente")
-        }
-        else {
-            alert("Publicacion rechazada con exito")
-        }
         document.getElementById("form_reject_" + id).submit();
       }
     }
-</script>
+    </script>
 {% endblock %}
