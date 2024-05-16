@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Title</title>
+    <title>user Navbar</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport"
@@ -51,7 +51,7 @@
             </li>
             {% if not user_session %}
               <li class="nav-item">
-                <a class="nav-link fs-4" href="{% url 'view_profile' id=session_id %}"><i class="bi bi-person-bounding-box" style="margin-right: 5px;"></i>Ver perfil</a>
+                <a class="nav-link fs-4" href="{% url 'view_profile' id=session_id %}"><i class="bi bi-person-bounding-box" style="margin-right: 5px;"></i> {{ session_name }} </a>
               </li>
             {% else %}
               <li class="nav-item">

@@ -1,17 +1,15 @@
 {% extends "layouts/base.html" %}
 {% block content %}
-{% for user in users %}
-    <h1>
-        {{ user.email }}
-    </h1>
+  {% for user in users %}
+    <h1>{{ user.email }}</h1>
     <form id="form_{{ user.id }}" method="post" action="{% url 'send_email' %}">
-        {% csrf_token %}
-        <input type="hidden" name="email" value="{{ user.email }}">
-        <input type="hidden" name="dni" value="{{ user.dni }}">
-        <button type="button" onclick="show_alert('{{ user.id }}')">Enviar</button>
+      {% csrf_token %}
+      <input type="hidden" name="email" value="{{ user.email }}">
+      <input type="hidden" name="dni" value="{{ user.dni }}">
+      <button type="button" onclick="show_alert('{{ user.id }}')">Enviar</button>
     </form>
-{% endfor %}
-<script>
+  {% endfor %}
+  <script>
     function show_alert(id) {
       if (confirm("¿Estás seguro de que deseas enviar el formulario?")) {
         alert("Email de recuperacion enviado")
@@ -19,6 +17,4 @@
       }
     }
   </script>
-{% endblock %}  
-
-
+{% endblock %}

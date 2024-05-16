@@ -1,43 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>Edita tu cuenta</title>
         <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous" />
         <!-- Bootstrap Icons CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+              rel="stylesheet">
     </head>
     <body class="bg-body-tertiary">
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-success alert-dismissible show" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"></button>
                     <strong>{{ message }}</strong>
                 </div>
             {% endfor %}
         {% endif %}
-
         {% if form.errors %}
             <div class="alert alert-danger alert-dismissible show m-2 " role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                <strong>Error: {% for field, errors in form.errors.items %}
-                                    {% if forloop.first %}
-                                        {{ errors.0 }}
-                                    {% endif %}
-                                {% endfor %} </strong>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                <strong>Error:
+                    {% for field, errors in form.errors.items %}
+                        {% if forloop.first %}{{ errors.0 }}{% endif %}
+                    {% endfor %}
+                </strong>
             </div>
         {% endif %}
-
-        <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 130vh; width: 40%;">
+        <div class="container-fluid d-flex justify-content-center align-items-center"
+             style="height: 130vh;
+                    width: 40%">
             <div class="card shadow-lg">
                 <div class="card-body">
                     <h5 class="card-title text-center mb-2">Edita tu cuenta</h5>
@@ -46,14 +49,24 @@
                         <div class="form-group row">
                             <label for="name" class="col-sm-9 col-form-label">Nombre</label>
                             <div class="col-sm-15">
-                                <input type="name" class="form-control" id="" name="" value= "{{ user.name }}" disabled>
+                                <input type="name"
+                                       class="form-control"
+                                       id=""
+                                       name=""
+                                       value="{{ user.name }}"
+                                       disabled>
                                 {% comment %} <p class="form-control-plaintext">{{ user.name }}</p> {% endcomment %}
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="surname" class="col-sm-9 col-form-label">Apellido</label>
                             <div class="col-sm-15">
-                                <input type="surname" class="form-control" id="" name="" value= "{{ user.surname }}" disabled>
+                                <input type="surname"
+                                       class="form-control"
+                                       id=""
+                                       name=""
+                                       value="{{ user.surname }}"
+                                       disabled>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -63,43 +76,71 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="{{ form.phone_number.id_for_label }}" class="col-sm-9 col-form-label">Teléfono</label>
+                            <label for="{{ form.phone_number.id_for_label }}"
+                                   class="col-sm-9 col-form-label">Teléfono</label>
                             <div class="col-sm-15">
-                                <input type="tel" class="form-control" id="{{ form.phone_number.id_for_label }}" name="{{ form.phone_number.html_name }}" placeholder ="{{user.phone_number}}">
+                                <input type="tel"
+                                       class="form-control"
+                                       id="{{ form.phone_number.id_for_label }}"
+                                       name="{{ form.phone_number.html_name }}"
+                                       placeholder="{{ user.phone_number }}">
                             </div>
                             <small id="phoneNumberHelp" class="form-text text-muted">El Número de Teléfono debe ser de 10 dígitos.</small>
                         </div>
                         {% comment %} ver {% endcomment %}
                         <div class="form-group row">
-                            <label for="{{ form.birth_day.id_for_label }}" class="col-sm-9 col-form-label">Fecha de Nacimiento</label>
+                            <label for="{{ form.birth_day.id_for_label }}"
+                                   class="col-sm-9 col-form-label">Fecha de Nacimiento</label>
                             <div class="col-sm-15">
-                                <input type="date" class="form-control" id="{{ form.birth_day.id_for_label }}" name="{{ form.birth_day.html_name }}" value= "{{ birthday }}" >
+                                <input type="date"
+                                       class="form-control"
+                                       id="{{ form.birth_day.id_for_label }}"
+                                       name="{{ form.birth_day.html_name }}"
+                                       value="{{ birthday }}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="{{ form.email.id_for_label }}" class="col-sm-9 col-form-label">Email</label>
                             <div class="col-sm-15">
-                                <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" placeholder="{{user.email}}">
+                                <input type="email"
+                                       class="form-control"
+                                       id="{{ form.email.id_for_label }}"
+                                       name="{{ form.email.html_name }}"
+                                       placeholder="{{ user.email }}">
                             </div>
                             <small id="emailHelp" class="form-text text-muted">El Email ingresado será utilizado como su Nombre de Usuario.</small>
                         </div>
                         <div class="form-group row">
-                            <label for="{{ form.password.id_for_label }}" class="col-sm-9 col-form-label">Contraseña actual</label>
+                            <label for="{{ form.password.id_for_label }}"
+                                   class="col-sm-9 col-form-label">Contraseña actual</label>
                             <div class="col-sm-15">
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" placeholder="Ingrese su Contraseña" >
-                                    <button class="btn btn-outline-secondary" type="button" id="showPasswordToggle1">
+                                    <input type="password"
+                                           class="form-control"
+                                           id="{{ form.password.id_for_label }}"
+                                           name="{{ form.password.html_name }}"
+                                           placeholder="Ingrese su Contraseña">
+                                    <button class="btn btn-outline-secondary"
+                                            type="button"
+                                            id="showPasswordToggle1">
                                         <i id="password_icon" class="bi bi-eye"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="{{ form.new_password.id_for_label }}" class="col-sm-9 col-form-label">Nueva Contraseña</label>
+                            <label for="{{ form.new_password.id_for_label }}"
+                                   class="col-sm-9 col-form-label">Nueva Contraseña</label>
                             <div class="col-sm-15">
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="{{ form.new_password.id_for_label }}" name="{{ form.new_password.html_name }}" placeholder="Ingrese su Contraseña" >
-                                    <button class="btn btn-outline-secondary" type="button" id="showPasswordToggle2">
+                                    <input type="password"
+                                           class="form-control"
+                                           id="{{ form.new_password.id_for_label }}"
+                                           name="{{ form.new_password.html_name }}"
+                                           placeholder="Ingrese su Contraseña">
+                                    <button class="btn btn-outline-secondary"
+                                            type="button"
+                                            id="showPasswordToggle2">
                                         <i id="password_icon" class="bi bi-eye"></i>
                                     </button>
                                 </div>
@@ -107,11 +148,19 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="{{ form.confirm_new_password.id_for_label }}" class="col-sm-9 col-form-label">Confirmar Nueva Contraseña</label>
+                            <label for="{{ form.confirm_new_password.id_for_label }}"
+                                   class="col-sm-9 col-form-label">Confirmar Nueva Contraseña</label>
                             <div class="col-sm-15">
                                 <div class="input-group">
-                                    <input type="password" class="form-control" id="{{ form.confirm_new_password.id_for_label }}" name="{{ form.confirm_new_password.html_name }}" placeholder="Ingrese su Contraseña" optional>
-                                    <button class="btn btn-outline-secondary" type="button" id="showPasswordToggle3">
+                                    <input type="password"
+                                           class="form-control"
+                                           id="{{ form.confirm_new_password.id_for_label }}"
+                                           name="{{ form.confirm_new_password.html_name }}"
+                                           placeholder="Ingrese su Contraseña"
+                                           optional>
+                                    <button class="btn btn-outline-secondary"
+                                            type="button"
+                                            id="showPasswordToggle3">
                                         <i id="password_icon" class="bi bi-eye"></i>
                                     </button>
                                 </div>
@@ -122,33 +171,26 @@
                                 <button type="submit" class="btn btn-danger fw-bold btn-block">Editar Cuenta</button>
                             </div>
                             <div class="col-sm-6 text-end">
-                                <a href="{% url 'view_profile' id=user.id %}" class="btn btn-primary fw-bold mx-2">Volver</a>
+                                <a href="{% url 'view_profile' id=user.id %}"
+                                   class="btn btn-primary fw-bold mx-2">Volver</a>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"></script>
         <script>
             var alertList = document.querySelectorAll(".alert");
             alertList.forEach(function (alert) {
                 new bootstrap.Alert(alert);
             });
         </script>
-
         <!-- Lógica para mostrar y ocultar password-->
         <script>
             document.getElementById('showPasswordToggle1').addEventListener('click', function() {

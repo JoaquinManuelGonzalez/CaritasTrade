@@ -1,5 +1,8 @@
 {% load static %}
-<head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"></head>
+<head>
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
 <nav class="navbar navbar-expand-lg bg-body-secondary ">
   <div class="container-fluid ">
     <a class="navbar-brand" href="{% url 'list_products' %}">
@@ -39,9 +42,9 @@
         </li>
         <div class="nav-item dropdown">
           <a class="dropdown-toggle nav-link fs-4"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"><i class="bi bi-database-fill-gear" style="margin-right: 5px;"></i> Gestión</a>
+             type="button"
+             data-bs-toggle="dropdown"
+             aria-expanded="false"><i class="bi bi-database-fill-gear" style="margin-right: 5px;"></i> Gestión</a>
           <ul class="dropdown-menu">
             <li>
               <a class="dropdown-item" href="#">Ayudantes</a>

@@ -1,25 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Captcha</title>
-    <script src="{% static 'scripts/script.js' %}" defer></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
-</head>
-<body>
-    <div class="captcha-container">
-        <div id="captcha"></div>
-        <input type="text" id="captchaInput" placeholder="Ingrese el captcha">
-        <button onclick="validateCaptcha('{{affiliate.id}}')">Validar</button>
-        <form id="form_worker_block_{{affiliate.id}}" method="post" action="{% url 'worker_block' %}">
-            {% csrf_token %}
-            <input type="hidden" name="id" value="{{ affiliate.id }}">
-        </form>
-        <form id="form_captcha_failed_{{affiliate.id}}" method="post" action="{% url 'see_waiting_posts' %}">
-            {% csrf_token %}
-        </form>
-    </div>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Captcha</title>
+        <script src="{% static 'scripts/script.js' %}" defer></script>
+        <link rel="stylesheet"
+              type="text/css"
+              href="{% static 'styles/styles.css' %}">
+    </head>
+    <body>
+        <div class="captcha-container">
+            <div id="captcha"></div>
+            <input type="text" id="captchaInput" placeholder="Ingrese el captcha">
+            <button onclick="validateCaptcha('{{ affiliate.id }}')">Validar</button>
+            <form id="form_worker_block_{{ affiliate.id }}"
+                  method="post"
+                  action="{% url 'worker_block' %}">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ affiliate.id }}">
+            </form>
+            <form id="form_captcha_failed_{{ affiliate.id }}"
+                  method="post"
+                  action="{% url 'see_waiting_posts' %}">
+                {% csrf_token %}
+            </form>
+        </div>
+    </body>
 </html>
