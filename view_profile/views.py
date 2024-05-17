@@ -130,7 +130,7 @@ def delete_post(request, id):
                     "session_id": session_id,
                     "user_session": user_session,
                     "user": user,
-                    "session_name": session_name,
+                    "session_name": session_name(request),
                     "combined_data": combined_data,
                     "need_products": products,
                     "success_message": "La publicación se ha eliminado con éxito",
