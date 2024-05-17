@@ -8,7 +8,10 @@ def see_post(request, id):
     if request.method == "GET" and request.session.get("id"):
         post = ExchangePost.objects.get(id=id)
         if post.is_active:
-            post_image = post.image.decode("utf-8")
+            if bool(post.image):
+                post_image = post.image.decode("utf-8")
+            else:
+                post_image = None
             reputation = (
                 Reputation.objects.filter(affiliate_id=post.affiliate_id)
                 .aggregate(promedio=Avg("reputation"))

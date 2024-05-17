@@ -1,18 +1,39 @@
-{% extends "layouts/base.html" %}
+{% extends "layouts/base_email.html" %}
 {% block content %}
-  {% for user in users %}
-    <h1>{{ user.email }}</h1>
+{% if success_message %}
+<div
+  class="alert alert-success  alert-dismissible fade show m-2"
+  role="alert"
+>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+  <strong>{{success_message}}</strong>
+</div>
+{% endif %}
+
+<h1 class="text-center fw-bolder ">Usuarios bloqueados</h1>
+{% for user in users %}
+<div class="d-flex justify-content-between p-5 m-5 rounded-5 shadow " style="border: 1px solid #ddd">
+  <h3>
+    <strong>Email: </strong>{{ user.email }}
+    </h3>
     <form id="form_{{ user.id }}" method="post" action="{% url 'send_email' %}">
-      {% csrf_token %}
-      <input type="hidden" name="email" value="{{ user.email }}">
-      <input type="hidden" name="dni" value="{{ user.dni }}">
-      <button type="button" onclick="show_alert('{{ user.id }}')">Enviar</button>
+        {% csrf_token %}
+        <input type="hidden" name="email" value="{{ user.email }}">
+        <input type="hidden" name="dni" value="{{ user.dni }}">
+        <button type="button" class="btn btn-success  " onclick="show_alert('{{ user.id }}')">Enviar <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+          <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+        </svg></button>
     </form>
-  {% endfor %}
-  <script>
+  </div>
+{% endfor %}
+<script>
     function show_alert(id) {
-      if (confirm("¿Estás seguro de que deseas enviar el formulario?")) {
-        alert("Email de recuperacion enviado")
+      if (confirm("¿Estás seguro de que deseas enviar el email?")) {
         document.getElementById("form_" + id).submit();
       }
     }

@@ -127,10 +127,12 @@
         });
         
 
-        document.getElementById("submit").addEventListener("click", function () {
+        document.getElementById("submit").addEventListener("click", function (event) {
                 let respuesta = confirm("¿Quiere enviar esta publicación para revisión?");
                 if (respuesta) {
                     document.getElementById("form").submit();
+                } else {
+                    event.preventDefault();
                 }
             });
     </script>
