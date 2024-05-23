@@ -9,23 +9,30 @@ from data_base.models import ProductCategory
 class ExchangeForm(forms.Form):
     title = forms.CharField(
         label="Titulo",
+        max_length=20,
         error_messages={
             "required": "Ingresar el titulo de la publicacion, por favor",
-            "invalid": "Ingresar el titulo de la publicacion, por favor",
+            "max_length": "El titulo es erroneo, debe ser menor a 20 caracteres",
         },
     )
-    description = forms.CharField(label="Descripcion",
+    description = forms.CharField(
+        label="Descripcion",
+        max_length=300,
         error_messages={
             "required": "Ingresar la descripcion de la publicacion, por favor",
-            "invalid": "Ingresar la descripcion de la publicacion, por favor",
-        },)
-    image = forms.ImageField(label="Imagen", required=False,
+            "max_length": "El titulo es erroneo, debe ser menor a 300 caracteres",
+        },
+    )
+    image = forms.ImageField(
+        label="Imagen",
+        required=False,
         error_messages={
-            "required": "Ingresar el titulo de la publicacion, por favor",
-            "invalid": "Ingresar el titulo de la publicacion, por favor",
-        },)
+            "invalid": "La imagen es invalida, ingrese otra por favor",
+        },
+    )
     category = forms.ModelChoiceField(
-        queryset=ProductCategory.objects.all(), label="Categoria",
+        queryset=ProductCategory.objects.all(),
+        label="Categoria",
         error_messages={
             "required": "Seleccionar la categoria de la publicacion, por favor",
             "invalid": "Seleccionar la categoria de la publicacion, por favor",
@@ -34,18 +41,10 @@ class ExchangeForm(forms.Form):
 
     def clean_title(self):
         title = self.cleaned_data.get("title")
-        if len(title) > 20:
-            raise ValidationError(
-                "El titulo es erroneo, debe ser menor a 20 caracteres"
-            )
         return title.lower().capitalize()
 
     def clean_description(self):
         description = self.cleaned_data.get("description")
-        if len(description) > 300:
-            raise ValidationError(
-                "Ingresar la descripcion de la publicacion, por favor"
-            )
         return description
 
     def clean_category(self):
