@@ -1,14 +1,17 @@
 from django.shortcuts import redirect, render
 from data_base.models import ExchangePost, Reputation, ProductCategory, Affiliate
 from django.db.models import Avg
+from view_profile.views import session_name
 
 
-# Create your views here.
 def see_post(request, id):
     if request.method == "GET" and request.session.get("id"):
         post = ExchangePost.objects.get(id=id)
         if post.is_active:
-            post_image = post.image.decode("utf-8")
+            if bool(post.image):
+                post_image = post.image.decode("utf-8")
+            else:
+                post_image = None
             reputation = (
                 Reputation.objects.filter(affiliate_id=post.affiliate_id)
                 .aggregate(promedio=Avg("reputation"))
@@ -24,6 +27,7 @@ def see_post(request, id):
                     "post": post,
                     "post_image": post_image,
                     "reputation": reputation,
+                    "session_name": session_name(request),
                     "reputation_percentage": (reputation * 100) / 5,
                     "category": category,
                     "user_session": False,
@@ -38,8 +42,11 @@ def see_post(request, id):
             return render(
                 request,
                 "see_post.html",
-                {"user_session": False,
-                 "session_id": request.session.get("id")},
+                {
+                    "user_session": False,
+                    "session_name": session_name(request),
+                    "session_id": request.session.get("id"),
+                },
             )
     else:
         return redirect("landing_page")

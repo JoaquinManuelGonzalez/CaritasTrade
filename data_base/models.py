@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 class Workers(models.Model):
     name = models.CharField(max_length=20, blank=True)
     surname = models.CharField(max_length=20)
@@ -21,11 +20,19 @@ class Affiliate(models.Model):
     birth_day = models.DateField(blank=True)
     password = models.CharField(max_length=8)
     points = models.IntegerField(default=0)
-    login_attemps = models.IntegerField(default=0) 
+    login_attemps = models.IntegerField(default=0)
+    rejected_posts = models.IntegerField(default=0)
+
 
 class Reputation(models.Model):
     reputation = models.FloatField(default=3.0)
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+
+
+class Tokens(models.Model):
+    affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    token = models.CharField(max_length=16, unique=True)
+    expiration_date = models.DateTimeField()
 
 
 class Branches(models.Model):
@@ -46,8 +53,10 @@ class Workers_AccountBlock(models.Model):
     account_block = models.ForeignKey(AccountBlock, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
 
-class ProductCategory(models.Model) : 
+
+class ProductCategory(models.Model):
     name = models.CharField(max_length=20)
+
 
 class Products(models.Model):
     product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
@@ -68,8 +77,9 @@ class ExchangePost(models.Model):
     timestamp = models.DateTimeField()
     is_active = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
-    
-class EcommercePost(models.Model) :
+
+
+class EcommercePost(models.Model):
     product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
     image = models.BinaryField(null=True, blank=True)
@@ -84,9 +94,14 @@ class Affiliate_EcommercePost(models.Model):
     total_amount = models.IntegerField()
     total_cost_in_points = models.IntegerField()
 
-class ExchangeSolicitude(models.Model) : 
-    exchange_post_for_id = models.ForeignKey(ExchangePost, on_delete=models.CASCADE, related_name="exchange_post_for_id")
-    in_exchange_post_id = models.ForeignKey(ExchangePost, on_delete=models.CASCADE, related_name="in_exchange_post_id")
+
+class ExchangeSolicitude(models.Model):
+    exchange_post_for_id = models.ForeignKey(
+        ExchangePost, on_delete=models.CASCADE, related_name="exchange_post_for_id"
+    )
+    in_exchange_post_id = models.ForeignKey(
+        ExchangePost, on_delete=models.CASCADE, related_name="in_exchange_post_id"
+    )
     affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     denied = models.BooleanField(default=False)
     timestamp = models.DateTimeField()
@@ -110,4 +125,3 @@ class Exchange(models.Model):
 class Donation(models.Model):
     amount = models.FloatField()
     timestamp = models.DateTimeField()
-

@@ -17,9 +17,9 @@
         {% if role == "admin" %}
             {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
         {% elif role == "user" %}
-            {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+            {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
         {% else %}
-            {% include 'worker_navbar.html' with user_session=user_session session_id=session_id %}
+            {% include 'worker_navbar.html' with user_session=user_session session_id=session_id session_name=session_name %}
         {% endif %}
         {% block content %}
             <div class="p-3">
@@ -28,13 +28,15 @@
                     <p class="lead">Encuentra lo que necesitas intercambiando con otros usuarios</p>
                 </div>
                 <form method="get" class="d-flex justify-content-center  ">
-                    <input type="text" name="q" placeholder="Buscar por título" class="form-control m-2" style="width:65%;">
+                    <input type="text"
+                           name="q"
+                           placeholder="Buscar por título"
+                           class="form-control m-2"
+                           style="width:65%">
                     <div class="m-2">
                         <select name="category" class="form-select">
                             <option value="">Buscar por categorías</option>
-                            {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.name }}</option>
-                            {% endfor %}
+                            {% for category in categories %}<option value="{{ category.id }}">{{ category.name }}</option>{% endfor %}
                         </select>
                     </div>
                     <div class="m-2">
@@ -53,22 +55,25 @@
                     {% if combined_data %}
                         <div class="row">
                             {% for image_data, post_data in combined_data %}
-                                <div class="col-md-4 mb-4" style="text-align: center;">
-                                    <!-- Utilizamos col-md-4 para   dividir en 3 columnas en pantallas medianas y superiores -->
-                                    <div class="card" style="height: 400px; width: 300px">
+                                <div class="col-md-3 mb-4" style="text-align: center;">
+                                    <!-- Utilizamos col-md-3 para dividir en 4 columnas en pantallas medianas y superiores -->
+                                    <div class="card mx-auto" style="height: 400px; width: 250px;">
                                         <img src="data:image/jpeg;base64,{{ image_data }}"
                                              class="card-img-top"
                                              alt="{{ post_data.description }}"
                                              style="height: 250px;
-                                                    width: 250px allign-center" />
+                                                    width: 100%;
+                                                    object-fit: cover" />
                                         <div class="card-body">
                                             <h5 class="card-title">{{ post_data.title }}</h5>
                                             <p class="card-text">{{ post_data.description }}</p>
-                                            <a href="{% url 'see_post' id=post_data.id %}" class="btn btn-primary">Ir a algún lugar</a>
+                                            <a href="{% url 'see_post' id=post_data.id %}" class="btn btn-primary">
+                                                <i class="bi bi-eye-fill" style="margin-right: 5px;"></i>Ver Publicación
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
-                                {% if forloop.counter|divisibleby:3 and forloop.counter < combined_data|length %}
+                                {% if forloop.counter|divisibleby:4 and forloop.counter < combined_data|length %}
                                 </div>
                                 <div class="row">
                                 {% endif %}

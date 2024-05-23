@@ -15,6 +15,7 @@ def raise_credentials_error():
         "No se ha podido iniciar sesión. El nombre de usuario o contraseña son inválidos."
     )
 
+
 def raise_account_blocked_error(affiliate_username):
     raise ValidationError(
         f"No se ha podido iniciar sesión. La cuenta del usuario {affiliate_username} se encuentra bloqueada."
@@ -41,9 +42,7 @@ def send_email(username, title, body):
 
 
 def block_affiliate_account(affiliate):
-    new_account_block = AccountBlock.objects.create(
-        affiliate_id=affiliate.id
-    )
+    new_account_block = AccountBlock.objects.create(affiliate_id=affiliate.id)
     subject = "Su Cuenta ha sido Bloqueada"
     message = f"Lamentamos informarle que la cuenta del usuario {affiliate.email} ha sido bloqueada temporalmente. Le notificaremos cuando este problema se solucione. Contactese a: comisionacional@caritas.org.ar para poder obtener más información."
     send_email(affiliate.email, subject, message)
@@ -56,7 +55,7 @@ def block_affiliate_account(affiliate):
 def validate_Affiliate_password(affliate_password, password):
     if affliate_password != password:
         raise_credentials_error()
-    
+
 
 def validate_Worker_password(worker_password, password):
     if worker_password != password:
@@ -92,7 +91,7 @@ def is_Affiliate(username, password):
         affiliate = Affiliate.objects.get(email=username)
     except Affiliate.DoesNotExist:
         raise_credentials_error()
-    if (AccountBlock.objects.filter(affiliate_id=affiliate.id).exists()):
+    if AccountBlock.objects.filter(affiliate_id=affiliate.id).exists():
         raise_account_blocked_error(affiliate.email)
     try:
         validate_Affiliate_password(affiliate.password, password)
@@ -112,60 +111,54 @@ def login_view(request):
         login_form = forms.Login_Form(request.POST)
         if login_form.is_valid():
             person_founded = False
-            username = login_form.cleaned_data['username']
-            password = login_form.cleaned_data['password']
+            username = login_form.cleaned_data["username"]
+            password = login_form.cleaned_data["password"]
             try:
-                worker_id, person_founded, otp_code = is_Worker(username, password, person_founded)
+                worker_id, person_founded, otp_code = is_Worker(
+                    username, password, person_founded
+                )
                 if person_founded:
-                    request.session['id'] = worker_id
+                    request.session["id"] = worker_id
                     if is_Admin(username):
-                        request.session['role'] = "admin"
+                        request.session["role"] = "admin"
                     else:
-                        request.session['role'] = "worker"
-                    request.session['code'] = otp_code
+                        request.session["role"] = "worker"
+                    request.session["code"] = otp_code
                     return HttpResponseRedirect(reverse("confirm_session"))
                 else:
                     affiliate_id = is_Affiliate(username, password)
-                    request.session['id'] = affiliate_id
-                    request.session['role'] = "user"
-                    return HttpResponseRedirect(reverse("landing_page"))
+                    request.session["id"] = affiliate_id
+                    request.session["role"] = "user"
+                    return HttpResponseRedirect(reverse("list_products"))
             except ValidationError as e:
-                login_form.add_error(
-                    None, e.message
-                )
-                return render(request, "log_in.html", {
-                    "form" : login_form
-                })
+                login_form.add_error(None, e.message)
+                return render(request, "log_in.html", {"form": login_form})
         else:
-            return render(request, "log_in.html", {
-                "form" : login_form
-            })
+            return render(request, "log_in.html", {"form": login_form})
     else:
         login_form = forms.Login_Form()
-        return render(request, "log_in.html", {
-            "form" : login_form
-        })
-    
+        return render(request, "log_in.html", {"form": login_form})
+
+
 def confirm_session_view(request):
     if request.method == "POST":
         confirm_session_form = forms.Confirm_Form(request.POST)
         if confirm_session_form.is_valid():
-            input_code = confirm_session_form.cleaned_data['otp_code']
-            if request.session['code'] != input_code:
+            input_code = confirm_session_form.cleaned_data["otp_code"]
+            if request.session["code"] != input_code:
                 confirm_session_form.add_error(
-                    None, "El código O.T.P ingresado no coincide con el código enviado. Intente nuevamente."
+                    None,
+                    "El código O.T.P ingresado no coincide con el código enviado. Intente nuevamente.",
                 )
-                return render(request, "confirm_log_in.html", {
-                    "form" : confirm_session_form
-                })
+                return render(
+                    request, "confirm_log_in.html", {"form": confirm_session_form}
+                )
             else:
-                return HttpResponseRedirect(reverse("landing_page"))
+                return HttpResponseRedirect(reverse("list_products"))
         else:
-            return render(request, "confirm_log_in.html",{
-                "form" : confirm_session_form
-            })
+            return render(
+                request, "confirm_log_in.html", {"form": confirm_session_form}
+            )
     else:
         confirm_session_form = forms.Confirm_Form()
-        return render(request, "confirm_log_in.html", {
-                "form" : confirm_session_form
-            })
+        return render(request, "confirm_log_in.html", {"form": confirm_session_form})

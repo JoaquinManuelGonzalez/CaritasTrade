@@ -19,9 +19,9 @@
             {% if role == "admin" %}
                 {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
             {% elif role == "user" %}
-                {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+                {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
             {% else %}
-                {% include 'worker_navbar.html' with user_session=user_session session_id=session_id %}
+                {% include 'worker_navbar.html' with user_session=user_session session_id=session_id session_name=session_name %}
             {% endif %}
             <main class="">
                 {% if post %}
@@ -30,7 +30,7 @@
                             <!-- Columna de la imagen -->
                             <div class="col-md-4 text-center">
                                 <img src="data:image/png;base64,{{ post_image }}"
-                                     class="img-fluid m-5 rounded-5 shadow-sm"
+                                     class="img-fluid m-5 rounded-5 shadow-sm ratio-1x1 "
                                      style="border: 1px solid #ddd"
                                      alt="Imagen">
                             </div>
@@ -44,7 +44,7 @@
                                 </div>
                                 {% if role == "user" and not own_post %}
                                     <button type="button" class="btn btn-danger m-5">
-                                        Solicitar intercambio <i class="bi bi-send"></i>
+                                        <i class="bi bi-send" style="margin-right: 5px;"></i>Solicitar intercambio
                                     </button>
                                 {% endif %}
                             </div>

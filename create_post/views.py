@@ -1,12 +1,14 @@
 import base64
 import datetime
 from django.shortcuts import redirect, render
-from data_base.models import ExchangePost, ProductCategory, Affiliate, Reputation
+from data_base.models import ExchangePost, ProductCategory, Affiliate
 from .forms import ExchangeForm
+from view_profile.views import session_name
 
 
 # Create your views here.
 def create_post(request):
+
     if request.method == "GET" and request.session.get("id"):
         form = ExchangeForm()
         return render(
@@ -17,13 +19,14 @@ def create_post(request):
                 "form": form,
                 "user_session": False,
                 "session_id": request.session.get("id"),
+                "session_name": session_name(request),
             },
         )
     elif request.method == "POST" and request.session.get("id"):
         form = ExchangeForm(request.POST, request.FILES)
         affiliate = Affiliate.objects.get(id=request.session.get("id"))
         num_posts = ExchangePost.objects.filter(
-            affiliate_id=affiliate, is_rejected=False, is_active=False
+            affiliate_id=affiliate, is_rejected=False, is_active=True
         ).count()
         if form.is_valid() and num_posts < 5:
             post = ExchangePost(
@@ -50,6 +53,7 @@ def create_post(request):
                     "success_message": "La publicación que creaste está ahora en estado pendiente. Nuestro equipo de trabajo la revisará y te notificará vía mail si fue aprobada o no.",
                     "user_session": False,
                     "session_id": request.session.get("id"),
+                    "session_name": session_name(request),
                 },
             )
         else:
@@ -63,6 +67,7 @@ def create_post(request):
                     "categories": ProductCategory.objects.all(),
                     "user_session": False,
                     "session_id": request.session.get("id"),
+                    "session_name": session_name(request),
                 },
             )
     else:
