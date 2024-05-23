@@ -7,6 +7,19 @@ from data_base.models import ProductCategory
 
 
 class ExchangeForm(forms.Form):
+    """
+    Defines a Django form for creating an exchange post.
+
+    The `ExchangeForm` class inherits from `forms.Form` and defines the following fields:
+
+    - `title`: A `CharField` for the title of the post, with a maximum length of 20 characters and custom error messages.
+    - `description`: A `CharField` for the description of the post, with a maximum length of 300 characters and custom error messages.
+    - `image`: An `ImageField` for the post's image, which is optional.
+    - `category`: A `ModelChoiceField` for selecting the category of the post, with custom error messages.
+
+    The form also includes custom clean methods for the `title`, `description`, and `category` fields to perform additional validation and formatting.
+    """
+
     title = forms.CharField(
         label="Titulo",
         max_length=20,

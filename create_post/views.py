@@ -8,6 +8,18 @@ from view_profile.views import session_name
 
 # Create your views here.
 def create_post(request):
+    """
+    Creates a new exchange post for an affiliate.
+
+    If the user is not logged in, redirects to the landing page.
+
+    If the user has already created 5 active posts, displays an error message.
+
+    Otherwise, creates a new `ExchangePost` object with the form data and saves it to the database.
+    The post is initially set to be inactive, and will be reviewed by the admin team.
+
+    If the post is created successfully, a success message is displayed.
+    """
     if not request.session.get("id"):
         return redirect("landing_page")
 
