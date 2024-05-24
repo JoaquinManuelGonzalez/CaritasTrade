@@ -16,8 +16,7 @@
               href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <body class="bg-body-tertiary">
-        {# Including the navbar #}
-        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id %}
+        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
         <script>
             var alertList = document.querySelectorAll(".alert");
             alertList.forEach(function (alert) {
@@ -39,33 +38,35 @@
                     <div class="col-md-6 mx-auto">
                         <div class="text-center mb-5">
                             <h1 class="display-4 fw-bold">{{ user.name }}</h1>
-                            {% if user_session %}
-                                <p class="lead text-success ">¡Estás en tu perfil!</p>
-                            {% endif %}
+                            {% if user_session %}<p class="lead text-success ">¡Estás en tu perfil!</p>{% endif %}
                         </div>
                         {% if user_session %}
                             <div class="card mb-3">
-                                <div class="card-header">
-                                    Información del Usuario
-                                </div>
+                                <div class="card-header">Información del Usuario</div>
                                 <div class="card-body">
-                                    <p class="card-text"><strong>Nombre:</strong> {{ user.name }}</p>
-                                    <p class="card-text"><strong>Apellido:</strong> {{ user.surname }}</p>
-                                    <p class="card-text"><strong>Email:</strong> {{ user.email }}</p>
+                                    <p class="card-text">
+                                        <strong>Nombre:</strong> {{ user.name }}
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Apellido:</strong> {{ user.surname }}
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Email:</strong> {{ user.email }}
+                                    </p>
                                 </div>
                             </div>
                         {% endif %}
                         <div class="card mb-3">
-                            <div class="card-header">
-                                Publicaciones Activas
-                            </div>
+                            <div class="card-header">Publicaciones Activas</div>
                             <div class="card-body">
                                 <div class="row row-cols-1 row-cols-md-2 g-4">
                                     {% if combined_data %}
                                         {% for image_data, post_data in combined_data %}
                                             <div class="col">
                                                 <div class="card h-100">
-                                                    <img src="data:image/jpeg;base64,{{ image_data }}" class="card-img-top" alt="Imagen">
+                                                    <img src="data:image/jpeg;base64,{{ image_data }}"
+                                                         class="card-img-top"
+                                                         alt="Imagen">
                                                     <div class="card-body">
                                                         <h5 class="card-title">{{ post_data.title }}</h5>
                                                         <p class="card-text">{{ post_data.description }}</p>
@@ -76,7 +77,9 @@
                                                             {% if user_session %}
                                                                 <form action="{% url 'delete_post' id=post_data.id %}" method="post">
                                                                     {% csrf_token %}
-                                                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill" style="margin-right: 2px;"></i>Eliminar</button>
+                                                                    <button type="submit" class="btn btn-danger">
+                                                                        <i class="bi bi-trash-fill" style="margin-right: 2px;"></i>Eliminar
+                                                                    </button>
                                                                 </form>
                                                             {% endif %}
                                                         </div>
@@ -93,15 +96,11 @@
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-header">
-                                Lista de Necesidades
-                            </div>
+                            <div class="card-header">Lista de Necesidades</div>
                             <div class="card-body">
                                 {% if need_products %}
                                     <ol class="list-group list-group-numbered">
-                                        {% for product in need_products %}
-                                            <li class="list-group-item">{{ product.name }}</li>
-                                        {% endfor %}
+                                        {% for product in need_products %}<li class="list-group-item">{{ product.name }}</li>{% endfor %}
                                     </ol>
                                 {% else %}
                                     <p class="text-muted">Este usuario no tiene necesidades registradas actualmente.</p>
@@ -112,6 +111,8 @@
                 </div>
             </div>
         {% endblock %}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    </body>    
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+                crossorigin="anonymous"></script>
+    </body>
 </html>
