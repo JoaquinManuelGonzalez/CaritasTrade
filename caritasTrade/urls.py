@@ -50,8 +50,8 @@ urlpatterns = [
         name="see_exchange_requests",
     ),
     path(
-        "get_user_posts/<int:id>",
-        see_post_views.get_posts_from_user,
-        name="get_user_posts",
+        "/send_exchange_solicitude/<int:post_id_for>",
+        see_post_views.send_exchange_solicitude,
+        name="send_exchange_solicitude",
     ),
 ]

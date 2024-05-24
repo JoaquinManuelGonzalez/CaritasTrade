@@ -26,29 +26,74 @@
             <main class="">
                 {% if role == "user" and not own_post %}
                     <div id="message_board" class="p-5"></div>
-                    <div id="post_select" class="visually-hidden d-flex flex-column align-content-around  position-absolute start-50 translate-middle-x text-center  translate-middle w-50 rounded-5 shadow-lg "
-                         style="background-color: rgba(255, 255, 255, 0.3);
-                                backdrop-filter: blur(10px);
-                                -webkit-backdrop-filter: blur(10px);
-                                height: 50%">
-                        <div class="p-5">
-                            <h1>Selecciona tu posteo a intercambiar</h1>
+                    <form id="post_select"
+                          class="visually-hidden opacity-0  d-flex flex-column align-content-around  position-absolute start-50 translate-middle-x text-center  translate-middle w-50 rounded-5 shadow-lg "
+                          style="background-color: rgba(50, 50, 50, 0.4);
+                                 backdrop-filter: blur(30px);
+                                 -webkit-backdrop-filter: blur(10px);
+                                 height: 50%;
+                                 transition: opacity 0.1s ease-in-out"
+                          hx-post="{% url 'send_exchange_solicitude' post_id_for=post.id %}"
+                          hx-swap="afterbegin"
+                          hx-target="#message_board">
+                          {% csrf_token %}
+                        <div class="p-5 z-3">
+                            <h1 class="text-white">Selecciona tu producto a intercambiar</h1>
                             <div class="p-5">
                                 <div class="mb-3">
-                                    <label for="{{ form.category.id_for_label }}" class="form-label">Posteo a intercambiar</label>
-                                    <select class="form-select form-select-lg"
-                                            name="{{ form.category.html_name }}"
-                                            id="{{ form.category.id_for_label }}">
-                                        <option value=""></option>
-                                        {% for post in posts %}<option value="{{ post.id }}">{{ post.title }}</option>{% endfor %}
+                                    <label for="post_id" class="form-label text-white">Posteo seleccionado</label>
+                                    <select class="form-select form-select-lg shadow text-white "
+                                            Required
+                                            name="post_id"
+                                            id="post_id"
+                                            style="background-color: rgba(50, 50, 50, 0.5);
+                                                   backdrop-filter: blur(10px)">
+                                        <option value=""
+                                                style="background-color: rgba(50, 50, 50, 0.5);
+                                                       backdrop-filter: blur(10px)"></option>
+                                        {% for post in posts %}
+                                            <option value="{{ post.id }}"
+                                                    style="background-color: rgba(50, 50, 50, 0.5);
+                                                           backdrop-filter: blur(10px)">{{ post.title }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <a name="" id="" class="btn btn-primary" href="#" role="button">Confirmar</a>
+                        <div class="d-flex justify-content-center ">
+                            <div class="d-grid gap-2">
+                                <button type="submit" name="" id="" class="btn btn-danger m-2 shadow-lg ">
+                                    Confirmar
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="16"
+                                         height="16"
+                                         fill="currentColor"
+                                         class="bi bi-check-circle"
+                                         viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="button"
+                                        name=""
+                                        id="cancel_request"
+                                        class="btn btn-dark m-2 shadow-lg">
+                                    Cancelar
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="16"
+                                         height="16"
+                                         fill="currentColor"
+                                         class="bi bi-x-circle"
+                                         viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 {% endif %}
                 {% if post %}
                     <div class="container mt-5 shadow-lg rounded-5 ">
@@ -119,12 +164,24 @@
             <script>
                 document.getElementById("request_button").addEventListener("click", function () {
                     postSelect = document.getElementById("post_select");
-                    if (postSelect.classList.contains("visually-hidden")) {
+                    if (postSelect.classList.contains("opacity-0")) {
+                        postSelect.classList.remove("opacity-0");
                         postSelect.classList.remove("visually-hidden");
                     } else {
+                        postSelect.classList.add("opacity-0");
                         postSelect.classList.add("visually-hidden");
                     }
-                }
+                });
+                document.getElementById("cancel_request").addEventListener("click", function () {
+                    postSelect = document.getElementById("post_select");
+                    if (postSelect.classList.contains("opacity-0")) {
+                        postSelect.classList.remove("opacity-0");
+                        postSelect.classList.remove("visually-hidden");
+                    } else {
+                        postSelect.classList.add("opacity-0");
+                        postSelect.classList.add("visually-hidden");
+                    }
+                });
             </script>
         </body>
     </html>
