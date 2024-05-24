@@ -20,6 +20,7 @@ from landing_page import views as landing_page_views
 from affiliate_registration import views as affiliate_registration_views
 from see_post import views as see_post_views
 from create_post import views as create_post_views
+from view_map import views as view_maps_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,4 +35,5 @@ urlpatterns = [
     path('about_us/', landing_page_views.about_us, name='about_us'),
     path("recovery_email/", include("recovery_email.urls"), name="recovery_email"),
     path("validate_post/", include("validate_post.urls"), name="validate_post"),
+    path('view_map/', view_maps_views.view_map, name='view_map')
 ]

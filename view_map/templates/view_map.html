@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <section class="py-3 py-md-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9 col-xl-8">
+                    <div class="card widget-card border-light shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
+                                <div class="mb-2 mb-sm-0">
+                                    <h5 class="card-title widget-card-title m-0">Mapa de Filiales de Cáritas</h5>
+                                </div>
+                                <div>
+                                    <span class="text-secondary fs-7">¡Encontrá la Filial que estás buscando!</span>
+                                </div>
+                            </div>
+                            <div id="map" class="bsb-jvm-zoom-btn">
+                                {{ map_html|safe }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
