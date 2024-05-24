@@ -1,7 +1,7 @@
 import base64
 import datetime
 from django.shortcuts import redirect, render
-from data_base.models import ExchangePost, ProductCategory, Affiliate
+from data_base.models import ExchangePost, ProductCategory, Affiliate, ExchangeSolicitude
 from .forms import ExchangeForm
 from view_profile.views import session_name
 
@@ -65,3 +65,4 @@ def create_post(request):
             "session_name": session_name(request),
         },
     )
+    

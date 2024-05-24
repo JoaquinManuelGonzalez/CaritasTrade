@@ -24,6 +24,32 @@
                 {% include 'worker_navbar.html' with user_session=user_session session_id=session_id session_name=session_name %}
             {% endif %}
             <main class="">
+                {% if role == "user" and not own_post %}
+                    <div id="message_board" class="p-5"></div>
+                    <div id="post_select" class="visually-hidden d-flex flex-column align-content-around  position-absolute start-50 translate-middle-x text-center  translate-middle w-50 rounded-5 shadow-lg "
+                         style="background-color: rgba(255, 255, 255, 0.3);
+                                backdrop-filter: blur(10px);
+                                -webkit-backdrop-filter: blur(10px);
+                                height: 50%">
+                        <div class="p-5">
+                            <h1>Selecciona tu posteo a intercambiar</h1>
+                            <div class="p-5">
+                                <div class="mb-3">
+                                    <label for="{{ form.category.id_for_label }}" class="form-label">Posteo a intercambiar</label>
+                                    <select class="form-select form-select-lg"
+                                            name="{{ form.category.html_name }}"
+                                            id="{{ form.category.id_for_label }}">
+                                        <option value=""></option>
+                                        {% for post in posts %}<option value="{{ post.id }}">{{ post.title }}</option>{% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <a name="" id="" class="btn btn-primary" href="#" role="button">Confirmar</a>
+                        </div>
+                    </div>
+                {% endif %}
                 {% if post %}
                     <div class="container mt-5 shadow-lg rounded-5 ">
                         <div class="row">
@@ -43,7 +69,7 @@
                                     <p>{{ category.name }}</p>
                                 </div>
                                 {% if role == "user" and not own_post %}
-                                    <button type="button" class="btn btn-danger m-5">
+                                    <button type="button" class="btn btn-danger m-5" id="request_button">
                                         <i class="bi bi-send" style="margin-right: 5px;"></i>Solicitar intercambio
                                     </button>
                                 {% endif %}
@@ -87,5 +113,18 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
                     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
                     crossorigin="anonymous"></script>
+            <script src="https://unpkg.com/htmx.org@1.9.12"
+                    integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+                    crossorigin="anonymous"></script>
+            <script>
+                document.getElementById("request_button").addEventListener("click", function () {
+                    postSelect = document.getElementById("post_select");
+                    if (postSelect.classList.contains("visually-hidden")) {
+                        postSelect.classList.remove("visually-hidden");
+                    } else {
+                        postSelect.classList.add("visually-hidden");
+                    }
+                }
+            </script>
         </body>
     </html>

@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from data_base.models import ExchangePost, Reputation, ProductCategory, Affiliate
 from django.db.models import Avg
 from view_profile.views import session_name
@@ -36,6 +36,7 @@ def see_post(request, id):
                     "author_id": post.affiliate_id,
                     "author_name": Affiliate.objects.get(id=post.affiliate_id).name,
                     "own_post": post.affiliate_id == request.session.get("id"),
+                    "posts": ExchangePost.objects.filter(affiliate_id= request.session.get("id"), is_active=True),
                 },
             )
         else:
@@ -50,3 +51,11 @@ def see_post(request, id):
             )
     else:
         return redirect("landing_page")
+
+
+def get_posts_from_user(request, id):
+    return render(
+        request,
+        "posts_as_options.html",
+        {"posts": ExchangePost.objects.filter(affiliate_id=id)},
+    )
