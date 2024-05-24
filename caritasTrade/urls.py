@@ -35,5 +35,6 @@ urlpatterns = [
     path('about_us/', landing_page_views.about_us, name='about_us'),
     path("recovery_email/", include("recovery_email.urls"), name="recovery_email"),
     path("validate_post/", include("validate_post.urls"), name="validate_post"),
-    path('view_map/', view_maps_views.view_map, name='view_map')
+    path('view_map/', view_maps_views.view_map, name='view_map'),
+    path('branches_management/', include("branches_management.urls"), name='branches_management')
 ]
