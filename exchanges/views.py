@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from data_base.models import ExchangeSolicitude, ExchangePost
+from data_base.models import ExchangeSolicitude, ExchangePost, Affiliate
 
 
 # Create your views here.
@@ -9,7 +9,19 @@ def see_exchange_requests(request):
     requests = ExchangePost.objects.filter(
         affiliate_id=request.session.get("id"), is_active=True
     )
+    print(requests)
     requests = ExchangeSolicitude.objects.filter(
-        in_exchange_post_id__in=requests, denied=False
+        exchange_post_for_id__in=requests, denied=False
     )
-    return render(request, "see_exchange_requests.html", {"requests": requests})
+    print(requests)
+    print(request.session.get("id"))
+    return render(
+        request,
+        "see_exchange_requests.html",
+        {
+            "requests": requests,
+            "user_session": False,
+            "session_id": request.session.get("id"),
+            "session_name": Affiliate.objects.get(id=request.session.get("id")).name,
+        },
+    )

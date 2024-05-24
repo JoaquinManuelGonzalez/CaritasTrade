@@ -47,7 +47,7 @@
               <a class="nav-link fs-4" href="{% url 'create_post' %}"><i class="bi bi-plus-square" style="margin-right: 5px;"></i></i>Crear Publicación</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link fs-4" href="#"><i class="bi bi-envelope-exclamation" style="margin-right: 5px;"></i>Ver Solicitudes de Intercambio</a>
+              <a class="nav-link fs-4" href="{% url "see_exchange_requests" %}"><i class="bi bi-envelope-exclamation" style="margin-right: 5px;"></i>Ver Solicitudes de Intercambio</a>
             </li>
             {% if not user_session %}
               <li class="nav-item">
