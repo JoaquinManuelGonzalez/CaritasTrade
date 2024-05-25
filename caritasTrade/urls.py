@@ -40,7 +40,7 @@ urlpatterns = [
         name="list_exchange_products",
     ),
     path("edit_profile/", include("edit_profile.urls"), name="edit_profile"),
-    path("view_profile/", include("view_profile.urls")),
+    path("view_profile/", include("view_profile.urls"), name="view_profile"),
     path("about_us/", landing_page_views.about_us, name="about_us"),
     path("recovery_email/", include("recovery_email.urls"), name="recovery_email"),
     path("validate_post/", include("validate_post.urls"), name="validate_post"),

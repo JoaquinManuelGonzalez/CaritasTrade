@@ -19,12 +19,41 @@
             <div>
                 <div class="d-flex flex-column ">
                     {% for request in requests %}
-                        <div class="d-flex text-success p-5 m-2 rounded-5 shadow-lg ">
-                            <p class="p-1">{{ request.exchange_post_for_id.title }}</p>
-                            <p class="p-1">{{ request.in_exchange_post_id.title }}</p>
-                            <p class="p-1">{{ request.affiliate_id.name }}</p>
-                            <p class="p-1">{{ request.denied }}</p>
-                            <p class="p-1">{{ request.timestamp }}</p>
+                        <div class="d-flex flex-column p-5 m-2 rounded-5 shadow-lg ">
+                            <div class="d-flex p-1 justify-content-between ">
+                                <div class="d-flex flex-column ">
+                                    <div class="d-flex p-1">
+                                        <h2>
+                                            Publicacion ofrecida: <a href=" {% url "see_post" id=request.exchange_post_for_id.id %} ">{{ request.exchange_post_for_id.title }}</a>
+                                        </h2>
+                                    </div>
+                                    <div class="d-flex p-1">
+                                        <h2>
+                                            Publicacion peticionada: <a href="{% url "see_post" id=request.in_exchange_post_id.id %}">{{ request.in_exchange_post_id.title }}</a>
+                                        </h2>
+                                    </div>
+                                    <div class="d-flex p-1">
+                                        <h2>
+                                            Usuario: <a href="{% url "view_profile" id=request.affiliate_id.id %}">{{ request.affiliate_id.name }}</a>
+                                        </h2>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column  p-1 justify-content-evenly align-content-end ">
+                                    <form action=""
+                                        {% comment %} hx-post="{% url 'accept_exchange_request' request_id=request.id %}" {% endcomment %}
+                                    >
+                                        <a name=""
+                                           type="submit"
+                                           id=""
+                                           class="btn btn-success "
+                                           href="#"
+                                           role="button">Hacer mierda</a>
+                                    </form>
+                                    <form action="">
+                                        <a name="" id="" class="btn btn-danger" href="#" role="button">Lovumba</a>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
                 </div>
@@ -35,6 +64,9 @@
                 crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
                 integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12"
+                integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
                 crossorigin="anonymous"></script>
     </body>
 </html>
