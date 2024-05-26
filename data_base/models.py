@@ -26,7 +26,9 @@ class Affiliate(models.Model):
 
 class Reputation(models.Model):
     reputation = models.FloatField(default=3.0)
-    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, related_name="affiliate")
+    to_do = models.BooleanField(default=False)
+    comes_from_affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, null=True, blank=True, related_name="comes_from_affiliate")
 
 
 class Tokens(models.Model):
@@ -59,7 +61,7 @@ class ProductCategory(models.Model):
 
 
 class Products(models.Model):
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
 
 
@@ -70,7 +72,7 @@ class Affiliate_Need_Product(models.Model):
 
 class ExchangePost(models.Model):
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=20)
     image = models.BinaryField(null=True, blank=True)
     description = models.TextField(max_length=300)

@@ -31,6 +31,7 @@ def raise_new_account_block_error(affiliate_username):
 def generate_otp(length):
     characters = string.ascii_letters + string.digits + string.punctuation
     otp = "".join(random.choice(characters) for _ in range(length))
+    print(otp)
     return otp
 
 
