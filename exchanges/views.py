@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from data_base.models import ExchangeSolicitude, ExchangePost, Affiliate
 
@@ -25,3 +26,6 @@ def see_exchange_requests(request):
             "session_name": Affiliate.objects.get(id=request.session.get("id")).name,
         },
     )
+
+def register_exchange(request):
+    return HttpResponse("Register exchange")

@@ -54,4 +54,9 @@ urlpatterns = [
         see_post_views.send_exchange_solicitude,
         name="send_exchange_solicitude",
     ),
+    path(
+        "register_exchange",
+        exchanges_views.register_exchange,
+        name="register_exchange",
+    ),
 ]
