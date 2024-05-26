@@ -65,5 +65,6 @@ urlpatterns = [
         exchanges_views.validate_exchange_codes,
         name="validate_exchange_codes",
     ),
-    path('view_map/', view_maps_views.view_map, name='view_map')
+    path('view_map/', view_maps_views.view_map, name='view_map'),
+    path('branches_management/', include("branches_management.urls"), name='branches_management')
 ]

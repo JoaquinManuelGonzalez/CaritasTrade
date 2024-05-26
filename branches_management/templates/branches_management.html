@@ -1,0 +1,97 @@
+{% load static %}
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <title>Gestión de Filiales</title>
+            <meta charset="utf-8" />
+            <meta name="viewport"
+                  content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+                  rel="stylesheet"
+                  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+                  crossorigin="anonymous" />
+            <style>
+        .branch-details {
+            display: flex; /* Utilizamos flexbox para el contenedor */
+            flex-direction: column; /* Coloca los elementos en columna */
+        }
+        .custom-button {
+            background-color: rgba(255, 255, 255, 0.3); /* Color de fondo con opacidad */
+            border: none; /* Sin borde */
+            border-radius: 20px; /* Bordes redondeados */
+            padding: 10px 20px; /* Espaciado interno */
+            text-decoration: none; /* Sin subrayado */
+            color: #000000; /* Color de texto negro */
+            transition: background-color 0.3s; /* Transición suave */
+        }
+        .custom-button:hover {
+            background-color: rgba(169, 169, 169, 0.7); /* Color de fondo gris al pasar el ratón */
+        }
+            </style>
+        </head>
+        <body>
+            {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
+            <section class="bsb-service-7 py-5 py-xl-8">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h1 class="fs-1 mb-2 text-secondary text-uppercase">Gestión de Filiales</h1>
+                        </div>
+                        <div class="col-auto">
+                            <a class="nav-link fs-3 m-2 custom-button"
+                               href="{% url 'create_branch' %}"><i class="bi bi-plus-square" style="margin-right: 5px;"></i>Añadir Filial</a>
+                        </div>
+                    </div>
+                </div>
+                {% if branches %}
+                    {% for branch in branches %}
+                        <div class="d-flex justify-content-between p-5 m-5 rounded-5 shadow"
+                             style="border: 1px solid #ddd">
+                            <div class="branch-details">
+                                <h3>
+                                    <strong class="text-primary">Nombre de la Filial: </strong>{{ branch.name }}
+                                </h3>
+                                <ul>
+                                    <li>
+                                        <h5>
+                                            <strong>Latitud: </strong>{{ branch.latitude }}
+                                        </h5>
+                                    </li>
+                                    <li>
+                                        <h5>
+                                            <strong>Longitud: </strong>{{ branch.altitude }}
+                                        </h5>
+                                    </li>
+                                    <li>
+                                        <h5>
+                                            <strong>Nombre Completo y D.N.I del Ayudante a Cargo: </strong>{{ branch.worker.name }} {{ branch.worker.surname }} - {{ branch.worker.dni }}
+                                        </h5>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <a class="nav-link fs-4 m-2 custom-button" href="{% url 'edit_branch' branch.id %}"><i class="bi bi-gear" style="margin-right: 5px;"></i>Editar Filial</a>
+                                <a class="nav-link fs-4 m-2 custom-button" href="#"><i class="bi bi-trash-fill" style="margin-right: 5px;"></i>Eliminar Filial</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="container p-xxl-5">
+                        <div class="row justify-content-md-center align-items-center">
+                            <div class="alert alert-primary col-12 col-md-10 col-lg-8 col-xl-7">
+                                <h3 class="fs-4 mb-2 text-center text-uppercase">No se ha podido encontrar Filiales en el sistema</h3>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </section>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                    crossorigin="anonymous"></script>
+        {% endblock %}
+    </body>
+</html>

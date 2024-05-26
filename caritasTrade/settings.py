@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     "list_exchange_products",
     "validate_post",
     "exchanges",
-    'view_map'
+    'view_map',
+    'branches_management'
 ]
 
 MIDDLEWARE = [

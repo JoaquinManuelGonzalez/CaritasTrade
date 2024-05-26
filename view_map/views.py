@@ -8,7 +8,7 @@ def view_map(request):
     map = folium.Map(location=[-34.92145, -57.95453], zoom_start=13, min_zoom=12, max_zoom=18)
     map.options['maxBounds'] = bounds
     branches = Branches.objects.all()
-    [folium.Marker([branch.latitude, branch.altitude], popup=branch.name).add_to(map) for branch in branches]
+    [folium.Marker([branch.latitude, branch.altitude], popup=branch.name, icon=folium.Icon(color="red",icon="church", prefix="fa")).add_to(map) for branch in branches]
     map_html = map._repr_html_()
 
     return render(request, "view_map.html", {
