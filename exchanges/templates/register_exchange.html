@@ -21,13 +21,17 @@
                  style="background: linear-gradient(135deg, rgba(233, 236, 239, 0.6), rgba(255, 255, 255, 0.6));
                         backdrop-filter: blur(30px);
                         -webkit-backdrop-filter: blur(10px)">
-                <form class="rounded-5 d-flex flex-column">
+                <form class="rounded-5 d-flex flex-column"
+                      hx-post="{% url "validate_exchange_codes" %}"
+                      hx-swap="innerHTML"
+                      hx-target="#message_board">
+                      {% csrf_token %}
                     <div class="mb-3">
                         <label for="" class="form-label">Codigo 1</label>
                         <input type="text"
                                class="form-control"
-                               name=""
-                               id=""
+                               name="code_1"
+                               id="code_1"
                                aria-describedby="helpId"
                                placeholder="" />
                     </div>
@@ -35,8 +39,8 @@
                         <label for="" class="form-label">Codigo 2</label>
                         <input type="text"
                                class="form-control"
-                               name=""
-                               id=""
+                               name="code_2"
+                               id="code_2"
                                aria-describedby="helpId"
                                placeholder="" />
                     </div>
@@ -50,6 +54,9 @@
                 crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
                 integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12"
+                integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
                 crossorigin="anonymous"></script>
     </body>
 </html>

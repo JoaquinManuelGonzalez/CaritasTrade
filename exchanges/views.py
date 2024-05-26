@@ -1,6 +1,13 @@
+import datetime
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from data_base.models import ExchangeSolicitude, ExchangePost, Affiliate
+from data_base.models import (
+    ExchangeSolicitude,
+    ExchangePost,
+    Affiliate,
+    Workers,
+    Exchange,
+)
 
 
 # Create your views here.
@@ -15,6 +22,10 @@ def see_exchange_requests(request):
         exchange_post_for_id__in=requests, denied=False
     )
     print(requests)
+    requests = requests.exclude(
+        id__in=Exchange.objects.values_list('exchange_solicitude_id', flat=True)
+    )
+    print(requests)
     print(request.session.get("id"))
     return render(
         request,
@@ -27,12 +38,80 @@ def see_exchange_requests(request):
         },
     )
 
+
 def register_exchange(request):
     if not request.session.get("id") and not request.session.get("role") == "worker":
         return redirect("landing_page")
     if request.method == "GET":
-        return render(request, "register_exchange.html", {
-            "user_session": False,
-            "session_id": request.session.get("id"),
-            "session_name": Affiliate.objects.get(id=request.session.get("id")).name,
-        })
+        return render(
+            request,
+            "register_exchange.html",
+            {
+                "user_session": False,
+                "session_id": request.session.get("id"),
+                "session_name": Workers.objects.get(id=request.session.get("id")).name,
+            },
+        )
+
+
+def get_penalized_affiliate(code):
+    if Exchange.objects.filter(code1=code, timestamp__isnull=True).exists():
+        return Exchange.objects.get(code1=code).affiliate_2
+    elif Exchange.objects.filter(code2=code, timestamp__isnull=True).exists():
+        return Exchange.objects.get(code2=code).affiliate_1
+    return None
+
+
+def penalize_affiliate(affiliate):
+    if affiliate.points > 0:
+        affiliate.points -= 1
+        affiliate.save()
+    return f"Se ha penalizado al usuario {affiliate.name}"
+
+
+def validate_exchange_codes(request):
+    if (
+        request.method != "POST"
+        or not request.session.get("id")
+        or request.session.get("role") != "worker"
+    ):
+        return render(
+            request,
+            "message.html",
+            {"message": "Operación no permitida", "type_of_alert": "danger"},
+        )
+
+    code1, code2 = request.POST.get("code_1"), request.POST.get("code_2")
+    message = "Alguno o ambos de los códigos son inválidos"
+    type_of_alert = "danger"
+
+    if code1 and not code2:
+        penalized_affiliate = get_penalized_affiliate(code1)
+        if penalized_affiliate:
+            message = penalize_affiliate(penalized_affiliate)
+            type_of_alert = "success"
+
+    elif not code1 and code2:
+        penalized_affiliate = get_penalized_affiliate(code2)
+        if penalized_affiliate:
+            message = penalize_affiliate(penalized_affiliate)
+            type_of_alert = "success"
+
+    elif code1 and code2:
+        exchange = (
+            Exchange.objects.filter(
+                code1=code1, code2=code2, timestamp__isnull=True
+            ).first()
+            or Exchange.objects.filter(
+                code1=code2, code2=code1, timestamp__isnull=True
+            ).first()
+        )
+        if exchange:
+            exchange.timestamp = datetime.datetime.now()
+            exchange.save()
+            message = "Se ha registrado el intercambio de forma exitosa"
+            type_of_alert = "success"
+
+    return render(
+        request, "message.html", {"message": message, "type_of_alert": type_of_alert}
+    )

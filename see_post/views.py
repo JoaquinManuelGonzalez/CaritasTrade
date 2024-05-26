@@ -45,7 +45,7 @@ def see_post(request, id):
                     "author_name": Affiliate.objects.get(id=post.affiliate_id).name,
                     "own_post": post.affiliate_id == request.session.get("id"),
                     "posts": ExchangePost.objects.filter(
-                        affiliate_id=request.session.get("id"), is_active=True
+                        affiliate_id=request.session.get("id"), is_active=True, product_category=post.product_category
                     ),
                 },
             )
