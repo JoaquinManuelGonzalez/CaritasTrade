@@ -86,3 +86,45 @@ def create_branch(request):
                 'form': branch_form,
                 "map_html": map_html
             })
+
+
+def edit_branch(request, branch_id):
+    branch = Branches.objects.get(id=branch_id)
+    worker_in_charge = Workers.objects.get(id=branch.worker_id)
+    map_html = create_map()
+    if request.method == "POST":
+        branch_form = forms.EditBranchForm(request.POST)
+        if branch_form.is_valid():
+            name = capitalize_element(branch_form.cleaned_data['name'])
+            if name:
+                branch.name = name
+            latitude = branch_form.cleaned_data['latitude']
+            if latitude:
+                branch.latitude = latitude
+            altitude = branch_form.cleaned_data['altitude']
+            if altitude:
+                branch.altitude = altitude
+            worker = branch_form.cleaned_data['worker']
+            if worker:
+                branch.worker = worker
+            branch.save()
+            success_message = "Los datos de la Filial han sido editados exitosamente."
+            return render(request, "edit_branch.html", {
+                "session_id" : request.session.get("id"),
+                "user_session" : False,
+                "branch": branch,
+                "worker_in_charge": worker_in_charge,
+                "map_html": map_html,
+                'success_message': success_message
+            })
+            
+    else:
+        branch_form = forms.EditBranchForm()
+    return render(request, "edit_branch.html", {
+        "session_id" : request.session.get("id"),
+        "user_session" : False,
+        "branch": branch,
+        "form": branch_form,
+        "worker_in_charge": worker_in_charge,
+        "map_html": map_html
+    })

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+{% load static %}
+{% block content %}
+    <html lang="en">
+        <head>
+            <title>Editar Filial</title>
+            <meta charset="utf-8" />
+            <meta name="viewport"
+                  content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+                  rel="stylesheet"
+                  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+                  crossorigin="anonymous" />
+        </head>
+        <body>
+            {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
+            {% if success_message %}
+                <div class="alert alert-success alert-dismissible show m-2 " role="alert">
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    <strong>Felicidades:
+                        {{ success_message }}
+                    </strong>
+                </div>
+            {% endif %}
+            {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible show m-2 " role="alert">
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    <strong>Error:
+                        {% for field, errors in form.errors.items %}
+                            {% if forloop.first %}{{ errors.0 }}{% endif %}
+                        {% endfor %}
+                    </strong>
+                </div>
+            {% endif %}
+            <section class="py-3 py-md-5">
+                <div class="container">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-12 col-lg-6">
+                            <div class="card widget-card border-light shadow-sm" style="width: 750px">
+                                <div class="card-body p-4">
+                                    <div class="d-block d-sm-flex align-items-center justify-content-between mb-3">
+                                        <div class="mb-2 mb-sm-0">
+                                            <h5 class="card-title widget-card-title m-0">Mapa de Filiales de Cáritas</h5>
+                                        </div>
+                                    </div>
+                                    <div id="map" class="bsb-jvm-zoom-btn" style="width: 700px">{{ map_html|safe }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <div class="container-fluid">
+                                <div class="d-flex justify-content-center">
+                                    <div class="card shadow-lg">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-center mb-2">Editar Filial</h5>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <div class="form-group row">
+                                                    <label for="worker" class="col-sm-9 col-form-label">Ayudante</label>
+                                                    <div class="col-sm-15">
+                                                        <select name="worker" class="form-control" id="worker">
+                                                            <option value="" disable selected>{{ worker_in_charge.name }} {{ worker_in_charge.surname }} - D.N.I: {{ worker_in_charge.dni }}</option>
+                                                            {% for worker in form.fields.worker.queryset %}
+                                                                <option value="{{ worker.id }}">{{ worker.name }} {{ worker.surname }} - D.N.I: {{ worker.dni }}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="name" class="col-sm-9 col-form-label">Nombre de la Filial</label>
+                                                    <div class="col-sm-15">
+                                                        <input type="text"
+                                                               name="name"
+                                                               class="form-control"
+                                                               id="name"
+                                                               placeholder="{{ branch.name }}"
+                                                               >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="latitude" class="col-sm-9 col-form-label">Latitud</label>
+                                                    <div class="col-sm-15">
+                                                        <input type="number"
+                                                               name="latitude"
+                                                               class="form-control"
+                                                               id="latitude"
+                                                               placeholder="{{ branch.latitude }}"
+                                                               step="0.000000001"
+                                                               >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="altitude" class="col-sm-9 col-form-label">Altitud</label>
+                                                    <div class="col-sm-15">
+                                                        <input type="number"
+                                                               name="altitude"
+                                                               class="form-control"
+                                                               id="altitude"
+                                                               placeholder="{{ branch.altitude }}"
+                                                               step="0.000000001"
+                                                               >
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mt-4">
+                                                    <div class="col-sm-6">
+                                                        <a href="{% url 'branches_management' %}"
+                                                           class="btn btn-danger fw-bold mx-2">Volver</a>
+                                                    </div>
+                                                    <div class="col-sm-6 text-end">
+                                                        <button type="submit" class="btn btn-primary fw-bold btn-block">Editar Filial</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                    crossorigin="anonymous"></script>
+        </body>
+    </html>
+{% endblock %}
