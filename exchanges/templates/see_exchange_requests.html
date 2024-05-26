@@ -15,49 +15,77 @@
     <body>
         {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
         <div class="p-5 m-5">
-            <h1>Solicitudes de intercambio hijueperra</h1>
-            <div>
-                <div class="d-flex flex-column ">
-                    {% for request in requests %}
-                        <div class="d-flex flex-column p-5 m-2 rounded-5 shadow-lg ">
-                            <div class="d-flex p-1 justify-content-between ">
-                                <div class="d-flex flex-column ">
-                                    <div class="d-flex p-1">
-                                        <h2>
-                                            Publicacion ofrecida: <a href=" {% url "see_post" id=request.exchange_post_for_id.id %} ">{{ request.exchange_post_for_id.title }}</a>
-                                        </h2>
+            <h1 class="@">Solicitudes de intercambio</h1>
+            {% if requests %}
+                <div>
+                    <div class="d-flex flex-row flex-wrap">
+                        {% for request in requests %}
+                            <div class="card p-4 m-3 rounded-5 shadow-lg"
+                                 style="background: linear-gradient(135deg, rgba(233, 236, 239, 0.6), rgba(255, 255, 255, 0.6));
+                                        backdrop-filter: blur(30px);
+                                        -webkit-backdrop-filter: blur(10px)">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-exchange-alt fa-2x text-primary me-3"></i>
+                                            <div>
+                                                <h4 class="card-title mb-1">Pidieron intercambio por:</h4>
+                                                <p class="card-text">
+                                                    <a href="{% url 'see_post' id=request.exchange_post_for_id.id %}">{{ request.exchange_post_for_id.title }}</a>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="d-flex p-1">
-                                        <h2>
-                                            Publicacion peticionada: <a href="{% url "see_post" id=request.in_exchange_post_id.id %}">{{ request.in_exchange_post_id.title }}</a>
-                                        </h2>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-gift fa-2x text-success me-3"></i>
+                                            <div>
+                                                <h4 class="card-title mb-1">Ofrecieron:</h4>
+                                                <p class="card-text">
+                                                    <a href="{% url 'see_post' id=request.in_exchange_post_id.id %}">{{ request.in_exchange_post_id.title }}</a>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="d-flex p-1">
-                                        <h2>
-                                            Usuario: <a href="{% url "view_profile" id=request.affiliate_id.id %}">{{ request.affiliate_id.name }}</a>
-                                        </h2>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-user fa-2x text-info me-3"></i>
+                                            <div>
+                                                <h4 class="card-title mb-1">Usuario:</h4>
+                                                <p class="card-text">
+                                                    <a href="{% url 'view_profile' id=request.affiliate_id.id %}">{{ request.affiliate_id.name }}</a>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="d-flex flex-column  p-1 justify-content-evenly align-content-end ">
-                                    <form action=""
-                                        {% comment %} hx-post="{% url 'accept_exchange_request' request_id=request.id %}" {% endcomment %}
-                                    >
-                                        <a name=""
-                                           type="submit"
-                                           id=""
-                                           class="btn btn-success "
-                                           href="#"
-                                           role="button">Hacer mierda</a>
-                                    </form>
-                                    <form action="">
-                                        <a name="" id="" class="btn btn-danger" href="#" role="button">Lovumba</a>
-                                    </form>
+                                    <div class="d-flex justify-content-center">
+                                        <form action="" method="post" class="me-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="fas fa-check"></i> Aceptar
+                                            </button>
+                                        </form>
+                                        <form action="" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-times"></i> Rechazar
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    <strong>Usted no tiene solicitudes de intercambio pendientes</strong>
+                </div>
+            {% endif %}
         </div>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
                 integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

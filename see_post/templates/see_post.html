@@ -27,23 +27,29 @@
                 {% if role == "user" and not own_post %}
                     <div id="message_board" class="p-5"></div>
                     <form id="post_select"
-                          class="visually-hidden opacity-0  d-flex flex-column align-content-around  position-absolute start-50 translate-middle-x text-center  translate-middle w-50 rounded-5 shadow-lg "
+                          class="visually-hidden opacity-0 d-flex flex-column align-content-around position-absolute start-50 top-50 translate-middle text-center rounded-5 shadow-lg"
                           style="background-color: rgba(50, 50, 50, 0.4);
                                  backdrop-filter: blur(30px);
                                  -webkit-backdrop-filter: blur(10px);
-                                 height: 50%;
-                                 transition: opacity 0.1s ease-in-out"
+                                 transition: opacity 0.1s ease-in-out;
+                                 width: 50vw;
+                                 /* Tamaño relativo al ancho de la ventana */ height: auto;
+                                 /* Altura ajustable al contenido */ max-height: 80vh;
+                                 /* Limitar altura máxima */ overflow-y: auto;
+                                 /* Hacer contenido desplazable */ padding: 20px;
+                                 /* Espacio interno para contenido */ box-sizing: border-box;
+                                 /* Incluir padding y border en el tamaño */"
                           hx-post="{% url 'send_exchange_solicitude' post_id_for=post.id %}"
-                          hx-swap="afterbegin"
+                          hx-swap="innerHTML"
                           hx-target="#message_board">
-                          {% csrf_token %}
+                        {% csrf_token %}
                         <div class="p-5 z-3">
                             <h1 class="text-white">Selecciona tu producto a intercambiar</h1>
                             <div class="p-5">
                                 <div class="mb-3">
                                     <label for="post_id" class="form-label text-white">Posteo seleccionado</label>
-                                    <select class="form-select form-select-lg shadow text-white "
-                                            Required
+                                    <select class="form-select form-select-lg shadow text-white"
+                                            required
                                             name="post_id"
                                             id="post_id"
                                             style="background-color: rgba(50, 50, 50, 0.5);
@@ -60,9 +66,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center ">
-                            <div class="d-grid gap-2">
-                                <button type="submit" name="" id="" class="btn btn-danger m-2 shadow-lg ">
+                        <div class="d-flex justify-content-center">
+                            <div class="d-grid gap-2"
+                                 style="width: 100%;
+                                        max-width: 300px;
+                                        margin: 0 auto">
+                                <button type="submit"
+                                        class="btn btn-danger m-2 shadow-lg"
+                                        style="width: 100%">
                                     Confirmar
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="16"
@@ -75,11 +86,14 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="d-grid gap-2">
+                            <div class="d-grid gap-2"
+                                 style="width: 100%;
+                                        max-width: 300px;
+                                        margin: 0 auto">
                                 <button type="button"
-                                        name=""
                                         id="cancel_request"
-                                        class="btn btn-dark m-2 shadow-lg">
+                                        class="btn btn-dark m-2 shadow-lg"
+                                        style="width: 100%">
                                     Cancelar
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                          width="16"
