@@ -35,6 +35,9 @@
         <li class="nav-item">
           <a class="nav-link fs-4" href="{% url "see_waiting_posts" %}"><i class="bi bi-card-checklist" style="margin-right: 5px;"></i> Validar Publicación </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link fs-4" href="{% url "category_list" %}"><i class="bi bi-tags" style="margin-right: 5px;"></i> Categorías </a>
+        </li>
         {% if not user_session %}
           <li class="nav-item">
             <a class="nav-link fs-4" href="{% url 'view_profile' id=session_id %}"><i class="bi bi-person-bounding-box" style="margin-right: 5px;"></i> {{ session_name }} </a>
