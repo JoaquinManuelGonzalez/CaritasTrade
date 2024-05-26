@@ -24,7 +24,8 @@
                 <form class="rounded-5 d-flex flex-column"
                       hx-post="{% url "validate_exchange_codes" %}"
                       hx-swap="innerHTML"
-                      hx-target="#message_board">
+                      hx-target="#message_board"
+                      hx-confirm="¿Estas seguro de enviar estos codigos?">
                       {% csrf_token %}
                     <div class="mb-3">
                         <label for="" class="form-label">Codigo 1</label>
