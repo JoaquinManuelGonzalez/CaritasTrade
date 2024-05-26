@@ -117,6 +117,10 @@ def validate_exchange_codes(request):
         )
         if exchange:
             exchange.timestamp = datetime.datetime.now()
+            exchange.affiliate_1.points +=1
+            exchange.affiliate_2.points += 1
+            exchange.affiliate_1.save()
+            exchange.affiliate_2.save()
             exchange.save()
             message = "Se ha registrado el intercambio de forma exitosa"
             type_of_alert = "success"
