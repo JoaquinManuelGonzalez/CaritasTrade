@@ -56,8 +56,14 @@ def register_exchange(request):
 
 def get_penalized_affiliate(code):
     if Exchange.objects.filter(code1=code, timestamp__isnull=True).exists():
+        exchange=Exchange.objects.get(code1=code, timestamp__isnull=True)
+        exchange.timestamp = datetime.datetime.now()
+        exchange.save()
         return Exchange.objects.get(code1=code).affiliate_2
     elif Exchange.objects.filter(code2=code, timestamp__isnull=True).exists():
+        exchange=Exchange.objects.get(code2=code, timestamp__isnull=True)
+        exchange.timestamp = datetime.datetime.now()
+        exchange.save()
         return Exchange.objects.get(code2=code).affiliate_1
     return None
 
@@ -82,6 +88,8 @@ def validate_exchange_codes(request):
         )
 
     code1, code2 = request.POST.get("code_1"), request.POST.get("code_2")
+    print(code1, code2, type(code1), type(code2))
+    print(Exchange.objects.filter(code1=code1, code2=code2).exists())
     message = "Alguno o ambos de los códigos son inválidos"
     type_of_alert = "danger"
 
@@ -98,6 +106,7 @@ def validate_exchange_codes(request):
             type_of_alert = "success"
 
     elif code1 and code2:
+        print("Se metio por el if de que existen 2 codigos")
         exchange = (
             Exchange.objects.filter(
                 code1=code1, code2=code2, timestamp__isnull=True

@@ -131,7 +131,7 @@ class Exchange(models.Model):
     )
     code1 = models.CharField(max_length=5, unique=True)
     code2 = models.CharField(max_length=5, unique=True)
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(null=True, blank=True)
 
 
 class Donation(models.Model):
