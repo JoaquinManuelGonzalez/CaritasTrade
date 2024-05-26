@@ -24,6 +24,91 @@
                 {% include 'worker_navbar.html' with user_session=user_session session_id=session_id session_name=session_name %}
             {% endif %}
             <main class="">
+                {% if role == "user" and not own_post %}
+                    <div id="message_board" class="p-5"></div>
+                    <form id="post_select"
+                          class="visually-hidden opacity-0 d-flex flex-column align-content-around position-absolute start-50 top-50 translate-middle text-center rounded-5 shadow-lg"
+                          style="background-color: rgba(50, 50, 50, 0.4);
+                                 backdrop-filter: blur(30px);
+                                 -webkit-backdrop-filter: blur(10px);
+                                 transition: opacity 0.1s ease-in-out;
+                                 width: 50vw;
+                                 /* Tamaño relativo al ancho de la ventana */ height: auto;
+                                 /* Altura ajustable al contenido */ max-height: 80vh;
+                                 /* Limitar altura máxima */ overflow-y: auto;
+                                 /* Hacer contenido desplazable */ padding: 20px;
+                                 /* Espacio interno para contenido */ box-sizing: border-box;
+                                 /* Incluir padding y border en el tamaño */"
+                          hx-post="{% url 'send_exchange_solicitude' post_id_for=post.id %}"
+                          hx-swap="innerHTML"
+                          hx-target="#message_board">
+                        {% csrf_token %}
+                        <div class="p-5 z-3">
+                            <h1 class="text-white">Selecciona tu producto a intercambiar</h1>
+                            <div class="p-5">
+                                <div class="mb-3">
+                                    <label for="post_id" class="form-label text-white">Posteo seleccionado</label>
+                                    <select class="form-select form-select-lg shadow text-white"
+                                            required
+                                            name="post_id"
+                                            id="post_id"
+                                            style="background-color: rgba(50, 50, 50, 0.5);
+                                                   backdrop-filter: blur(10px)">
+                                        <option value=""
+                                                style="background-color: rgba(50, 50, 50, 0.5);
+                                                       backdrop-filter: blur(10px)"></option>
+                                        {% for post in posts %}
+                                            <option value="{{ post.id }}"
+                                                    style="background-color: rgba(50, 50, 50, 0.5);
+                                                           backdrop-filter: blur(10px)">{{ post.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="d-grid gap-2"
+                                 style="width: 100%;
+                                        max-width: 300px;
+                                        margin: 0 auto">
+                                <button type="submit"
+                                        class="btn btn-danger m-2 shadow-lg"
+                                        style="width: 100%">
+                                    Confirmar
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="16"
+                                         height="16"
+                                         fill="currentColor"
+                                         class="bi bi-check-circle"
+                                         viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="d-grid gap-2"
+                                 style="width: 100%;
+                                        max-width: 300px;
+                                        margin: 0 auto">
+                                <button type="button"
+                                        id="cancel_request"
+                                        class="btn btn-dark m-2 shadow-lg"
+                                        style="width: 100%">
+                                    Cancelar
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="16"
+                                         height="16"
+                                         fill="currentColor"
+                                         class="bi bi-x-circle"
+                                         viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
                 {% if post %}
                     <div class="container mt-5 shadow-lg rounded-5 ">
                         <div class="row">
@@ -43,7 +128,7 @@
                                     <p>{{ category.name }}</p>
                                 </div>
                                 {% if role == "user" and not own_post %}
-                                    <button type="button" class="btn btn-danger m-5">
+                                    <button type="button" class="btn btn-danger m-5" id="request_button">
                                         <i class="bi bi-send" style="margin-right: 5px;"></i>Solicitar intercambio
                                     </button>
                                 {% endif %}
@@ -87,5 +172,30 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
                     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
                     crossorigin="anonymous"></script>
+            <script src="https://unpkg.com/htmx.org@1.9.12"
+                    integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+                    crossorigin="anonymous"></script>
+            <script>
+                document.getElementById("request_button").addEventListener("click", function () {
+                    postSelect = document.getElementById("post_select");
+                    if (postSelect.classList.contains("opacity-0")) {
+                        postSelect.classList.remove("opacity-0");
+                        postSelect.classList.remove("visually-hidden");
+                    } else {
+                        postSelect.classList.add("opacity-0");
+                        postSelect.classList.add("visually-hidden");
+                    }
+                });
+                document.getElementById("cancel_request").addEventListener("click", function () {
+                    postSelect = document.getElementById("post_select");
+                    if (postSelect.classList.contains("opacity-0")) {
+                        postSelect.classList.remove("opacity-0");
+                        postSelect.classList.remove("visually-hidden");
+                    } else {
+                        postSelect.classList.add("opacity-0");
+                        postSelect.classList.add("visually-hidden");
+                    }
+                });
+            </script>
         </body>
     </html>

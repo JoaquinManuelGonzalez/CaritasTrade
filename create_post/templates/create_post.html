@@ -97,6 +97,7 @@
                         <select class="form-select form-select-lg"
                                 name="{{ form.category.html_name }}"
                                 id="{{ form.category.id_for_label }}">
+                            <option value=""></option>
                             {% for category in categories %}<option value="{{ category.id }}">{{ category.name }}</option>{% endfor %}
                         </select>
                     </div>

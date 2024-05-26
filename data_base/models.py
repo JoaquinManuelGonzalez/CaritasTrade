@@ -108,6 +108,18 @@ class ExchangeSolicitude(models.Model):
 
 
 class Exchange(models.Model):
+    """
+    Represents an exchange between two affiliates. The `Exchange` model stores information about the exchange, including the exchange solicitude, the two affiliates involved, and the codes associated with the exchange.
+
+    Attributes:
+        exchange_solicitude (ExchangeSolicitude): The exchange solicitude that this exchange is associated with.
+        affiliate_1 (Affiliate): The first affiliate involved in the exchange (requester).
+        affiliate_2 (Affiliate): The second affiliate involved in the exchange (reciever).
+        code1 (str): A 5-character code associated with the exchange.
+        code2 (str): Another 5-character code associated with the exchange.
+        timestamp (datetime): The timestamp of when the exchange occurred phisically.
+    """
+
     exchange_solicitude = models.ForeignKey(
         ExchangeSolicitude, on_delete=models.CASCADE
     )
@@ -117,9 +129,9 @@ class Exchange(models.Model):
     affiliate_2 = models.ForeignKey(
         Affiliate, on_delete=models.CASCADE, related_name="affiliate_2"
     )
-    code1 = models.CharField(max_length=5)
-    code2 = models.CharField(max_length=5)
-    timestamp = models.DateTimeField()
+    code1 = models.CharField(max_length=5, unique=True)
+    code2 = models.CharField(max_length=5, unique=True)
+    timestamp = models.DateTimeField(null=True, blank=True)
 
 
 class Donation(models.Model):
