@@ -26,12 +26,9 @@ class Affiliate(models.Model):
 
 class Reputation(models.Model):
     reputation = models.FloatField(default=3.0)
-<<<<<<< HEAD
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, related_name="affiliate")
     to_do = models.BooleanField(default=False)
     comes_from_affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, null=True, blank=True, related_name="comes_from_affiliate")
-=======
->>>>>>> b2dd189e697c6c7d4268b08b2526b6674a0a9422
 
 
 class Tokens(models.Model):
