@@ -59,7 +59,7 @@ class ProductCategory(models.Model):
 
 
 class Products(models.Model):
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
+    product_category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=20)
 
 
@@ -77,6 +77,7 @@ class ExchangePost(models.Model):
     timestamp = models.DateTimeField()
     is_active = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
+    is_paused = models.BooleanField(default=False)
 
 
 class EcommercePost(models.Model):
