@@ -28,4 +28,11 @@ def see_exchange_requests(request):
     )
 
 def register_exchange(request):
-    return HttpResponse("Register exchange")
+    if not request.session.get("id") and not request.session.get("role") == "worker":
+        return redirect("landing_page")
+    if request.method == "GET":
+        return render(request, "register_exchange.html", {
+            "user_session": False,
+            "session_id": request.session.get("id"),
+            "session_name": Affiliate.objects.get(id=request.session.get("id")).name,
+        })
