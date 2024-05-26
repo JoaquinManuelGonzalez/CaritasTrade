@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     "validate_post",
     "exchanges",
     'view_map',
-    'branches_management'
+    'branches_management',
     'categories',
 ]
 
