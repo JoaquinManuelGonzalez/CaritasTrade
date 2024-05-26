@@ -155,7 +155,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 MESSAGE_TAGS = {
     messages.DEBUG: "debug",
     messages.INFO: "info",
-    messages.SUCCESS: "success",
-    messages.WARNING: "warning",
-    messages.ERROR: "danger",
+    messages.SUCCESS: "EXITO",
+    messages.WARNING: "PELIGRO",
+    messages.ERROR: "ERROR",
 }
