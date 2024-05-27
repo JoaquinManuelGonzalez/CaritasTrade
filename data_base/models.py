@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 
 
 class Workers(models.Model):
@@ -135,7 +137,8 @@ class Exchange(models.Model):
     code1 = models.CharField(max_length=5, unique=True)
     code2 = models.CharField(max_length=5, unique=True)
     timestamp = models.DateTimeField(null=True, blank=True)
-
+    branch = models.ForeignKey(Branches, on_delete=models.CASCADE)
+    exchange_date = models.DateField(null=True, blank=True)
 
 class Donation(models.Model):
     amount = models.FloatField()
