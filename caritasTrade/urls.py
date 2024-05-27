@@ -67,6 +67,7 @@ urlpatterns = [
         name="validate_exchange_codes",
     ),
     path('view_map/', view_maps_views.view_map, name='view_map'),
+    path("create_worker/", include("create_worker.urls"), name="create_worker"),
     path('branches_management/', include("branches_management.urls"), name='branches_management'),
     path("categories/", include('categories.urls'), name="categories"),
     path("select_branch/<int:solicitude_id>", select_branch_views.select_branch, name="select_branch"),
