@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'edit_profile',
     'list_exchange_products',
     'validate_post',
-    'view_map'
+    'view_map',
+    'create_worker'
 ]
 
 MIDDLEWARE = [

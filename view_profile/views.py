@@ -15,7 +15,7 @@ def session_name(request):
     session_id = request.session.get("id")
     if role == "user":
         session_user = Affiliate.objects.get(id=session_id)
-    elif role == "worker":
+    else:
         session_user = Workers.objects.get(id=session_id)
     return session_user.name
 
