@@ -137,8 +137,9 @@ class Exchange(models.Model):
     code1 = models.CharField(max_length=5, unique=True)
     code2 = models.CharField(max_length=5, unique=True)
     timestamp = models.DateTimeField(null=True, blank=True)
-    branch = models.ForeignKey(Branches, on_delete=models.CASCADE)
+    branch = models.ForeignKey(Branches, on_delete=models.SET_NULL, null=True, blank=True)
     exchange_date = models.DateField(null=True, blank=True)
+    deleted = models.BooleanField(default=False)
 
 class Donation(models.Model):
     amount = models.FloatField()
