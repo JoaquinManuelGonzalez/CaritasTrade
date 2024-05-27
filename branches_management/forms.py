@@ -25,7 +25,7 @@ class BranchForm(forms.Form):
         altitude = cleaned_data.get("altitude")
 
         if Branches.objects.filter(latitude=latitude, altitude=altitude).exists():
-            raise forms.ValidationError("Una Filial con esta Latitud y Altitud ya existe en el sistema.")
+            raise forms.ValidationError("Una Filial con esta Latitud y Longitud ya existe en el sistema.")
 
         return cleaned_data
     
@@ -59,6 +59,6 @@ class EditBranchForm(forms.Form):
         if not latitude or not altitude:
             return cleaned_data
         if Branches.objects.filter(latitude=latitude, altitude=altitude).exists():
-            raise forms.ValidationError("Una Filial con esta Latitud y Altitud ya existe en el sistema.")
+            raise forms.ValidationError("Una Filial con esta Latitud y Longitud ya existe en el sistema.")
 
         return cleaned_data
