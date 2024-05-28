@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'view_map',
     'branches_management',
     'categories',
+    "select_branch",
+    'create_worker',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Registrar ayudante</title>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+        <!-- Bootstrap Icons CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    </head>
+    <body class="bg-body-tertiary">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible show m-2 " role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong>Error: {% for field, errors in form.errors.items %}
+                                    {% if forloop.first %}
+                                        {{ errors.0 }}
+                                    {% endif %}
+                                {% endfor %} </strong>
+            </div>
+        {% endif %}
+
+        <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 130vh; width: 40%;">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-2">Registrar ayudante</h5>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <label for="{{ form.name.id_for_label }}" class="col-sm-9 col-form-label">Nombre</label>
+                            <div class="col-sm-15">
+                                <input type="text" class="form-control" id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" value="{{ request.POST.name }}" placeholder="Ingrese su Nombre/s" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.surname.id_for_label }}" class="col-sm-9 col-form-label">Apellido</label>
+                            <div class="col-sm-15">
+                                <input type="text" class="form-control" id="{{ form.surname.id_for_label }}" name="{{ form.surname.html_name }}" value="{{ request.POST.surname }}" placeholder="Ingrese su Apellido/s" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.dni.id_for_label }}" class="col-sm-9 col-form-label">D.N.I</label>
+                            <div class="col-sm-15">
+                                <input type="text" class="form-control" id="{{ form.dni.id_for_label }}" name="{{ form.dni.html_name }}" value="{{ request.POST.dni }}" placeholder="Ingrese su D.N.I" required>
+                            </div>
+                            <small id="DNIHelp" class="form-text text-muted">El D.N.I que ingrese debe ser de 8 dígitos.</small>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.phone_number.id_for_label }}" class="col-sm-9 col-form-label">Teléfono</label>
+                            <div class="col-sm-15">
+                                <input type="tel" class="form-control" id="{{ form.phone_number.id_for_label }}" name="{{ form.phone_number.html_name }}" value="{{ request.POST.phone_number }}" placeholder="Ingrese su Número de Teléfono" required>
+                            </div>
+                            <small id="phoneNumberHelp" class="form-text text-muted">El Número de Teléfono que ingrese debe ser de 10 dígitos y no debe contener "-".</small>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.birth_day.id_for_label }}" class="col-sm-9 col-form-label">Fecha de Nacimiento</label>
+                            <div class="col-sm-15">
+                                <input type="date" class="form-control" id="{{ form.birth_day.id_for_label }}" name="{{ form.birth_day.html_name }}" value="{{ request.POST.birth_day }}" required>
+                            </div>
+                            <small id="phoneNumberHelp" class="form-text text-muted">La Fecha de Nacimiento que ingrese debe corresponder a la de una persona de mínimo 18 años de edad.</small>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.email.id_for_label }}" class="col-sm-9 col-form-label">Email</label>
+                            <div class="col-sm-15">
+                                <input type="email" class="form-control" id="{{ form.email.id_for_label }}" name="{{ form.email.html_name }}" value="{{ request.POST.email }}" placeholder="Ingrese su Email" required>
+                            </div>
+                            <small id="emailHelp" class="form-text text-muted">El Email que ingrese será utilizado como su Nombre de Usuario.</small>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.password.id_for_label }}" class="col-sm-9 col-form-label">Contraseña</label>
+                            <div class="col-sm-15">
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" value="{{ request.POST.password }}" placeholder="Ingrese su Contraseña" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="showPasswordToggle">
+                                        <i id="password_icon" class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <small id="passwordHelp" class="form-text text-muted">La Contraseña que ingrese debe poseer 8 caracteres como mínimo y combinar letras, números y caracteres especiales.</small>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-4 ">
+                            <div class="col-sm-6 text-end">
+                                <a href="{% url 'list_products' %}" class="btn btn-primary fw-bold mx-2">Volver</a>
+                            </div>
+                            <div class="col-sm-6 ">
+                                <button type="submit" class="btn btn-danger fw-bold btn-block">Registrar ayudante</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+
+        <script>
+            var alertList = document.querySelectorAll(".alert");
+            alertList.forEach(function (alert) {
+                new bootstrap.Alert(alert);
+            });
+        </script>
+
+        <!-- Lógica para mostrar y ocultar password-->
+        <script>
+            document.getElementById('showPasswordToggle').addEventListener('click', function() {
+                var passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    document.getElementById('password_icon').className="bi bi-eye-fill";
+                } else {
+                    passwordInput.type = 'password';
+                    document.getElementById('password_icon').className="bi bi-eye";
+                }
+            });
+        </script>
+    </body>
+</html>

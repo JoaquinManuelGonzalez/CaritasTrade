@@ -1,0 +1,193 @@
+{% load static %}
+{% block content %}
+    <html lang="en">
+        <head>
+            <title>Seleccionar Filial para Intercambio</title>
+            <meta charset="utf-8" />
+            <meta name="viewport"
+                  content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+                  rel="stylesheet"
+                  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+                  crossorigin="anonymous" />
+            <style>
+                body {
+                background-color: #f8f9fa;
+                }
+                .container {
+                max-width: 1200px;
+                margin-top: 2rem;
+                padding: 0 15px;
+                }
+                h1 {
+                font-weight: 300;
+                color: #343a40;
+                padding-bottom: 1rem;
+                }
+                p.text-center.text-muted {
+                font-size: 1.2rem;
+                margin-bottom: 2rem;
+                }
+                .card {
+                border: none;
+                border-radius: 0.5rem;
+                }
+                .card-header {
+                border-bottom: none;
+                border-radius: 0.5rem 0.5rem 0 0;
+                }
+                .branch-card {
+                border: 1px solid #e9ecef;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                margin-right: 1.3rem;
+                margin-left: 0.7rem;
+                cursor: pointer;
+                }
+                .branch-card:hover {
+                transform: scale(1.02);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                }
+                .form-check-input {
+                margin-top: 0.3rem;
+                }
+                .btn {
+                border-radius: 0.5rem;
+                padding: 10px 20px;
+                }
+                .btn-primary {
+                background-color: #007bff;
+                border-color: #007bff;
+                transition: background-color 0.2s ease, border-color 0.2s ease;
+                }
+                .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+                }
+                .btn-secondary {
+                background-color: #6c757d;
+                border-color: #6c757d;
+                transition: background-color 0.2s ease, border-color 0.2s ease;
+                }
+                .btn-secondary:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+                }
+                #scroll-to-actions {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                border-radius: 50%;
+                padding: 15px;
+                font-size: 20px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                }
+                .btn-circle {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                text-align: center;
+                padding: 10px;
+                font-size: 24px;
+                line-height: 1.33;
+                }
+            </style>
+        </head>
+        <body>
+            {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger alert-dismissible show m-2 " role="alert">
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        <strong>Error: {{ message }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% if available_branches_by_date %}
+                <div class="container mt-5">
+                    <h1 class="mb-2 text-center">Seleccionar Filial para Intercambio</h1>
+                    <p class="text-center text-muted">Selecciona la Filial que desees para llevar a cabo tu Intercambio</p>
+                    <form method="post"
+                          action="{% url 'select_branch' solicitude_id=solicitude_id %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            {% for date, branches in available_branches_by_date.items %}
+                                {% if forloop.counter0|divisibleby:2 %}
+                                </div>
+                                <div class="row centered">
+                                {% endif %}
+                                <div class="col-md-6 mb-4">
+                                    <div class="card shadow-sm">
+                                        <div class="card-header bg-primary text-white">
+                                            <h2 class="h5 mb-0">{{ date }}</h2>
+                                        </div>
+                                        <div class="card-body d-flex flex-wrap">
+                                            {% for branch in branches %}
+                                                <label for="branch_{{ date }}_{{ branch.id }}"
+                                                       class="branch-card card mr-2 mb-3 flex-grow-1">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title h6">{{ branch.name }}</h3>
+                                                        <div class="form-check">
+                                                            <input type="radio"
+                                                                   name="selected_branch"
+                                                                   id="branch_{{ date }}_{{ branch.id }}"
+                                                                   value="{{ date }}-{{ branch.id }}"
+                                                                   class="form-check-input"
+                                                                   onchange="updateExchangeDetails('{{ date }}', '{{ branch.id }}')">
+                                                            <span class="form-check-label">Seleccionar</span>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <input name="exchange_date" id="exchange_date" type="hidden">
+                        <input name="exchange_branch" id="exchange_branch" type="hidden">
+                        <div class="d-flex justify-content-between mt-5" id="action-buttons">
+                            <a href="{% url 'see_exchange_requests' %}"
+                               class="btn btn-danger btn-lg fw-bold">Volver a Listado de Solicitudes Pendientes</a>
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold">Confirmar Selección</button>
+                        </div>
+                    </form>
+                    <button class="btn btn-secondary btn-circle"
+                            id="scroll-to-actions"
+                            onclick="scrollToActions()">
+                        <i class="bi bi-arrow-down-circle"></i>
+                    </button>
+                </div>
+            {% else %}
+                <div class="container p-xxl-5">
+                    <div class="row justify-content-md-center align-items-center">
+                        <div class="alert alert-primary col-12 col-md-10 col-lg-8 col-xl-7">
+                            <h3 class="fs-4 mb-2 text-center text-uppercase">
+                                No se ha podido encontrar Filiales disponibles para realizar Intercambios. Intente más tarde.
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <script>
+                function updateExchangeDetails(date, branchId) {
+                    document.getElementById('exchange_date').value = date;
+                    document.getElementById('exchange_branch').value = branchId;
+                }
+        
+                function scrollToActions() {
+                    document.getElementById('action-buttons').scrollIntoView({ behavior: 'smooth' });
+                }
+            </script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                    crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                    crossorigin="anonymous"></script>
+        </body>
+    </html>
+{% endblock %}
