@@ -71,4 +71,14 @@ urlpatterns = [
     path('branches_management/', include("branches_management.urls"), name='branches_management'),
     path("categories/", include('categories.urls'), name="categories"),
     path("select_branch/<int:solicitude_id>", select_branch_views.select_branch, name="select_branch"),
+    path(
+        "return_error_message_regarding_active_exchanges",
+        exchanges_views.return_error_message_regarding_active_exchanges,
+        name="return_error_message_regarding_active_exchanges",
+    ),
+    path(
+        "delete_request/<int:id>",
+        exchanges_views.delete_request,
+        name="delete_request",
+    )
 ]
