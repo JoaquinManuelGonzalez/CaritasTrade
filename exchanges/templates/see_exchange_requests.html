@@ -14,6 +14,24 @@
     </head>
     <body>
         {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
+        <div id="message_board" class="p-5">
+            {% if message %}
+                <div
+                    class="alert alert-success alert-dismissible fade show"
+                    role="alert"
+                >
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"
+                    ></button>
+                
+                    <strong>{{ message }}</strong>
+                </div>
+                
+            {% endif %}
+        </div>
         <div class="p-5 m-5">
             <h1 class="@">Solicitudes de intercambio</h1>
             {% if requests %}
@@ -59,13 +77,26 @@
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-center">
+                                        {% if active_exchanges < 5 %}
                                         <form action="{% url 'select_branch' solicitude_id=request.id %}" method="get" class="me-2">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-success">
                                                 <i class="fas fa-check"></i> Aceptar
                                             </button>
                                         </form>
-                                        <form action="" method="post">
+                                        {% else %}
+                                        <form action="" method="get" class="me-2"
+                                            hx-get="{% url 'return_error_message_regarding_active_exchanges' %}" 
+                                            hx-swap="innerHTML"
+                                            hx-target="#message_board"
+                                        >
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="fas fa-check"></i> Aceptar
+                                            </button>
+                                        </form>
+                                        {% endif %}
+                                        <form action="{% url "delete_request"  request.id %}" method="post" class="me-2">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-danger">
                                                 <i class="fas fa-times"></i> Rechazar

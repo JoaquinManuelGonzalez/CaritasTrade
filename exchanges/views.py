@@ -17,16 +17,18 @@ def see_exchange_requests(request):
     requests = ExchangePost.objects.filter(
         affiliate_id=request.session.get("id"), is_active=True
     )
-    print(requests)
     requests = ExchangeSolicitude.objects.filter(
         exchange_post_for_id__in=requests, denied=False
     )
-    print(requests)
     requests = requests.exclude(
         id__in=Exchange.objects.values_list('exchange_solicitude_id', flat=True)
     )
-    print(requests)
-    print(request.session.get("id"))
+    active_exchanges = Exchange.objects.filter(
+        affiliate_1_id=request.session.get("id"), timestamp__isnull=True
+    ).count() + Exchange.objects.filter(
+        affiliate_2_id=request.session.get("id"), timestamp__isnull=True
+    ).count()
+    print(active_exchanges)
     return render(
         request,
         "see_exchange_requests.html",
@@ -35,8 +37,10 @@ def see_exchange_requests(request):
             "user_session": False,
             "session_id": request.session.get("id"),
             "session_name": Affiliate.objects.get(id=request.session.get("id")).name,
+            "active_exchanges": active_exchanges,
         },
     )
+
 
 
 def register_exchange(request):
@@ -127,4 +131,49 @@ def validate_exchange_codes(request):
 
     return render(
         request, "message.html", {"message": message, "type_of_alert": type_of_alert}
+    )
+
+
+def return_error_message_regarding_active_exchanges(request):
+    return render(
+        request,
+        "message.html",
+        {
+            "message": "La cantidad de intercambios activos alcanzo el maximo",
+            "type_of_alert": "danger",
+        },
+    )
+
+def delete_request(request, id):
+    if not request.session.get("id") and not request.session.get("role") == "user":
+        return redirect("landing_page")
+    exchange_request = ExchangeSolicitude.objects.get(id=id)
+    exchange_request.denied = True
+    exchange_request.save()
+    requests = ExchangePost.objects.filter(
+        affiliate_id=request.session.get("id"), is_active=True
+    )
+    requests = ExchangeSolicitude.objects.filter(
+        exchange_post_for_id__in=requests, denied=False
+    )
+    requests = requests.exclude(
+        id__in=Exchange.objects.values_list('exchange_solicitude_id', flat=True)
+    )
+    active_exchanges = Exchange.objects.filter(
+        affiliate_1_id=request.session.get("id"), timestamp__isnull=True
+    ).count() + Exchange.objects.filter(
+        affiliate_2_id=request.session.get("id"), timestamp__isnull=True
+    ).count()
+    print(active_exchanges)
+    return render(
+        request,
+        "see_exchange_requests.html",
+        {
+            "requests": requests,
+            "user_session": False,
+            "session_id": request.session.get("id"),
+            "session_name": Affiliate.objects.get(id=request.session.get("id")).name,
+            "active_exchanges": active_exchanges,
+            "message": "Intercambio rechazado con exito",
+        },
     )
