@@ -35,8 +35,18 @@ def registration_form_worker(request):
             return render(request, "success_worker_message.html")
         else:
             return render(
-                request, "registration_worker_form.html", {"form": registration_form}
+                request, "registration_worker_form.html", {
+                    "session_id": request.session.get("id"),
+                    "user_session": False,
+                    "form": registration_form
+                }
             )
     else:
         registration_form = forms.Register_Form()
-        return render(request, "registration_worker_form.html", {"form": registration_form})
+        return render(
+                request, "registration_worker_form.html", {
+                    "session_id": request.session.get("id"),
+                    "user_session": False,
+                    "form": registration_form
+                }
+            )
