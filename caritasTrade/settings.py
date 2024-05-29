@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'categories',
     "select_branch",
     'create_worker',
+    'edit_worker',
+    'list_workers',
 ]
 
 MIDDLEWARE = [

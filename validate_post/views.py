@@ -15,7 +15,6 @@ def see_waiting_posts(request):
     if request.session.get("role") == "user":
         return redirect("landing_page")
     blocked_affiliates = AccountBlock.objects.values_list("affiliate_id", flat=True)
-    print(blocked_affiliates)
     posts = ExchangePost.objects.filter(is_active=False, is_rejected=False).exclude(
         affiliate_id__in=blocked_affiliates
     )
@@ -33,7 +32,6 @@ def see_waiting_posts(request):
             image_data = post.image.decode("utf-8")
             aux["image"] = image_data
         post_info.append(aux)
-    print(posts)
 
     return render(
         request,

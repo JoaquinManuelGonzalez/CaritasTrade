@@ -68,7 +68,7 @@ class Register_Form(forms.Form):
         if (not re.match(r'^\d{8}$', new_dni)):
             raise ValidationError(
                 "El D.N.I ingresado debe estar conformado por números unicamente.")
-        if(Affiliate.objects.filter(dni=new_dni).exists()):
+        if(Affiliate.objects.filter(dni=new_dni).exists()) or (Workers.objects.filter(dni=new_dni).exists()):
             raise ValidationError(
                 "El D.N.I ingresado ya se encuentra registrado en el sistema.")
         return new_dni

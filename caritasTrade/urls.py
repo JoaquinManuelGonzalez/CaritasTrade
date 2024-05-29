@@ -71,4 +71,6 @@ urlpatterns = [
     path('branches_management/', include("branches_management.urls"), name='branches_management'),
     path("categories/", include('categories.urls'), name="categories"),
     path("select_branch/<int:solicitude_id>", select_branch_views.select_branch, name="select_branch"),
+    path("edit_worker/", include("edit_worker.urls"), name="edit_worker"),
+    path("list_workers/", include("list_workers.urls"), name="list_worker")
 ]
