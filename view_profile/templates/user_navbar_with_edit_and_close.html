@@ -49,6 +49,9 @@
             <li class="nav-item">
               <a class="nav-link fs-4" href="{% url "see_exchange_requests" %}"><i class="bi bi-envelope-exclamation" style="margin-right: 5px;"></i>Ver Solicitudes de Intercambio</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link fs-4" href="{% url "view_pending_score" %}"><i class="bi bi-people" style="margin-right: 5px;"></i>Ver puntuaciones restantes</a>
+            </li>
             {% if not user_session %}
               <li class="nav-item">
                 <a class="nav-link fs-4" href="{% url 'view_profile' id=session_id %}"><i class="bi bi-person-bounding-box" style="margin-right: 5px;"></i> {{ session_name }} </a>

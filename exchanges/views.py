@@ -7,6 +7,7 @@ from data_base.models import (
     Affiliate,
     Workers,
     Exchange,
+    Reputation,
 )
 
 
@@ -17,16 +18,18 @@ def see_exchange_requests(request):
     requests = ExchangePost.objects.filter(
         affiliate_id=request.session.get("id"), is_active=True
     )
-    print(requests)
     requests = ExchangeSolicitude.objects.filter(
         exchange_post_for_id__in=requests, denied=False
     )
-    print(requests)
     requests = requests.exclude(
         id__in=Exchange.objects.values_list('exchange_solicitude_id', flat=True)
     )
-    print(requests)
-    print(request.session.get("id"))
+    active_exchanges = Exchange.objects.filter(
+        affiliate_1_id=request.session.get("id"), timestamp__isnull=True
+    ).count() + Exchange.objects.filter(
+        affiliate_2_id=request.session.get("id"), timestamp__isnull=True
+    ).count()
+    print(active_exchanges)
     return render(
         request,
         "see_exchange_requests.html",
@@ -35,8 +38,10 @@ def see_exchange_requests(request):
             "user_session": False,
             "session_id": request.session.get("id"),
             "session_name": Affiliate.objects.get(id=request.session.get("id")).name,
+            "active_exchanges": active_exchanges,
         },
     )
+
 
 
 def register_exchange(request):
@@ -121,10 +126,74 @@ def validate_exchange_codes(request):
             exchange.affiliate_2.points += 1
             exchange.affiliate_1.save()
             exchange.affiliate_2.save()
+            # class Reputation(models.Model):
+            #     reputation = models.FloatField(default=3.0)
+            #     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, related_name="affiliate")
+            #     to_do = models.BooleanField(default=False)
+            #     comes_from_affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, null=True, blank=True, related_name="comes_from_affiliate")
+            new_rep1 = Reputation.objects.create(
+                reputation=3.0,
+                affiliate=exchange.affiliate_1,
+                to_do=True,
+                comes_from_affiliate=exchange.affiliate_2,
+            )
+            new_rep1.save()
+            new_rep2 = Reputation.objects.create(
+                reputation=3.0,
+                affiliate=exchange.affiliate_2,
+                to_do=True,
+                comes_from_affiliate=exchange.affiliate_1,
+            )
+            new_rep2.save()
             exchange.save()
             message = "Se ha registrado el intercambio de forma exitosa"
             type_of_alert = "success"
 
     return render(
         request, "message.html", {"message": message, "type_of_alert": type_of_alert}
+    )
+
+
+def return_error_message_regarding_active_exchanges(request):
+    return render(
+        request,
+        "message.html",
+        {
+            "message": "La cantidad de intercambios activos alcanzo el maximo",
+            "type_of_alert": "danger",
+        },
+    )
+
+def delete_request(request, id):
+    if not request.session.get("id") and not request.session.get("role") == "user":
+        return redirect("landing_page")
+    exchange_request = ExchangeSolicitude.objects.get(id=id)
+    exchange_request.denied = True
+    exchange_request.save()
+    requests = ExchangePost.objects.filter(
+        affiliate_id=request.session.get("id"), is_active=True
+    )
+    requests = ExchangeSolicitude.objects.filter(
+        exchange_post_for_id__in=requests, denied=False
+    )
+    requests = requests.exclude(
+        id__in=Exchange.objects.values_list('exchange_solicitude_id', flat=True)
+    )
+    active_exchanges = Exchange.objects.filter(
+        affiliate_1_id=request.session.get("id"), timestamp__isnull=True
+    ).count() + Exchange.objects.filter(
+        affiliate_2_id=request.session.get("id"), timestamp__isnull=True
+    ).count()
+    print(active_exchanges)
+    return render(
+        request,
+        "see_exchange_requests.html",
+        {
+            "requests": requests,
+            "user_session": False,
+            "session_id": request.session.get("id"),
+            "session_name": Affiliate.objects.get(id=request.session.get("id")).name,
+            "active_exchanges": active_exchanges,
+            "message": "Intercambio rechazado con exito",
+        },
     )

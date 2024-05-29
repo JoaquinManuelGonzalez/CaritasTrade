@@ -70,7 +70,19 @@ urlpatterns = [
     path("create_worker/", include("create_worker.urls"), name="create_worker"),
     path('branches_management/', include("branches_management.urls"), name='branches_management'),
     path("categories/", include('categories.urls'), name="categories"),
+    path("rate_exchange/", include("rate_exchange.urls"), name="rate_exchanges"),
+
     path("select_branch/<int:solicitude_id>", select_branch_views.select_branch, name="select_branch"),
     path("edit_worker/", include("edit_worker.urls"), name="edit_worker"),
-    path("list_workers/", include("list_workers.urls"), name="list_worker")
+    path("list_workers/", include("list_workers.urls"), name="list_worker"),
+    path(
+        "return_error_message_regarding_active_exchanges",
+        exchanges_views.return_error_message_regarding_active_exchanges,
+        name="return_error_message_regarding_active_exchanges",
+    ),
+    path(
+        "delete_request/<int:id>",
+        exchanges_views.delete_request,
+        name="delete_request",
+    )
 ]
