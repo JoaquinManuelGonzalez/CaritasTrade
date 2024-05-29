@@ -10,7 +10,7 @@ from view_profile.views import session_name, decode_images
 
 def list_products(request):
     role = request.session.get("role")
-    post = ExchangePost.objects.filter(is_active=True)
+    post = ExchangePost.objects.filter(is_active=True, is_paused=False)
 
     query = request.GET.get("q")
     category = request.GET.get("category")

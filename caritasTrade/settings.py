@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'view_map',
     'branches_management',
     'categories',
+    'rate_exchange',
 ]
 
 MIDDLEWARE = [
