@@ -18,6 +18,23 @@
   </head>
   <body>
     {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
+    {% if success_message %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <button type="button"
+              class="btn-close m-2"
+              data-bs-dismiss="alert"
+              aria-label="Close"></button>
+      <strong>{{ success_message }}</strong>
+    </div>
+  {% elif failure_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <button type="button"
+              class="btn-close m-2"
+              data-bs-dismiss="alert"
+              aria-label="Close"></button>
+      <strong>{{ failure_message }}</strong>
+    </div>
+  {% endif %}
     <div class="d-flex flex-column  m-5 justify-content-evenly ">
     <form id="form_create"
         method="get"
@@ -79,7 +96,7 @@
               <form id="form_delete_{{ worker.id }}"
                     method="post"
                     class="m-2"
-                    action="">
+                    action="{% url 'delete_worker' %}">
                 {% csrf_token %}
                 <input type="hidden" name="id" value="{{ worker.id }}">
                 <button type="button"
