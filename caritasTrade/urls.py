@@ -70,6 +70,8 @@ urlpatterns = [
     path("create_worker/", include("create_worker.urls"), name="create_worker"),
     path('branches_management/', include("branches_management.urls"), name='branches_management'),
     path("categories/", include('categories.urls'), name="categories"),
+    path("rate_exchange/", include("rate_exchange.urls"), name="rate_exchanges"),
+
     path("select_branch/<int:solicitude_id>", select_branch_views.select_branch, name="select_branch"),
     path(
         "return_error_message_regarding_active_exchanges",

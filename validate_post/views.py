@@ -16,7 +16,7 @@ def see_waiting_posts(request):
         return redirect("landing_page")
     blocked_affiliates = AccountBlock.objects.values_list("affiliate_id", flat=True)
     print(blocked_affiliates)
-    posts = ExchangePost.objects.filter(is_active=False, is_rejected=False).exclude(
+    posts = ExchangePost.objects.filter(is_active=False, is_rejected=False, is_paused=False).exclude(
         affiliate_id__in=blocked_affiliates
     )
     post_info = []
@@ -90,11 +90,11 @@ def accept(request):
         post = ExchangePost.objects.filter(id=post_id).first()
         if (
             ExchangePost.objects.filter(
-                affiliate_id=post.affiliate_id, is_active=True
+                affiliate_id=post.affiliate_id, is_active=True, is_paused = False,
             ).count()
             >= 5
         ):
-            failure_message_accept = "No puedes tener mas de 5 publicaciones activas"
+            failure_message_accept = "EL usuario no puede tener mas de 5 publicaciones activas"
         else:
             post.is_active = True
             post.save()
@@ -103,7 +103,7 @@ def accept(request):
             success_message_accept = "Publicacion aceptada con exito"
         # Renderizo la pagina devuelta con un mensaje.
         blocked_affiliates = AccountBlock.objects.values_list("affiliate_id", flat=True)
-        posts = ExchangePost.objects.filter(is_active=False, is_rejected=False).exclude(
+        posts = ExchangePost.objects.filter(is_active=False, is_rejected=False, is_paused=False).exclude(
             affiliate_id__in=blocked_affiliates
         )
         post_info = []
@@ -158,7 +158,7 @@ def reject(request):
             send_temporal_block_email(affiliate.email)
             send_admin_email(affiliate.email)
     blocked_affiliates = AccountBlock.objects.values_list("affiliate_id", flat=True)
-    posts = ExchangePost.objects.filter(is_active=False, is_rejected=False).exclude(
+    posts = ExchangePost.objects.filter(is_active=False, is_rejected=False, is_paused=False).exclude(
         affiliate_id__in=blocked_affiliates
     )
     post_info = []
@@ -212,7 +212,7 @@ def block(request):
         else:
             return render(request, "captcha.html", {"affiliate": affiliate})
     blocked_affiliates = AccountBlock.objects.values_list("affiliate_id", flat=True)
-    posts = ExchangePost.objects.filter(is_active=False, is_rejected=False).exclude(
+    posts = ExchangePost.objects.filter(is_active=False, is_rejected=False, is_paused=False).exclude(
         affiliate_id__in=blocked_affiliates
     )
     post_info = []
@@ -261,7 +261,7 @@ def worker_block(request):
                 worker=worker, timestamp=timezone.now(), account_block=account_block
             )
     blocked_affiliates = AccountBlock.objects.values_list("affiliate_id", flat=True)
-    posts = ExchangePost.objects.filter(is_active=False, is_rejected=False).exclude(
+    posts = ExchangePost.objects.filter(is_active=False, is_rejected=False,is_paused=False).exclude(
         affiliate_id__in=blocked_affiliates
     )
     post_info = []

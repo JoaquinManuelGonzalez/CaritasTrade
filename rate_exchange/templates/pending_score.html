@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Puntuaciones Pendientes</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- SweetAlert2 para mostrar mensajes -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .list-group-item {
+            background: #f8f9fa;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            padding: 1rem 0;
+            transition: background 0.3s;
+        }
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+        .list-group-item:hover {
+            background: #e9ecef;
+        }
+        .star-rating {
+            direction: rtl;
+            display: inline-flex;
+            font-size: 2rem;
+            color: #ffd700;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffd700;
+        }
+        .star-rating label[for^="star-0"] {
+            display: none; /* Ocultar la estrella que representa 0 */
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+</head>
+<body>
+    {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Puntuaciones Pendientes</h1>
+        </div>
+        {% if message %}
+            <div class="alert alert-warning">{{ message }}</div>
+        {% else %}
+            <div class="list-group">
+                {% for score in pending_scores %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ score.affiliate.email }}</span>
+                        <form method="post" action="{% url 'submit_score' score.id %}" class="d-flex align-items-center" onsubmit="return confirmSubmit(event, '{{ score.affiliate.email }}')">
+                            {% csrf_token %}
+                            <div class="star-rating">
+                                <input type="radio" name="score" id="star-5-{{ score.id }}" value="5"><label for="star-5-{{ score.id }}">★</label>
+                                <input type="radio" name="score" id="star-4-{{ score.id }}" value="4"><label for="star-4-{{ score.id }}">★</label>
+                                <input type="radio" name="score" id="star-3-{{ score.id }}" value="3"><label for="star-3-{{ score.id }}">★</label>
+                                <input type="radio" name="score" id="star-2-{{ score.id }}" value="2"><label for="star-2-{{ score.id }}">★</label>
+                                <input type="radio" name="score" id="star-1-{{ score.id }}" value="1"><label for="star-1-{{ score.id }}">★</label>
+                                <input type="radio" name="score" id="star-0-{{ score.id }}" value="0" checked><label for="star-0-{{ score.id }}">★</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary ms-3">Confirmar</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script>
+        function confirmSubmit(event, email) {
+            event.preventDefault();
+            const form = event.target;
+            const selectedStar = form.querySelector('input[name="score"]:checked').value;
+
+            Swal.fire({
+                title: 'Confirmar Puntuación',
+                text: `¿Estás seguro de que deseas asignar ${selectedStar} estrellas a ${email}?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, confirmar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
