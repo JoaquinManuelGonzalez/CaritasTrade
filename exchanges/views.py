@@ -125,6 +125,23 @@ def validate_exchange_codes(request):
             exchange.affiliate_2.points += 1
             exchange.affiliate_1.save()
             exchange.affiliate_2.save()
+<<<<<<< Updated upstream
+=======
+            new_rep1 = Reputation.objects.create(
+                reputation=3.0,
+                affiliate=exchange.affiliate_1,
+                to_do=True,
+                comes_from_affiliate=exchange.affiliate_2,
+            )
+            new_rep1.save()
+            new_rep2 = Reputation.objects.create(
+                reputation=3.0,
+                affiliate=exchange.affiliate_2,
+                to_do=True,
+                comes_from_affiliate=exchange.affiliate_1,
+            )
+            new_rep2.save()
+>>>>>>> Stashed changes
             exchange.save()
             message = "Se ha registrado el intercambio de forma exitosa"
             type_of_alert = "success"
