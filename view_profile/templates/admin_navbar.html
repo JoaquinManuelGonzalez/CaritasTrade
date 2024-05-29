@@ -29,9 +29,6 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fs-4" href="{% url "registration_form_worker" %}"><i class="bi bi-person-add" style="margin-right: 5px;"></i> Crear ayudante</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link fs-4" href="#"><i class="bi bi-cart3" style="margin-right: 5px;"></i> Ver Ecommerce</a>
         </li>
         <li class="nav-item">
@@ -50,13 +47,13 @@
              aria-expanded="false"><i class="bi bi-database-fill-gear" style="margin-right: 5px;"></i> Gestión</a>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="#">Ayudantes</a>
+              <a class="dropdown-item" href="{% url "see_workers" %}">Ayudantes</a>
             </li>
             <li>
               <a class="dropdown-item" href="{% url "branches_management" %}">Filiales</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Categorias de productos</a>
+              <a class="dropdown-item" href="{% url "category_list" %}">Categorias de productos</a>
             </li>
           </ul>
         </div>

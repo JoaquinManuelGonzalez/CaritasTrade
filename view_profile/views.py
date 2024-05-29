@@ -55,7 +55,7 @@ def profile(request, id):
     role = request.session.get("role")
     if role == "user":
         user = get_object_or_404(Affiliate, id=id)
-        post = ExchangePost.objects.filter(affiliate_id=id, is_active=True)
+        post = ExchangePost.objects.filter(affiliate_id=id, is_active=True, is_paused=False)
         # decodifico las imagenes
         combined_data = decode_images(post)
         # armo la lista de deseos
@@ -101,25 +101,12 @@ def delete_post(request, id):
             post.delete()
             user = Affiliate.objects.get(id=request.session.get("id"))
             post = ExchangePost.objects.filter(
-                affiliate_id=request.session.get("id"), is_active=True
+                affiliate_id=request.session.get("id"), is_active=True,is_paused=False
             )
             # decodifico las imagenes
-            decoded_images = []
-            for p in post:
-                if p.image:
-                    image_data = p.image.decode("utf-8")
-                    decoded_images.append(image_data)
-                else:
-                    decoded_images.append(None)
-            combined_data = list(zip(decoded_images, post))
+            combined_data = decode_images(post)
             # armo la lista de deseos
-            need_list = Affiliate_Need_Product.objects.filter(affiliate_id=id)
-            products = []
-            for need in need_list:
-                product = Products.objects.get(
-                    id=need.id
-                )  # Filtrar la tabla de productos por el ID
-                products.append(product)  # Agregar el producto a la lista de productos
+            need_list = craft_need_list(id)
 
             session_id = request.session.get("id")
             user_session = True
@@ -132,7 +119,7 @@ def delete_post(request, id):
                     "user": user,
                     "session_name": session_name(request),
                     "combined_data": combined_data,
-                    "need_products": products,
+                    "need_products": need_list,
                     "success_message": "La publicación se ha eliminado con éxito",
                 },
             )

@@ -8,6 +8,7 @@ from data_base.models import (
     Reputation,
     Workers,
     Exchange,
+    Reputation,
 )
 
 
