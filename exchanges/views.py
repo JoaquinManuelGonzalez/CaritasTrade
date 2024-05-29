@@ -5,6 +5,7 @@ from data_base.models import (
     ExchangeSolicitude,
     ExchangePost,
     Affiliate,
+    Reputation,
     Workers,
     Exchange,
     Reputation,
@@ -126,11 +127,6 @@ def validate_exchange_codes(request):
             exchange.affiliate_2.points += 1
             exchange.affiliate_1.save()
             exchange.affiliate_2.save()
-            # class Reputation(models.Model):
-            #     reputation = models.FloatField(default=3.0)
-            #     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, related_name="affiliate")
-            #     to_do = models.BooleanField(default=False)
-            #     comes_from_affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, null=True, blank=True, related_name="comes_from_affiliate")
             new_rep1 = Reputation.objects.create(
                 reputation=3.0,
                 affiliate=exchange.affiliate_1,

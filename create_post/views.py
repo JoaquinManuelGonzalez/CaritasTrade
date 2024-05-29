@@ -26,7 +26,7 @@ def create_post(request):
     form = ExchangeForm(request.POST or None, request.FILES or None)
     affiliate = Affiliate.objects.get(id=request.session.get("id"))
     num_posts = ExchangePost.objects.filter(
-        affiliate_id=affiliate, is_rejected=False, is_active=True
+        affiliate_id=affiliate, is_rejected=False, is_active=True, is_paused=False
     ).count()
 
     if form.is_valid() and num_posts < 5:
