@@ -140,6 +140,7 @@ class Exchange(models.Model):
     branch = models.ForeignKey(Branches, on_delete=models.SET_NULL, null=True, blank=True)
     exchange_date = models.DateField(null=True, blank=True)
     deleted = models.BooleanField(default=False)
+    is_confirmed = models.BooleanField(default=False)
 
 class Donation(models.Model):
     amount = models.FloatField()
