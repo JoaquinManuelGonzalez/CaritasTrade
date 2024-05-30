@@ -14,7 +14,7 @@ def select_branch(request, solicitude_id):
     # Obtener la fecha actual
     fecha_actual = datetime.now()
     # Calcular la fecha de fin (6 meses a partir de la fecha actual)
-    fecha_fin = fecha_actual + timedelta(days=6*30)  # Aproximadamente 6 meses
+    fecha_fin = fecha_actual + timedelta(days=1*30)  # Aproximadamente 6 meses
     # Inicializar la fecha actual para iterar
     fecha_iter = fecha_actual
     # Iterar desde la fecha actual hasta la fecha de fin
