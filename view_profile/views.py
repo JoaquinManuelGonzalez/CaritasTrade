@@ -1,12 +1,14 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.core.mail import send_mail
 from data_base.models import (
     Affiliate,
     ExchangePost,
     Affiliate_Need_Product,
     Products,
     Workers,
+    ExchangeSolicitude
 )
 
 
@@ -92,12 +94,29 @@ def confirm_sign_off(request):
     return HttpResponseRedirect(reverse("landing_page"))
 
 
+def notify(post_id, post):
+    solicitudes = ExchangeSolicitude.objects.filter(exchange_post_for_id=post_id, denied=False).all()
+    solicitudes.update(denied=True)
+    emails = []
+    for solicitud in solicitudes:
+        emails.append(solicitud.affiliate_id.email)
+    if emails:
+        send_mail(
+            "Solicitud de intercambio rechazada",
+            f"Buen dia, le avisamos que su solicitud de intercambio de {post.title} a sido rechazada",
+            None,
+            emails,
+            fail_silently=False,
+        )
+
+
 def delete_post(request, id):
     if request.method == "POST" and request.session.get("id"):
         post_id = id
         post = ExchangePost.objects.get(id=post_id)
         creator = Affiliate.objects.get(id=post.affiliate_id)
         if creator.id == request.session.get("id"):
+            notify(post_id, post)
             post.delete()
             user = Affiliate.objects.get(id=request.session.get("id"))
             post = ExchangePost.objects.filter(
