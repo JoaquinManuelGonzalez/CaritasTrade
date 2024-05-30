@@ -122,28 +122,32 @@ def validate_exchange_codes(request):
             ).first()
         )
         if exchange:
-            exchange.timestamp = datetime.datetime.now()
-            exchange.affiliate_1.points +=1
-            exchange.affiliate_2.points += 1
-            exchange.affiliate_1.save()
-            exchange.affiliate_2.save()
-            new_rep1 = Reputation.objects.create(
-                reputation=3.0,
-                affiliate=exchange.affiliate_1,
-                to_do=True,
-                comes_from_affiliate=exchange.affiliate_2,
-            )
-            new_rep1.save()
-            new_rep2 = Reputation.objects.create(
-                reputation=3.0,
-                affiliate=exchange.affiliate_2,
-                to_do=True,
-                comes_from_affiliate=exchange.affiliate_1,
-            )
-            new_rep2.save()
-            exchange.save()
-            message = "Se ha registrado el intercambio de forma exitosa"
-            type_of_alert = "success"
+            if not exchange.exchange_date == datetime.datetime.now().date():
+                message = "Este intercambio no tiene turno para el dia actual"
+                type_of_alert = "danger"
+            else:
+                exchange.timestamp = datetime.datetime.now()
+                exchange.affiliate_1.points +=1
+                exchange.affiliate_2.points += 1
+                exchange.affiliate_1.save()
+                exchange.affiliate_2.save()
+                new_rep1 = Reputation.objects.create(
+                    reputation=3.0,
+                    affiliate=exchange.affiliate_1,
+                    to_do=True,
+                    comes_from_affiliate=exchange.affiliate_2,
+                )
+                new_rep1.save()
+                new_rep2 = Reputation.objects.create(
+                    reputation=3.0,
+                    affiliate=exchange.affiliate_2,
+                    to_do=True,
+                    comes_from_affiliate=exchange.affiliate_1,
+                )
+                new_rep2.save()
+                exchange.save()
+                message = "Se ha registrado el intercambio de forma exitosa"
+                type_of_alert = "success"
 
     return render(
         request, "message.html", {"message": message, "type_of_alert": type_of_alert}
