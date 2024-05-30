@@ -12,22 +12,22 @@
                   integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
                   crossorigin="anonymous" />
             <style>
-        .branch-details {
-            display: flex; /* Utilizamos flexbox para el contenedor */
-            flex-direction: column; /* Coloca los elementos en columna */
-        }
-        .custom-button {
-            background-color: rgba(255, 255, 255, 0.3); /* Color de fondo con opacidad */
-            border: none; /* Sin borde */
-            border-radius: 20px; /* Bordes redondeados */
-            padding: 10px 20px; /* Espaciado interno */
-            text-decoration: none; /* Sin subrayado */
-            color: #000000; /* Color de texto negro */
-            transition: background-color 0.3s; /* Transición suave */
-        }
-        .custom-button:hover {
-            background-color: rgba(169, 169, 169, 0.7); /* Color de fondo gris al pasar el ratón */
-        }
+                .branch-details {
+                    display: flex; /* Utilizamos flexbox para el contenedor */
+                    flex-direction: column; /* Coloca los elementos en columna */
+                }
+                .custom-button {
+                    background-color: rgba(255, 255, 255, 0.3); /* Color de fondo con opacidad */
+                    border: none; /* Sin borde */
+                    border-radius: 20px; /* Bordes redondeados */
+                    padding: 10px 20px; /* Espaciado interno */
+                    text-decoration: none; /* Sin subrayado */
+                    color: #000000; /* Color de texto negro */
+                    transition: background-color 0.3s; /* Transición suave */
+                }
+                .custom-button:hover {
+                    background-color: rgba(169, 169, 169, 0.7); /* Color de fondo gris al pasar el ratón */
+                }
             </style>
         </head>
         <body>
@@ -61,22 +61,22 @@
                              style="border: 1px solid #ddd">
                             <div class="branch-details">
                                 <h3>
-                                    <strong class="text-primary">Nombre de la Filial:</strong>{{ branch.name }}
+                                    <strong class="text-primary">Nombre de la Filial: </strong>{{ branch.name }}
                                 </h3>
                                 <ul>
                                     <li>
                                         <h5>
-                                            <strong>Latitud:</strong>{{ branch.latitude }}
+                                            <strong>Latitud: </strong>{{ branch.latitude }}
                                         </h5>
                                     </li>
                                     <li>
                                         <h5>
-                                            <strong>Longitud:</strong>{{ branch.altitude }}
+                                            <strong>Longitud: </strong>{{ branch.altitude }}
                                         </h5>
                                     </li>
                                     <li>
                                         <h5>
-                                            <strong>Nombre Completo y D.N.I del Ayudante a Cargo:</strong>{{ branch.worker.name }} {{ branch.worker.surname }} - {{ branch.worker.dni }}
+                                            <strong>Nombre Completo y D.N.I del Ayudante a Cargo: </strong>{{ branch.worker.name }} {{ branch.worker.surname }} - {{ branch.worker.dni }}
                                         </h5>
                                     </li>
                                 </ul>
