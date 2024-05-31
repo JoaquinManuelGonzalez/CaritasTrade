@@ -53,6 +53,17 @@
 
 <body>
     {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
+    {% if success_message %}
+        <div class="alert alert-success alert-dismissible show m-2 " role="alert">
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+            <strong>Felicidades:
+                {{ success_message }}
+            </strong>
+        </div>
+    {% endif %}
     <h1 class="header-title">Intercambios Pendientes</h1>
     {% if pending_exchanges %}
         <p class="header-subtitle">Por favor, revisa y confirma los intercambios pendientes</p>
