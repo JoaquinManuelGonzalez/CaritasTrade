@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'create_worker',
     'edit_worker',
     'list_workers',
+    "pending_exchanges",
 ]
 
 MIDDLEWARE = [

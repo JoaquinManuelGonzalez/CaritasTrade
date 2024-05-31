@@ -145,8 +145,8 @@ class Exchange(models.Model):
     affiliate_2 = models.ForeignKey(
         Affiliate, on_delete=models.CASCADE, related_name="affiliate_2"
     )
-    code1 = models.CharField(max_length=5, unique=True)
-    code2 = models.CharField(max_length=5, unique=True)
+    code1 = models.CharField(max_length=5, unique=True, null=True)
+    code2 = models.CharField(max_length=5, unique=True, null=True)
     timestamp = models.DateTimeField(null=True, blank=True)
     branch = models.ForeignKey(
         Branches, on_delete=models.SET_NULL, null=True, blank=True

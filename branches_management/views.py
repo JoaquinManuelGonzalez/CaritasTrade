@@ -3,6 +3,7 @@ from . import forms
 from data_base.models import Branches, Workers, Exchange
 from log_in.views import send_email
 import folium
+from view_profile.views import session_name
 
 
 def capitalize_element(data):
@@ -29,6 +30,7 @@ def list_branches(request):
     return render(request, "branches_management.html", {
         "session_id": request.session.get("id"),
         "user_session": False,
+        "session_name": session_name(request),
         "branches": branches
     })
 
@@ -52,6 +54,7 @@ def create_branch(request):
                 return render(request, "create_branch.html", {
                     "session_id": request.session.get("id"),
                     "user_session": False,
+                    "session_name": session_name(request),
                     'form': branch_form,
                     "map_html": map_html
                 })
@@ -63,6 +66,7 @@ def create_branch(request):
                 return render(request, "create_branch.html", {
                     "session_id": request.session.get("id"),
                     "user_session": False,
+                    "session_name": session_name(request),
                     'form': branch_form,
                     "map_html": map_html
                 })
@@ -77,6 +81,7 @@ def create_branch(request):
             return render(request, "create_branch.html", {
                 "session_id": request.session.get("id"),
                 "user_session": False,
+                "session_name": session_name(request),
                 'form': branch_form,
                 'success_message': success_message,
                 "map_html": map_html
@@ -86,6 +91,7 @@ def create_branch(request):
     return render(request, "create_branch.html", {
         "session_id": request.session.get("id"),
         "user_session": False,
+        "session_name": session_name(request),
         'form': branch_form,
         "map_html": map_html
     })
@@ -115,6 +121,7 @@ def edit_branch(request, branch_id):
             return render(request, "edit_branch.html", {
                 "session_id": request.session.get("id"),
                 "user_session": False,
+                "session_name": session_name(request),
                 "branch": branch,
                 "worker_in_charge": worker_in_charge,
                 "map_html": map_html,
@@ -125,6 +132,7 @@ def edit_branch(request, branch_id):
     return render(request, "edit_branch.html", {
         "session_id": request.session.get("id"),
         "user_session": False,
+        "session_name": session_name(request),
         "branch": branch,
         "form": branch_form,
         "worker_in_charge": worker_in_charge,
@@ -149,6 +157,7 @@ def delete_branch(request, branch_id):
     return render(request, "branches_management.html", {
         "session_id": request.session.get("id"),
         "user_session": False,
+        "session_name": session_name(request),
         "branches": Branches.objects.all(),
         'success_message': success_message
     })
