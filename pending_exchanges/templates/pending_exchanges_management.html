@@ -1,0 +1,94 @@
+{% load static %}
+{% block content %}
+<!doctype html>
+<html lang="es">
+<head>
+    <title>Confirmación de Intercambios Pendientes</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS v5.3.2 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous"
+    />
+    <style>
+        .header-title {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            color: #343a40;
+        }
+        .header-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #6c757d;
+            margin-bottom: 40px;
+        }
+        .branch-details {
+            display: flex; /* Utilizamos flexbox para el contenedor */
+            flex-direction: column; /* Coloca los elementos en columna */
+        }
+        .custom-button {
+            background-color: rgba(255, 255, 255, 0.3); /* Color de fondo con opacidad */
+            border: none; /* Sin borde */
+            border-radius: 20px; /* Bordes redondeados */
+            padding: 10px 20px; /* Espaciado interno */
+            text-decoration: none; /* Sin subrayado */
+            color: #000000; /* Color de texto negro */
+            transition: background-color 0.3s; /* Transición suave para el color de fondo */
+        }
+        .custom-button:hover {
+            background-color: rgba(255, 255, 255, 0.5); /* Color de fondo ligeramente más claro al pasar el ratón */
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
+    <h1 class="header-title">Intercambios Pendientes</h1>
+    <p class="header-subtitle">Por favor, revisa y confirma los intercambios pendientes</p>
+    {% for pending_exchange in pending_exchanges %}
+        <div class="d-flex justify-content-between p-5 m-5 rounded-0 shadow" style="border: 1px solid #ddd">
+            <div class="branch-details">
+                <h3>
+                    <strong class="text-primary">Nombre de la Filial: </strong>{{ pending_exchange.branch.name }}
+                </h3>
+                <ul>
+                    <li>
+                        <h5>
+                            <strong>Fecha del intercambio: </strong>{{ pending_exchange.exchange_date|date:"d/m/Y" }}
+                        </h5>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+                <a class="btn btn-danger fw-bold btn-block"
+                   href="#" style="margin-right: 10px"><i class="bi bi-trash-fill" style="margin-right: 5px;"></i>Rechazar Confirmación de Intercambio</a>
+                <a class="btn btn-primary fw-bold btn-block"
+                   href="#"><i class="bi bi-check-square" style="margin-right: 5px;"></i>Aceptar Intercambio</a>
+            </div>
+        </div>
+    {% endfor %}
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"
+    ></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"
+    ></script>
+</body>
+</html>
+{% endblock %}

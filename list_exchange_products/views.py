@@ -10,7 +10,7 @@ from view_profile.views import session_name, decode_images
 
 def list_products(request):
     role = request.session.get("role")
-    post = ExchangePost.objects.filter(is_active=True, is_paused=False)
+    post = ExchangePost.objects.filter(is_active=True, is_paused=False, is_finished=False, is_rejected=False)
 
     query = request.GET.get("q")
     category = request.GET.get("category")
@@ -34,6 +34,8 @@ def list_products(request):
             affiliate_id__in=afiliados_con_reputacion_mayor,
             is_rejected=False,
             is_active=True,
+            is_paused=False,
+            is_finished=False,
         )
         post = post.filter(id__in=posteos_coincidentes.values_list("id", flat=True))
     # decodifico las imagenes

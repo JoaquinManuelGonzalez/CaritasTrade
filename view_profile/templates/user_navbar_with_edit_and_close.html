@@ -50,6 +50,9 @@
               <a class="nav-link fs-4" href="{% url "see_exchange_requests" %}"><i class="bi bi-envelope-exclamation" style="margin-right: 5px;"></i>Ver Solicitudes de Intercambio</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link fs-4" href="{% url 'pending_exchanges_management' %}"><i class="bi bi-calendar-check" style="margin-right: 5px;"></i>Confirmación de Intercambios Pendientes</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link fs-4" href="{% url "view_pending_score" %}"><i class="bi bi-people" style="margin-right: 5px;"></i>Ver puntuaciones restantes</a>
             </li>
             {% if not user_session %}

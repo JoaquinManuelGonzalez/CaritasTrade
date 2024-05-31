@@ -14,7 +14,7 @@ def select_branch(request, solicitude_id):
     # Obtener la fecha actual
     fecha_actual = datetime.now()
     # Calcular la fecha de fin (6 meses a partir de la fecha actual)
-    fecha_fin = fecha_actual + timedelta(days=6*30)  # Aproximadamente 6 meses
+    fecha_fin = fecha_actual + timedelta(days=1*30)  # Aproximadamente 6 meses
     # Inicializar la fecha actual para iterar
     fecha_iter = fecha_actual
     # Iterar desde la fecha actual hasta la fecha de fin
@@ -43,20 +43,20 @@ def select_branch(request, solicitude_id):
         exchange_solicitude = ExchangeSolicitude.objects.get(id=solicitude_id)
         affiliate_1 = Affiliate.objects.get(id=session_id)
         affiliate_2 = exchange_solicitude.affiliate_id
-        otp_1 = generate_otp(5)
-        otp_2 = generate_otp(5)
+        #otp_1 = generate_otp(5)
+        #otp_2 = generate_otp(5)
         exchange = Exchange(
             exchange_date=datetime.strptime(exchange_date, "%Y-%m-%d"),
             branch=Branches.objects.get(id=exchange_branch),
             exchange_solicitude=exchange_solicitude,
             affiliate_1=affiliate_1,
-            affiliate_2=affiliate_2,
-            code1=otp_1,
-            code2=otp_2,
+            affiliate_2=affiliate_2
+            #code1=otp_1,
+            #code2=otp_2,
         )
         exchange.save()
-        send_email(affiliate_1.email, f"OTP para confirmar el intercambio con el usuario: {affiliate_2.name} {affiliate_2.surname}", "OTP: " + str(otp_1))
-        send_email(affiliate_2.email, f"OTP para confirmar el intercambio con el usuario: {affiliate_1.name} {affiliate_1.surname}", "OTP: " + str(otp_2))
+        #send_email(affiliate_1.email, f"OTP para confirmar el intercambio con el usuario: {affiliate_2.name} {affiliate_2.surname}", "OTP: " + str(otp_1))
+        #send_email(affiliate_2.email, f"OTP para confirmar el intercambio con el usuario: {affiliate_1.name} {affiliate_1.surname}", "OTP: " + str(otp_2))
         return render(request, "success_message_exchange.html")     
     return render(request, 'select_branch.html', {
         "session_id": session_id,
