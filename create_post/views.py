@@ -1,7 +1,12 @@
 import base64
 import datetime
 from django.shortcuts import redirect, render
-from data_base.models import ExchangePost, ProductCategory, Affiliate, ExchangeSolicitude
+from data_base.models import (
+    ExchangePost,
+    ProductCategory,
+    Affiliate,
+    ExchangeSolicitude,
+)
 from .forms import ExchangeForm
 from view_profile.views import session_name
 
@@ -28,7 +33,7 @@ def create_post(request):
     num_posts = ExchangePost.objects.filter(
         affiliate_id=affiliate, is_rejected=False, is_active=True, is_paused=False
     ).count()
-
+    success_message = None
     if form.is_valid() and num_posts < 5:
         post = ExchangePost(
             title=form.cleaned_data["title"],
@@ -45,24 +50,20 @@ def create_post(request):
             affiliate_id=request.session["id"],
         )
         post.save()
-        form = ExchangeForm()
         success_message = "La publicación que creaste está ahora en estado pendiente. Nuestro equipo de trabajo la revisará y te notificará vía mail si fue aprobada o no."
+        form = ExchangeForm()
     else:
         if not form.errors and num_posts >= 5:
             form.add_error(None, "Limite de publicaciones alcanzado")
-
     return render(
         request,
         "create_post.html",
         {
             "form": form,
             "categories": ProductCategory.objects.all(),
-            "success_message": (
-                success_message if form.is_valid() and num_posts < 5 else None
-            ),
+            "success_message": success_message,
             "user_session": False,
             "session_id": request.session.get("id"),
             "session_name": session_name(request),
         },
     )
-    
