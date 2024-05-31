@@ -45,7 +45,10 @@ def see_post(request, id):
                     "author_name": Affiliate.objects.get(id=post.affiliate_id).name,
                     "own_post": post.affiliate_id == request.session.get("id"),
                     "posts": ExchangePost.objects.filter(
-                        affiliate_id=request.session.get("id"), is_active=True, product_category=post.product_category
+                        affiliate_id=request.session.get("id"),
+                        is_active=True,
+                        product_category=post.product_category,
+                        is_finished=False,
                     ),
                 },
             )
@@ -121,7 +124,7 @@ def send_exchange_solicitude(request, post_id_for):
         elif bool(previous_solicitude):
             message = "Ya se envió una solicitud de intercambio para la publicación"
         else:
-            message =  "La cantidad de intercambios activos alcanzo el maximo"
+            message = "La cantidad de intercambios activos alcanzo el maximo"
         return render(
             request,
             "message.html",
