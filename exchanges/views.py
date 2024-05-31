@@ -23,13 +23,18 @@ def see_exchange_requests(request):
         exchange_post_for_id__in=requests, denied=False
     )
     requests = requests.exclude(
-        id__in=Exchange.objects.values_list('exchange_solicitude_id', flat=True)
+        id__in=Exchange.objects.filter().values_list(
+            "exchange_solicitude_id", flat=True
+        )
     )
-    active_exchanges = Exchange.objects.filter(
-        affiliate_1_id=request.session.get("id"), timestamp__isnull=True
-    ).count() + Exchange.objects.filter(
-        affiliate_2_id=request.session.get("id"), timestamp__isnull=True
-    ).count()
+    active_exchanges = (
+        Exchange.objects.filter(
+            affiliate_1_id=request.session.get("id"), timestamp__isnull=True
+        ).count()
+        + Exchange.objects.filter(
+            affiliate_2_id=request.session.get("id"), timestamp__isnull=True
+        ).count()
+    )
     print(active_exchanges)
     return render(
         request,
@@ -42,7 +47,6 @@ def see_exchange_requests(request):
             "active_exchanges": active_exchanges,
         },
     )
-
 
 
 def register_exchange(request):
@@ -62,16 +66,28 @@ def register_exchange(request):
 
 def get_penalized_affiliate(code):
     if Exchange.objects.filter(code1=code, timestamp__isnull=True).exists():
-        exchange=Exchange.objects.get(code1=code, timestamp__isnull=True)
+        exchange = Exchange.objects.get(code1=code, timestamp__isnull=True)
         exchange.timestamp = datetime.datetime.now()
         exchange.save()
+        finish_post(exchange)
         return Exchange.objects.get(code1=code).affiliate_2
     elif Exchange.objects.filter(code2=code, timestamp__isnull=True).exists():
-        exchange=Exchange.objects.get(code2=code, timestamp__isnull=True)
+        exchange = Exchange.objects.get(code2=code, timestamp__isnull=True)
         exchange.timestamp = datetime.datetime.now()
         exchange.save()
+        finish_post(exchange)
         return Exchange.objects.get(code2=code).affiliate_1
     return None
+
+
+def finish_post(exchange):
+    exchange_solicitude = exchange.exchange_solicitude
+    post_for = exchange_solicitude.exchange_post_for_id
+    in_post = exchange_solicitude.in_exchange_post_id
+    post_for.is_finished = True
+    post_for.save()
+    in_post.is_finished = True
+    in_post.save()
 
 
 def penalize_affiliate(affiliate):
@@ -127,10 +143,11 @@ def validate_exchange_codes(request):
                 type_of_alert = "danger"
             else:
                 exchange.timestamp = datetime.datetime.now()
-                exchange.affiliate_1.points +=1
+                exchange.affiliate_1.points += 1
                 exchange.affiliate_2.points += 1
                 exchange.affiliate_1.save()
                 exchange.affiliate_2.save()
+                finish_post(exchange)
                 new_rep1 = Reputation.objects.create(
                     reputation=3.0,
                     affiliate=exchange.affiliate_1,
@@ -164,6 +181,7 @@ def return_error_message_regarding_active_exchanges(request):
         },
     )
 
+
 def delete_request(request, id):
     if not request.session.get("id") and not request.session.get("role") == "user":
         return redirect("landing_page")
@@ -177,13 +195,16 @@ def delete_request(request, id):
         exchange_post_for_id__in=requests, denied=False
     )
     requests = requests.exclude(
-        id__in=Exchange.objects.values_list('exchange_solicitude_id', flat=True)
+        id__in=Exchange.objects.values_list("exchange_solicitude_id", flat=True)
     )
-    active_exchanges = Exchange.objects.filter(
-        affiliate_1_id=request.session.get("id"), timestamp__isnull=True
-    ).count() + Exchange.objects.filter(
-        affiliate_2_id=request.session.get("id"), timestamp__isnull=True
-    ).count()
+    active_exchanges = (
+        Exchange.objects.filter(
+            affiliate_1_id=request.session.get("id"), timestamp__isnull=True
+        ).count()
+        + Exchange.objects.filter(
+            affiliate_2_id=request.session.get("id"), timestamp__isnull=True
+        ).count()
+    )
     print(active_exchanges)
     return render(
         request,
