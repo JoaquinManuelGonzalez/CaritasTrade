@@ -28,9 +28,17 @@ class Affiliate(models.Model):
 
 class Reputation(models.Model):
     reputation = models.FloatField(default=3.0)
-    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, related_name="affiliate")
+    affiliate = models.ForeignKey(
+        Affiliate, on_delete=models.CASCADE, related_name="affiliate"
+    )
     to_do = models.BooleanField(default=False)
-    comes_from_affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE, null=True, blank=True, related_name="comes_from_affiliate")
+    comes_from_affiliate = models.ForeignKey(
+        Affiliate,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="comes_from_affiliate",
+    )
 
 
 class Tokens(models.Model):
@@ -74,7 +82,9 @@ class Affiliate_Need_Product(models.Model):
 
 class ExchangePost(models.Model):
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
-    product_category = models.ForeignKey(ProductCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    product_category = models.ForeignKey(
+        ProductCategory, on_delete=models.SET_NULL, null=True, blank=True
+    )
     title = models.CharField(max_length=20)
     image = models.BinaryField(null=True, blank=True)
     description = models.TextField(max_length=300)
@@ -82,6 +92,7 @@ class ExchangePost(models.Model):
     is_active = models.BooleanField(default=False)
     is_rejected = models.BooleanField(default=False)
     is_paused = models.BooleanField(default=False)
+    is_finished = models.BooleanField(default=False)
 
 
 class EcommercePost(models.Model):
@@ -137,10 +148,13 @@ class Exchange(models.Model):
     code1 = models.CharField(max_length=5, unique=True)
     code2 = models.CharField(max_length=5, unique=True)
     timestamp = models.DateTimeField(null=True, blank=True)
-    branch = models.ForeignKey(Branches, on_delete=models.SET_NULL, null=True, blank=True)
+    branch = models.ForeignKey(
+        Branches, on_delete=models.SET_NULL, null=True, blank=True
+    )
     exchange_date = models.DateField(null=True, blank=True)
     deleted = models.BooleanField(default=False)
     is_confirmed = models.BooleanField(default=False)
+
 
 class Donation(models.Model):
     amount = models.FloatField()

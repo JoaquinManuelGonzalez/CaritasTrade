@@ -1,122 +1,127 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Perfil de {{ user.name }}</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-              rel="stylesheet"
-              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-              crossorigin="anonymous">
-        <link rel="stylesheet"
-              href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    </head>
-    <body class="bg-body-tertiary">
-        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
-        <script>
-            var alertList = document.querySelectorAll(".alert");
-            alertList.forEach(function (alert) {
-                new bootstrap.Alert(alert);
-            });
-        </script>
-        {% if success_message %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Close"></button>
-                <strong>{{ success_message }}</strong>
-            </div>
-        {% endif %}
-        {% block content %}
-            <div class="container py-5">
-                <div class="row">
-                    <div class="col-md-6 mx-auto">
-                        <div class="text-center mb-5">
-                            <h1 class="display-4 fw-bold">{{ user.name }}</h1>
-                            {% if user_session %}<p class="lead text-success ">¡Estás en tu perfil!</p>{% endif %}
-                        </div>
-                        {% if user_session %}
-                            <div class="card mb-3">
-                                <div class="card-header">Información del Usuario</div>
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        <strong>Nombre:</strong> {{ user.name }}
-                                    </p>
-                                    <p class="card-text">
-                                        <strong>Apellido:</strong> {{ user.surname }}
-                                    </p>
-                                    <p class="card-text">
-                                        <strong>Email:</strong> {{ user.email }}
-                                    </p>
-                                </div>
-                            </div>
-                        {% endif %}
+<head>
+    <title>Perfil de {{ user.name }}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Bootstrap CSS v5.3.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-body-tertiary">
+    {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
+    <script>
+        var alertList = document.querySelectorAll(".alert");
+        alertList.forEach(function (alert) {
+            new bootstrap.Alert(alert);
+        });
+    </script>
+    {% if success_message %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"></button>
+            <strong>{{ success_message }}</strong>
+        </div>
+    {% endif %}
+    {% block content %}
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+                    <div class="text-center mb-5">
+                        <h1 class="display-4 fw-bold">{{ user.name }}</h1>
+                        <h4 class="card-text">
+                            <strong>Reputación:</strong>
+                            {% for i in reputation_stars %}
+                                <i class="bi bi-star-fill text-warning"></i>
+                            {% endfor %}
+                        </h4>
+                        {% if user_session %}<p class="lead text-success ">¡Estás en tu perfil!</p>{% endif %}
+                    </div>
+                    {% if user_session %}
                         <div class="card mb-3">
-                            <div class="card-header">Publicaciones Activas</div>
+                            <div class="card-header">Información del Usuario</div>
                             <div class="card-body">
-                                <div class="row row-cols-1 row-cols-md-2 g-4">
-                                    {% if combined_data %}
-                                        {% for image_data, post_data in combined_data %}
-                                            <div class="col">
-                                                <div class="card h-100">
-                                                    <img src="data:image/jpeg;base64,{{ image_data }}"
-                                                         class="card-img-top"
-                                                         alt="Imagen">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">{{ post_data.title }}</h5>
-                                                        <p class="card-text">{{ post_data.description }}</p>
-                                                    </div>
-                                                    <div class="card-footer">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            {% if is_paused %}
-                                                                <small class="text-muted">Publicación pausada</small>
-                                                            {% else %}
-                                                                <a href="{% url 'see_post' id=post_data.id %}" class="btn btn-primary"><i class="bi bi-eye-fill" style="margin-right: 2px;"></i>Ver Publicación</a>
-                                                                {% if user_session %}
-                                                                    <form action="{% url 'delete_post' id=post_data.id %}" method="post">
-                                                                        {% csrf_token %}
-                                                                        <button type="submit" class="btn btn-danger">
-                                                                            <i class="bi bi-trash-fill" style="margin-right: 2px;"></i>Eliminar
-                                                                        </button>
-                                                                    </form>
-                                                                {% endif %}
+                                <p class="card-text">
+                                    <strong>Nombre:</strong> {{ user.name }}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Apellido:</strong> {{ user.surname }}
+                                </p>
+                                <p class="card-text">
+                                    <strong>Email:</strong> {{ user.email }}
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="card mb-3">
+                        <div class="card-header">Publicaciones</div>
+                        <div class="card-body">
+                            <div class="row row-cols-1 row-cols-md-2 g-4">
+                                {% if combined_data %}
+                                    {% for image_data, post_data in combined_data %}
+                                        <div class="col mx-auto">
+                                            <div class="card h-100">
+                                                <img src="data:image/jpeg;base64,{{ image_data }}"
+                                                     class="card-img-top "
+                                                     alt="Imagen">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ post_data.title }}</h5>
+                                                    <p class="card-text">{{ post_data.description }}</p>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        {% if post_data.is_paused %}
+                                                            <span class="badge text-bg-light mx-auto">Publicación pausada</span>    
+                                                        {% else %}
+                                                            <a href="{% url 'see_post' id=post_data.id %}" class="btn btn-primary mx-auto"><i class="bi bi-eye-fill" style="margin-right: 2px;"></i>Ver Publicación</a>
                                                             {% endif %}
-                                                        </div>
+                                                            {% if user_session %}
+                                                                <form action="{% url 'delete_post' id=post_data.id %}" method="post">
+                                                                    {% csrf_token %}
+                                                                    <button type="submit" class="btn btn-danger mx-auto">
+                                                                        <i class="bi bi-trash-fill mx-auto" style="margin-right: 2px;"></i>Eliminar
+                                                                    </button>
+                                                                </form>
+                                                            {% endif %}
                                                     </div>
                                                 </div>
                                             </div>
-                                        {% endfor %}
-                                    {% else %}
-                                        <div class="col">
-                                            <p class="text-muted">Este usuario no tiene publicaciones activas actualmente.</p>
                                         </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">Lista de Necesidades</div>
-                            <div class="card-body">
-                                {% if need_products %}
-                                    <ol class="list-group list-group-numbered">
-                                        {% for product in need_products %}<li class="list-group-item">{{ product.name }}</li>{% endfor %}
-                                    </ol>
+                                    {% endfor %}
                                 {% else %}
-                                    <p class="text-muted">Este usuario no tiene necesidades registradas actualmente.</p>
+                                    <div class="col">
+                                        <p class="text-muted">Este usuario no tiene publicaciones activas actualmente.</p>
+                                    </div>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-header">Lista de Necesidades</div>
+                        <div class="card-body">
+                            {% if need_products %}
+                                <ol class="list-group list-group-numbered">
+                                    {% for product in need_products %}<li class="list-group-item">{{ product.name }}</li>{% endfor %}
+                                </ol>
+                            {% else %}
+                                <p class="text-muted">Este usuario no tiene necesidades registradas actualmente.</p>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
-        {% endblock %}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-                crossorigin="anonymous"></script>
-    </body>
+        </div>
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</body>
 </html>
