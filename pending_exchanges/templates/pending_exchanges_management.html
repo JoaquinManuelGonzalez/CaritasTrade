@@ -54,29 +54,49 @@
 <body>
     {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
     <h1 class="header-title">Intercambios Pendientes</h1>
-    <p class="header-subtitle">Por favor, revisa y confirma los intercambios pendientes</p>
-    {% for pending_exchange in pending_exchanges %}
-        <div class="d-flex justify-content-between p-5 m-5 rounded-0 shadow" style="border: 1px solid #ddd">
-            <div class="branch-details">
-                <h3>
-                    <strong class="text-primary">Nombre de la Filial: </strong>{{ pending_exchange.branch.name }}
-                </h3>
-                <ul>
-                    <li>
-                        <h5>
-                            <strong>Fecha del intercambio: </strong>{{ pending_exchange.exchange_date|date:"d/m/Y" }}
-                        </h5>
-                    </li>
-                </ul>
+    {% if pending_exchanges %}
+        <p class="header-subtitle">Por favor, revisa y confirma los intercambios pendientes</p>
+        {% for pending_exchange in pending_exchanges %}
+            <div class="d-flex justify-content-between p-5 m-5 rounded-0 shadow" style="border: 1px solid #ddd">
+                <div class="branch-details">
+                    <h3>
+                        <strong class="text-primary">Nombre de la Filial: </strong>{{ pending_exchange.branch.name }}
+                    </h3>
+                    <ul>
+                        <li>
+                            <h5>
+                                <strong>Fecha del intercambio: </strong>{{ pending_exchange.exchange_date|date:"d/m/Y" }}
+                            </h5>
+                        </li>
+                        <li>
+                            <h5>
+                                <strong>Producto a Recibir: </strong>{{ pending_exchange.exchange_solicitude.exchange_post_for_id.title }}
+                            </h5>
+                        </li>
+                        <li>
+                            <h5>
+                                <strong>Producto a Dar: </strong>{{ pending_exchange.exchange_solicitude.in_exchange_post_id.title }}
+                            </h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <a class="btn btn-danger fw-bold btn-block"
+                    href="{% url 'reject_exchange' pending_exchange.id %}" style="margin-right: 10px"><i class="bi bi-trash-fill" style="margin-right: 5px;"></i>Rechazar Confirmación de Intercambio</a>
+                    <a class="btn btn-primary fw-bold btn-block"
+                    href="{% url 'accept_exchange' pending_exchange.id %}"><i class="bi bi-check-square" style="margin-right: 5px;"></i>Aceptar Intercambio</a>
+                </div>
             </div>
-            <div class="d-flex justify-content-end align-items-center">
-                <a class="btn btn-danger fw-bold btn-block"
-                   href="#" style="margin-right: 10px"><i class="bi bi-trash-fill" style="margin-right: 5px;"></i>Rechazar Confirmación de Intercambio</a>
-                <a class="btn btn-primary fw-bold btn-block"
-                   href="#"><i class="bi bi-check-square" style="margin-right: 5px;"></i>Aceptar Intercambio</a>
+        {% endfor %}
+    {% else %}
+        <div class="container p-xxl-5">
+            <div class="row justify-content-md-center align-items-center">
+                <div class="alert alert-primary col-12 col-md-10 col-lg-8 col-xl-7">
+                    <h3 class="fs-4 mb-2 text-center text-uppercase">Usted no posee Confirmaciones de Intercambios pendientes actualmente</h3>
+                </div>
             </div>
         </div>
-    {% endfor %}
+    {% endif %}
 
     <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

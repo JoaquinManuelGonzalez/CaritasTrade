@@ -24,7 +24,7 @@ from create_post import views as create_post_views
 from exchanges import views as exchanges_views
 from view_map import views as view_maps_views
 from select_branch import views as select_branch_views
-from pending_exchanges import views as pending_exchanges_views
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -88,7 +88,7 @@ urlpatterns = [
     ),
     path(
         "pending_exchanges_management/",
-        pending_exchanges_views.pending_exchanges_management,
+        include("pending_exchanges.urls"),
         name="pending_exchanges_management",
     ),
 ]
