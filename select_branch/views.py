@@ -3,7 +3,7 @@ from django.contrib import messages
 from datetime import datetime, timedelta
 from data_base.models import Branches, Exchange, ExchangeSolicitude, Affiliate
 from view_profile.views import session_name
-from log_in.views import generate_otp, send_email
+from log_in.views import send_email
 
 def select_branch(request, solicitude_id):
     session_id = request.session.get("id")
@@ -23,7 +23,7 @@ def select_branch(request, solicitude_id):
             available_branches = []
             for branch in branches:
                 reservations_count = Exchange.objects.filter(branch=branch.id, exchange_date=fecha_iter.date()).count()
-                if reservations_count < 50:
+                if reservations_count < 1: #Ese número se debe cambiar a 50 (cantidad de turnos que puede tener una filial por día)
                     available_branches.append(branch)
             if available_branches:
                 available_branches_by_date[fecha_iter.strftime("%Y-%m-%d")] = available_branches
@@ -51,6 +51,7 @@ def select_branch(request, solicitude_id):
             affiliate_2=affiliate_2
         )
         exchange.save()
+        send_email(affiliate_2.email, "Nueva Propuesta de Filial y Fecha para Intercambio", f"El usuario {affiliate_1.name} {affiliate_1.surname} te ha enviado una nueva propuesta de filial y fecha para el intercambio de {exchange_solicitude.exchange_post_for_id.title} por {exchange_solicitude.in_exchange_post_id.title}. Por favor, confirma o rechaza la nueva propuesta generada.")
         return render(request, "success_message_exchange.html")     
     return render(request, 'select_branch.html', {
         "session_id": session_id,
