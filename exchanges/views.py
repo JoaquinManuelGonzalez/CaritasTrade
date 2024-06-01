@@ -35,7 +35,6 @@ def see_exchange_requests(request):
             affiliate_2_id=request.session.get("id"), timestamp__isnull=True
         ).count()
     )
-    print(active_exchanges)
     return render(
         request,
         "see_exchange_requests.html",
@@ -110,8 +109,7 @@ def validate_exchange_codes(request):
         )
 
     code1, code2 = request.POST.get("code_1"), request.POST.get("code_2")
-    print(code1, code2, type(code1), type(code2))
-    print(Exchange.objects.filter(code1=code1, code2=code2).exists())
+    
     message = "Alguno o ambos de los códigos son inválidos"
     type_of_alert = "danger"
 
@@ -128,7 +126,6 @@ def validate_exchange_codes(request):
             type_of_alert = "success"
 
     elif code1 and code2:
-        print("Se metio por el if de que existen 2 codigos")
         exchange = (
             Exchange.objects.filter(
                 code1=code1, code2=code2, timestamp__isnull=True
@@ -205,7 +202,6 @@ def delete_request(request, id):
             affiliate_2_id=request.session.get("id"), timestamp__isnull=True
         ).count()
     )
-    print(active_exchanges)
     return render(
         request,
         "see_exchange_requests.html",

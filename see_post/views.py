@@ -86,21 +86,7 @@ def send_exchange_solicitude(request, post_id_for):
             affiliate_1=request.session.get("id")
         ).count()
 
-        print(
-            "post_id_for",
-            post_id_for,
-            "post_id_in_exchange",
-            post_id,
-            request.session.get("id"),
-        )
-        print(
-            "average rep:",
-            average_reputation,
-            " previous solicitude:",
-            previous_solicitude,
-            " number of exchanges:",
-            exchanges,
-        )
+        
         if average_reputation >= 3 and not bool(previous_solicitude) and exchanges < 5:
             ExchangeSolicitude.objects.create(
                 affiliate_id=Affiliate.objects.get(id=request.session.get("id")),
@@ -117,7 +103,6 @@ def send_exchange_solicitude(request, post_id_for):
                     "type_of_alert": "success",
                 },
             )
-        print(datetime.datetime.now())
         message = ""
         if average_reputation < 3:
             message = "La reputacion actual es menor a 3 estrellas"

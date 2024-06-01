@@ -10,12 +10,9 @@ def see_exchange_requests(request):
     requests = ExchangePost.objects.filter(
         affiliate_id=request.session.get("id"), is_active=True
     )
-    print(requests)
     requests = ExchangeSolicitude.objects.filter(
         exchange_post_for_id__in=requests, denied=False
     )
-    print(requests)
-    print(request.session.get("id"))
     return render(
         request,
         "see_exchange_requests.html",
@@ -39,7 +36,6 @@ def register_exchange(request):
         
 
 def validate_exchange_codes(request):
-    print("Se hizo una petición")
     return render(
         request,
         "message.html",

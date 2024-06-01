@@ -73,28 +73,30 @@ def category_delete(request, id):
         send_email_paused_post = set()
         send_email_exchanges = set()
         
-        for post in posts_to_pause:
-            post.is_paused = True
-            post.save()
+        if posts_to_pause:
+            for post in posts_to_pause:
+                post.is_paused = True
+                post.save()
 
-            # coleccion de emails dueños de posteos
-            send_email_paused_post.add(post.affiliate.email)
-            # coleccion de solicitudes de intercabios relacionados con el posteo
-            solicitudes_to_pause = ExchangeSolicitude.objects.filter(exchange_post_for_id=post.id) | ExchangeSolicitude.objects.filter(in_exchange_post_id=post.id)
-        print(send_email_paused_post)
-        print(solicitudes_to_pause)
-        # Eliminar todas las solicitudes relacionadas con las publicaciones pausadas
-        for solicitud in solicitudes_to_pause:
-            send_email_exchanges.add(solicitud.exchange_post_for_id.affiliate.email)
-            send_email_exchanges.add(solicitud.affiliate_id.email)
-            solicitud.delete()
+                # coleccion de emails dueños de posteos
+                send_email_paused_post.add(post.affiliate.email)
+                # coleccion de solicitudes de intercabios relacionados con el posteo
+                solicitudes_to_pause = ExchangeSolicitude.objects.filter(exchange_post_for_id=post.id) |     ExchangeSolicitude.objects.filter(in_exchange_post_id=post.id)
+            # Eliminar todas las solicitudes relacionadas con las publicaciones pausadas
+            if solicitudes_to_pause:
+                for solicitud in solicitudes_to_pause:
+                    send_email_exchanges.add(solicitud.exchange_post_for_id.affiliate.email)
+                    send_email_exchanges.add(solicitud.affiliate_id.email)
+                    solicitud.delete()
         
         # Eliminar la categoría
-        #category.delete()
+        category.delete()
         
         # envio emails
-        send_emails(list(send_email_paused_post), "owner_post")
-        send_emails(list(send_email_exchanges), "solicitudes_post")
+        if send_email_paused_post:
+            send_emails(list(send_email_paused_post), "owner_post")
+        if send_email_exchanges:
+            send_emails(list(send_email_exchanges), "solicitudes_post")
         messages.success(request, "Categoría eliminada exitosamente")
         return redirect(reverse("category_list"))
     return render(
