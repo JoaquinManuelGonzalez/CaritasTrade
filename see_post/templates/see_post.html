@@ -196,6 +196,18 @@
                         postSelect.classList.add("visually-hidden");
                     }
                 });
+
+                document.getElementById("message_board").addEventListener("htmx:afterSwap", function () {
+                    postSelect = document.getElementById("post_select");
+                    if (postSelect.classList.contains("opacity-0")) {
+                        postSelect.classList.remove("opacity-0");
+                        postSelect.classList.remove("visually-hidden");
+                    } else {
+                        postSelect.classList.add("opacity-0");
+                        postSelect.classList.add("visually-hidden");
+                    }
+                })
+
             </script>
         </body>
     </html>
