@@ -90,7 +90,7 @@ def category_delete(request, id):
             solicitud.delete()
         
         # Eliminar la categoría
-        #category.delete()
+        category.delete()
         
         # envio emails
         send_emails(list(send_email_paused_post), "owner_post")
