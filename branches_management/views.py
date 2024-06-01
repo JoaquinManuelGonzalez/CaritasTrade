@@ -13,6 +13,14 @@ def capitalize_element(data):
     return data_capitalized
 
 
+def check_latitude_and_existing_altitude(branch, latitude):
+    return Branches.objects.filter(latitude=latitude, altitude=branch.altitude).exists()
+
+
+def check_altitude_and_existing_latitude(branch, altitude):
+    return Branches.objects.filter(latitude=branch.latitude, altitude=altitude).exists()
+
+
 def create_map():
     bounds = [[-35.92145, -58.95453], [-33.92145, -56.95453]]
     map = folium.Map(location=[-34.92145, -57.95453],
@@ -109,10 +117,40 @@ def edit_branch(request, branch_id):
                 branch.name = name
             latitude = branch_form.cleaned_data['latitude']
             if latitude:
-                branch.latitude = latitude
+                if check_latitude_and_existing_altitude(branch, latitude):
+                    branch_form.add_error(
+                        None,
+                        "Una Filial con esta Latitud y Longitud ya existe en el sistema."
+                    )
+                    return render(request, "edit_branch.html", {
+                        "session_id": request.session.get("id"),
+                        "user_session": False,
+                        "session_name": session_name(request),
+                        "branch": branch,
+                        "worker_in_charge": worker_in_charge,
+                        "map_html": map_html,
+                        "form": branch_form
+                    })
+                else:
+                    branch.latitude = latitude
             altitude = branch_form.cleaned_data['altitude']
             if altitude:
-                branch.altitude = altitude
+                if check_altitude_and_existing_latitude(branch, altitude):
+                    branch_form.add_error(
+                        None,
+                        "Una Filial con esta Latitud y Longitud ya existe en el sistema."
+                    )
+                    return render(request, "edit_branch.html", {
+                        "session_id": request.session.get("id"),
+                        "user_session": False,
+                        "session_name": session_name(request),
+                        "branch": branch,
+                        "worker_in_charge": worker_in_charge,
+                        "map_html": map_html,
+                        "form": branch_form
+                    })
+                else:
+                    branch.altitude = altitude
             worker = branch_form.cleaned_data['worker']
             if worker:
                 branch.worker = worker
