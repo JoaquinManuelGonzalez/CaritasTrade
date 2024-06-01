@@ -52,7 +52,7 @@ def create_post(request):
         post.save()
         success_message = "La publicación que creaste está ahora en estado pendiente. Nuestro equipo de trabajo la revisará y te notificará vía mail si fue aprobada o no."
         form = ExchangeForm()
-    else:
+    elif request.method == "POST":
         if not form.errors and num_posts >= 5:
             form.add_error(None, "Limite de publicaciones alcanzado")
     return render(
