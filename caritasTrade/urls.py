@@ -91,4 +91,5 @@ urlpatterns = [
         include("pending_exchanges.urls"),
         name="pending_exchanges_management",
     ),
+    path("finish_day/", include("finish_day.urls"), name="finish_day" ),
 ]
