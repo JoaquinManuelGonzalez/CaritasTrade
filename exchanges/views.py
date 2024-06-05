@@ -114,16 +114,30 @@ def validate_exchange_codes(request):
     type_of_alert = "danger"
 
     if code1 and not code2:
-        penalized_affiliate = get_penalized_affiliate(code1)
-        if penalized_affiliate:
-            message = penalize_affiliate(penalized_affiliate)
-            type_of_alert = "success"
+        if Exchange.objects.filter(code1=code1, timestamp__isnull=True).exists() and not Exchange.objects.get(code1=code1, timestamp__isnull=True).exchange_date == datetime.datetime.now().date():
+            message = "Este intercambio no tiene turno para el dia actual"
+            type_of_alert = "danger"
+        elif Exchange.objects.filter(code2=code1, timestamp__isnull=True).exists() and not Exchange.objects.get(code1=code1, timestamp__isnull=True).exchange_date == datetime.datetime.now().date():
+            message = "Este intercambio no tiene turno para el dia actual"
+            type_of_alert = "danger"
+        else:
+            penalized_affiliate = get_penalized_affiliate(code1)
+            if penalized_affiliate:
+                message = penalize_affiliate(penalized_affiliate)
+                type_of_alert = "success"
 
     elif not code1 and code2:
-        penalized_affiliate = get_penalized_affiliate(code2)
-        if penalized_affiliate:
-            message = penalize_affiliate(penalized_affiliate)
-            type_of_alert = "success"
+        if Exchange.objects.filter(code1=code2, timestamp__isnull=True).exists() and not Exchange.objects.get(code1=code1, timestamp__isnull=True).exchange_date == datetime.datetime.now().date():
+            message = "Este intercambio no tiene turno para el dia actual"
+            type_of_alert = "danger"
+        elif Exchange.objects.filter(code2=code2, timestamp__isnull=True).exists() and not Exchange.objects.get(code1=code1, timestamp__isnull=True).exchange_date == datetime.datetime.now().date():
+            message = "Este intercambio no tiene turno para el dia actual"
+            type_of_alert = "danger"
+        else:
+            penalized_affiliate = get_penalized_affiliate(code2)
+            if penalized_affiliate:
+                message = penalize_affiliate(penalized_affiliate)
+                type_of_alert = "success"
 
     elif code1 and code2:
         exchange = (
