@@ -84,6 +84,8 @@ def send_exchange_solicitude(request, post_id_for):
         )
         exchanges = Exchange.objects.filter(
             affiliate_1=request.session.get("id")
+        ).count() + Exchange.objects.filter(
+            affiliate_2=request.session.get("id")
         ).count()
 
         
