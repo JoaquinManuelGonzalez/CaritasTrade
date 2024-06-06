@@ -111,6 +111,32 @@ def category_delete(request, id):
         },
     )
 
+def category_delete_all(request):
+    if request.method == "POST":
+        categories = ProductCategory.objects.all()
+        for category in categories:
+            posts_to_pause = ExchangePost.objects.filter(product_category=category)
+            if posts_to_pause:
+                for post in posts_to_pause:
+                    post.is_paused = True
+                    post.save()
+                    solicitudes_to_pause = ExchangeSolicitude.objects.filter(exchange_post_for_id=post.id) | ExchangeSolicitude.objects.filter(in_exchange_post_id=post.id)
+                    if solicitudes_to_pause:
+                        for solicitud in solicitudes_to_pause:
+                            solicitud.delete()
+            category.delete()
+        messages.success(request, "Todas las categorías han sido eliminadas exitosamente")
+        return redirect(reverse("category_list"))
+    return render(
+        request,
+        "category_delete_all.html",
+        {
+            "session_id": request.session.get("id"),
+            "user_session": False,
+            "session_name": session_name(request),
+            "role": request.session.get("role"),
+        },
+    )
 
 def send_emails(list, for_who):
     if for_who == "owner_post":
