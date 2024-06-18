@@ -92,4 +92,6 @@ urlpatterns = [
         name="pending_exchanges_management",
     ),
     path("finish_day/", include("finish_day.urls"), name="finish_day" ),
+    path('donations/', include('donations.urls'), name="donate" ),
+    path('stadistics/', include('stadistics.urls'), name="stadistics" ),
 ]

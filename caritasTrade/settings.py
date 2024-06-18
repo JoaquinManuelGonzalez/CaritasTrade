@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'list_workers',
     "pending_exchanges",
     "finish_day",
+    "donations",
+    "stadistics",
 ]
 
 MIDDLEWARE = [
@@ -166,3 +168,5 @@ MESSAGE_TAGS = {
     messages.WARNING: "PELIGRO",
     messages.ERROR: "ERROR",
 }
+
+MERCADOPAGO_ACCESS_TOKEN = 'APP_USR-8211015953814647-061711-8f876c2e2c8f574986bc6d7edfda7e37-1860445427'

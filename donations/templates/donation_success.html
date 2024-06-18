@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gracias por tu donación</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    {% include "empty_navbar.html" %}
+    <div class="container mt-5">
+        <h1 class="text-center">¡Gracias por tu donación!</h1>
+        <p class="text-center">Tu apoyo es muy valioso para nosotros y nos ayuda a continuar con nuestra misión.</p>
+        <div class="text-center">
+            <a href="{% url 'landing_page' %}" class="btn btn-primary">Volver a la página principal</a>
+        </div>
+    </div>
+</body>
+</html>

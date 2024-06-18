@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donación Rechazada</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    {% include "empty_navbar.html" %}
+    <div class="container mt-5">
+        <h1 class="text-center">¡Tu donación ha sido rechazada!</h1>
+        <p class="text-center">Su saldo es insuficiente o no posee una cuenta valida.</p>
+        <div class="text-center">
+            <a href="{% url 'landing_page' %}" class="btn btn-primary">Volver a la página principal</a>
+        </div>
+    </div>
+</body>
+</html>
