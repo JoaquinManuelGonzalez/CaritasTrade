@@ -11,11 +11,12 @@
               crossorigin="anonymous" />
     </head>
     <body>
+        {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
         <div class="container">
             <h1 class="mt-5">Estadísticas Principales</h1>
             <div class="list-group mt-4">
                 <a href="{% url 'transactions_pie_chart' %}"
-                   class="list-group-item list-group-item-action">Transacciones Hechas (Gráfico de Torta)</a>
+                   class="list-group-item list-group-item-action">Transacciones Estados (Gráfico de Torta)</a>
                 <a href="{% url 'transactions_by_age' %}"
                    class="list-group-item list-group-item-action">Transacciones Fallidas (por Edad)</a>
                 <a href="{% url 'category_histogram' %}"

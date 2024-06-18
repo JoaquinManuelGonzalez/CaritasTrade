@@ -37,9 +37,9 @@
         <li class="nav-item">
           <a class="nav-link fs-4" href="{% url "see_users" %}"><i class="bi bi-envelope-plus" style="margin-right: 5px;"></i> Recuperación de cuentas</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link fs-4" href="#"><i class="bi bi-bar-chart-line" style="margin-right: 5px;"></i> Estadísticas</a>
-        </li>
+        {% comment %} <li class="nav-item">
+          <a class="nav-link fs-4" href="{% url "main_view" %}"><i class="bi bi-bar-chart-line" style="margin-right: 5px;"></i> Estadísticas</a>
+        </li> {% endcomment %}
         <div class="nav-item dropdown">
           <a class="dropdown-toggle nav-link fs-4"
              type="button"
@@ -54,6 +54,9 @@
             </li>
             <li>
               <a class="dropdown-item" href="{% url "category_list" %}">Categorias de productos</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url "stadistics_menu" %}">Estadísticas</a>
             </li>
           </ul>
         </div>

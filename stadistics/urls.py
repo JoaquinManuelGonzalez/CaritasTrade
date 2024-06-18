@@ -2,7 +2,7 @@ from . import views
 from django.urls import path
 
 urlpatterns = [
-    path("", views.main_view, name="main_view"),
+    path("", views.stadistics_menu, name="stadistics_menu"),
     path(
         "transactions/pie-chart/",
         views.transactions_pie_chart,
