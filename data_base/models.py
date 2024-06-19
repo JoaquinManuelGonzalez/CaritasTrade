@@ -93,7 +93,7 @@ class ExchangePost(models.Model):
     is_rejected = models.BooleanField(default=False)
     is_paused = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
-
+    has_failed = models.BooleanField(default=False)
 
 class EcommercePost(models.Model):
     product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)

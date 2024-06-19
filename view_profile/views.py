@@ -55,7 +55,7 @@ def profile(request, id):
     if role == "user":
         user = get_object_or_404(Affiliate, id=id)
         post = ExchangePost.objects.filter(
-            affiliate_id=id, is_active=True, is_finished=False
+            affiliate_id=id, is_active=True, is_finished=False, has_failed=False
         )
         # Obtener el promedio de la reputación
         average_reputation = (
@@ -65,7 +65,7 @@ def profile(request, id):
         )
         # Redondeo al valor entero más cercano
         average_reputation = int(round(average_reputation))
-        
+
         # Genero una lista para iterar en la plantilla
         reputation_stars = range(average_reputation)
         # decodifico las imagenes
@@ -136,10 +136,13 @@ def delete_post(request, id):
                 affiliate_id=request.session.get("id"),
                 is_active=True,
                 is_finished=False,
+                has_failed=False,
             )
             # Obtener el promedio de la reputación
             average_reputation = (
-                Reputation.objects.filter(affiliate_id=request.session.get("id"), to_do=False)
+                Reputation.objects.filter(
+                    affiliate_id=request.session.get("id"), to_do=False
+                )
                 .aggregate(Avg("reputation"))
                 .get("reputation__avg", 0)
             )
@@ -147,7 +150,7 @@ def delete_post(request, id):
             average_reputation = int(round(average_reputation))
             # Genero una lista para iterar en la plantilla
             reputation_stars = range(average_reputation)
-            
+
             # decodifico las imagenes
             combined_data = decode_images(post)
             # armo la lista de deseos
