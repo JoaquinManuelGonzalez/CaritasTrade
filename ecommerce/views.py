@@ -4,7 +4,14 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from requests import session
 from list_exchange_products.views import session_name
-from data_base.models import Branches, EcommercePost, ProductCategory, Affiliate, Cupon
+from data_base.models import (
+    Branches,
+    EcommercePost,
+    ProductCategory,
+    Affiliate,
+    Cupon,
+    Workers,
+)
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -261,17 +268,29 @@ def register_cupons(request):
                     "type_of_alert": "danger",
                 },
             )
+        if (
+            not Cupon.objects.filter(code=code).first().branch
+            == Branches.objects.get(worker=request.session.get("id"))
+        ):
+            return render(
+                request,
+                "message.html",
+                {
+                    "message": "Este código no corresponde a esta sucursal",	
+                    "type_of_alert": "danger",
+                },
+            )
         c = Cupon.objects.get(code=code)
         c.used = True
         c.save()
         return render(
-                request,
-                "message.html",
-                {
-                    "message": "Cupon registrado exitosamente",
-                    "type_of_alert": "success",
-                },
-            )
+            request,
+            "message.html",
+            {
+                "message": "Cupón registrado exitosamente",
+                "type_of_alert": "success",
+            },
+        )
     elif request.method == "GET":
         return render(
             request,

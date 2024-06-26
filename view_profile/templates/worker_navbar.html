@@ -36,9 +36,19 @@
             </svg> Registrar Intercambio
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link fs-4" href="{% url 'list_ecommerce' %}"><i class="bi bi-cart3" style="margin-right: 5px;"></i> Ver Ecommerce</a>
-        </li>
+        <div class="nav-item dropdown">
+          <a class="dropdown-toggle nav-link fs-4"
+             type="button"
+             data-bs-toggle="dropdown"
+             aria-expanded="false"><i class="bi bi-cart3"  style="margin-right: 5px;"></i>Ecommerce</a>
+          <ul class="dropdown-menu">
+            <li class="nav-item">
+              <a class="nav-link fs-4"  style="margin-right: 5px;" href="{% url 'list_ecommerce' %}"><i class="bi bi-cart3"></i> Ver Ecommerce</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link fs-4"  style="margin-right: 5px;" href="{% url 'register_cupons' %}"><i class="bi bi-pencil"></i> Registrar Cupón</a>
+            </li>
+        </div>
         <li class="nav-item">
           <a class="nav-link fs-4" href="{% url "see_waiting_posts" %}"><i class="bi bi-card-checklist" style="margin-right: 5px;"></i> Validar Publicación </a>
         </li>
