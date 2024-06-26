@@ -102,6 +102,7 @@ class EcommercePost(models.Model):
     description = models.TextField(max_length=300)
     point_cost = models.IntegerField()
     stock = models.IntegerField()
+    branch = models.ForeignKey(Branches, on_delete=models.SET_NULL, null=True, blank=True)
 
 
 class Affiliate_EcommercePost(models.Model):

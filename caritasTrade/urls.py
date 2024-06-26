@@ -24,7 +24,7 @@ from create_post import views as create_post_views
 from exchanges import views as exchanges_views
 from view_map import views as view_maps_views
 from select_branch import views as select_branch_views
-
+from ecommerce import views as ecommerce_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -94,4 +94,7 @@ urlpatterns = [
     path("finish_day/", include("finish_day.urls"), name="finish_day" ),
     path('donations/', include('donations.urls'), name="donate" ),
     path('stadistics/', include('stadistics.urls'), name="stadistics" ),
+    path('list_ecommerce/', ecommerce_views.list_ecommerce, name='list_ecommerce'),
+    path('see_ecommerce_post/<int:id>', ecommerce_views.see_ecommerce_post, name='see_ecommerce_post'),
+    path('delete_post/<int:id>', ecommerce_views.delete_post, name='delete_post'),
 ]

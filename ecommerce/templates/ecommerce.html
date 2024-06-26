@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Exchange Products List</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous" />
+    </head>
+    <body>
+        {% if role == "admin" %}
+            {% include 'admin_navbar.html' with user_session=user_session session_id=session_id %}
+        {% elif role == "user" %}
+            {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
+        {% else %}
+            {% include 'worker_navbar.html' with user_session=user_session session_id=session_id session_name=session_name %}
+        {% endif %}
+        {% block content %}
+            <div class="p-3">
+                <div class="text-center my-4">
+                    <h2 class="display-4 fw-bold">Explora nuestros productos</h2>
+                    <p class="lead">Encuentra lo que necesitas intercambiando tus puntos</p>
+                </div>
+                <form method="get" class="d-flex justify-content-center  ">
+                    <input type="text"
+                           name="q"
+                           placeholder="Buscar por título"
+                           class="form-control m-2"
+                           style="width:65%">
+                    <div class="m-2">
+                        <select name="category" class="form-select">
+                            <option value="">Buscar por categorías</option>
+                            {% for category in categories %}<option value="{{ category.id }}">{{ category.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-danger rounded-5">Buscar</button>
+                </form>
+                <div class="p-3">
+                    {% if posts %}
+                        <div class="row">
+                            {% for image_data, post_data in posts %}
+                                <div class="col-md-3 mb-4" style="text-align: center;">
+                                    <!-- Utilizamos col-md-3 para dividir en 4 columnas en pantallas medianas y superiores -->
+                                    <div class="card mx-auto" style="height: 400px; width: 250px;">
+                                        <img src="data:image/jpeg;base64,{{ image_data }}"
+                                             class="card-img-top"
+                                             alt="{{ post_data.description }}"
+                                             style="height: 250px;
+                                                    width: 100%;
+                                                    object-fit: cover" />
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ post_data.title }}</h5>
+                                            <p class="card-text">{{ post_data.description }}</p>
+                                            <a href="{% url 'see_ecommerce_post' id=post_data.id %}" class="btn btn-primary">
+                                                <i class="bi bi-eye-fill" style="margin-right: 5px;"></i>Ver
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if forloop.counter|divisibleby:4 and forloop.counter < combined_data|length %}
+                                </div>
+                                <div class="row">
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <h5>No se han encontrado productos que coincidan con su búsqueda</h5>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"></script>
+</body>
+</html>

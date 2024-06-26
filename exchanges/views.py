@@ -5,7 +5,6 @@ from data_base.models import (
     ExchangeSolicitude,
     ExchangePost,
     Affiliate,
-    Reputation,
     Workers,
     Exchange,
     Reputation,
