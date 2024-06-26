@@ -1,5 +1,5 @@
 import datetime
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from data_base.models import (
     ExchangePost,
     ExchangeSolicitude,
@@ -10,6 +10,7 @@ from data_base.models import (
 )
 from django.db.models import Avg
 from view_profile.views import session_name
+from need_list.views import has_product_in_favorites
 
 
 def see_post(request, id):
@@ -28,6 +29,7 @@ def see_post(request, id):
             category = ProductCategory.objects.filter(
                 id=post.product_category_id
             ).first()
+            is_in_favorite = has_product_in_favorites(request, post.id)
             return render(
                 request,
                 "see_post.html",
@@ -50,6 +52,7 @@ def see_post(request, id):
                         product_category=post.product_category,
                         is_finished=False,
                     ),
+                    "is_in_favorites": is_in_favorite,
                 },
             )
         else:

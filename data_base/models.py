@@ -76,11 +76,6 @@ class Products(models.Model):
     name = models.CharField(max_length=20)
 
 
-class Affiliate_Need_Product(models.Model):
-    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
-
-
 class ExchangePost(models.Model):
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     product_category = models.ForeignKey(
@@ -95,6 +90,11 @@ class ExchangePost(models.Model):
     is_paused = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
     has_failed = models.BooleanField(default=False)
+
+
+class Affiliate_Need_Product(models.Model):
+    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    product = models.ForeignKey(ExchangePost, on_delete=models.CASCADE)
 
 
 class EcommercePost(models.Model):
