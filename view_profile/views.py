@@ -6,8 +6,6 @@ from django.core.mail import send_mail
 from data_base.models import (
     Affiliate,
     ExchangePost,
-    Affiliate_Need_Product,
-    Products,
     Reputation,
     Workers,
     ExchangeSolicitude,
@@ -36,17 +34,6 @@ def decode_images(post):
     return combined_data
 
 
-def craft_need_list(id):
-    need_list = Affiliate_Need_Product.objects.filter(affiliate_id=id)
-    products = []
-    for need in need_list:
-        product = Products.objects.get(
-            id=need.id
-        )  # Filtrar la tabla de productos por el ID
-        products.append(product)  # Agregar el producto a la lista de productos
-    return products
-
-
 # VER EL TEMA DE COMO WORKER VER UN AFILAIDOhacer session_id e user_session aca o dentro de los if? que paso en el caso en que sos un worker que quiere ver un user?  se puede?
 def profile(request, id):
     session_id = request.session.get("id")
@@ -71,7 +58,6 @@ def profile(request, id):
         # decodifico las imagenes
         combined_data = decode_images(post)
         # armo la lista de deseos
-        need_list = craft_need_list(id)
         return render(
             request,
             "profile.html",
@@ -81,7 +67,6 @@ def profile(request, id):
                 "user": user,
                 "session_name": session_name(request),
                 "combined_data": combined_data,
-                "need_products": need_list,
                 "reputation_stars": reputation_stars,
             },
         )
@@ -153,9 +138,6 @@ def delete_post(request, id):
 
             # decodifico las imagenes
             combined_data = decode_images(post)
-            # armo la lista de deseos
-            need_list = craft_need_list(id)
-
             session_id = request.session.get("id")
             user_session = True
             return render(
@@ -167,7 +149,6 @@ def delete_post(request, id):
                     "user": user,
                     "session_name": session_name(request),
                     "combined_data": combined_data,
-                    "need_products": need_list,
                     "success_message": "La publicación se ha eliminado con éxito",
                     "reputation_stars": reputation_stars,
                 },

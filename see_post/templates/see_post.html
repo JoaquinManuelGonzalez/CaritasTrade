@@ -25,7 +25,17 @@
             {% endif %}
             <main class="">
                 {% if role == "user" and not own_post %}
-                    <div id="message_board" class="p-5"></div>
+                    <div id="message_board" class="p-5">
+                        {% if message %}
+                            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                <strong>{{ message }}</strong>
+                            </div>
+                        {% endif %}
+                    </div>
                     <form id="post_select"
                           class="visually-hidden opacity-0 d-flex flex-column align-content-around position-absolute start-50 top-50 translate-middle text-center rounded-5 shadow-lg"
                           style="background-color: rgba(50, 50, 50, 0.4);
@@ -132,50 +142,64 @@
                                         <i class="bi bi-send" style="margin-right: 5px;"></i>Solicitar intercambio
                                     </button>
                                 {% endif %}
-                            </div>
-                            <!-- Columna de la reputación del usuario -->
-                            <div class="col-md-4 text-center">
-                                <h4 class="m-5">Reputación:</h4>
-                                <div class="progress "
-                                     role="progressbar"
-                                     aria-label="Danger example"
-                                     aria-valuenow="{{ reputation }}"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100">
-                                    <div class="progress-bar bg-primary"
-                                         style="width: {{ reputation_percentage }}%">{{ reputation }}</div>
                                 </div>
-                                {% if role == "user" %}
-                                    <form action="{% url "view_profile" id=author_id %}"
-                                          method="get"
-                                          class="m-5">
-                                        <button type="submit" class="btn btn-outline-primary">Autor: {{ author_name }}</button>
-                                    </form>
-                                {% endif %}
+                                <!-- Columna de la reputación del usuario -->
+                                <div class="col-md-4 text-center">
+                                    <h4 class="m-5">Reputación:</h4>
+                                    <div class="progress "
+                                         role="progressbar"
+                                         aria-label="Danger example"
+                                         aria-valuenow="{{ reputation }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100">
+                                        <div class="progress-bar bg-primary"
+                                             style="width: {{ reputation_percentage }}%">{{ reputation }}</div>
+                                    </div>
+                                    {% if role == "user" %}
+                                        <form action="{% url "view_profile" id=author_id %}"
+                                              method="get"
+                                              class="m-5">
+                                            <button type="submit" class="btn btn-outline-primary">Autor: {{ author_name }}</button>
+                                        </form>
+                                    {% endif %}
+                                    {% if role == "user" and not own_post %}
+                                        <form action="{% url "add_to_favorites" post_id=post.id %}"
+                                              method="post"
+                                              class="m-5">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary">
+                                                {% if is_in_favorites %}
+                                                    <i class="bi bi-star-fill" style="margin-right: 5px;"></i> Eliminar de Favoritos
+                                                {% else %}
+                                                    <i class="bi bi-star" style="margin-right: 5px;"></i> Añadir a Favoritos
+                                                {% endif %}
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% else %}
-                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        <strong>Esta publicación no se encuentra disponible por el momento. Intente más tarde.</strong>
-                    </div>
-                {% endif %}
-            </main>
-            <!-- Bootstrap JavaScript Libraries -->
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-                    crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-                    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-                    crossorigin="anonymous"></script>
-            <script src="https://unpkg.com/htmx.org@1.9.12"
-                    integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
-                    crossorigin="anonymous"></script>
-            <script>
+                    {% else %}
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            <strong>Esta publicación no se encuentra disponible por el momento. Intente más tarde.</strong>
+                        </div>
+                    {% endif %}
+                </main>
+                <!-- Bootstrap JavaScript Libraries -->
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                        crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                        crossorigin="anonymous"></script>
+                <script src="https://unpkg.com/htmx.org@1.9.12"
+                        integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+                        crossorigin="anonymous"></script>
+                <script>
                 document.getElementById("request_button").addEventListener("click", function () {
                     postSelect = document.getElementById("post_select");
                     if (postSelect.classList.contains("opacity-0")) {
@@ -208,6 +232,6 @@
                     }
                 })
 
-            </script>
-        </body>
-    </html>
+                </script>
+            </body>
+        </html>

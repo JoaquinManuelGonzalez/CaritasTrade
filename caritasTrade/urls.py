@@ -97,4 +97,5 @@ urlpatterns = [
     path('list_ecommerce/', ecommerce_views.list_ecommerce, name='list_ecommerce'),
     path('see_ecommerce_post/<int:id>', ecommerce_views.see_ecommerce_post, name='see_ecommerce_post'),
     path('delete_post/<int:id>', ecommerce_views.delete_post, name='delete_post'),
+    path('favorites/', include('need_list.urls'), name="favorites"),
 ]
