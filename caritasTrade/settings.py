@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "finish_day",
     "donations",
     "stadistics",
+    "need_list",
 ]
 
 MIDDLEWARE = [

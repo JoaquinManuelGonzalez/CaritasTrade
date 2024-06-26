@@ -24,6 +24,7 @@ from create_post import views as create_post_views
 from exchanges import views as exchanges_views
 from view_map import views as view_maps_views
 from select_branch import views as select_branch_views
+from need_list import views as need_list_views
 
 
 urlpatterns = [
@@ -94,4 +95,5 @@ urlpatterns = [
     path("finish_day/", include("finish_day.urls"), name="finish_day" ),
     path('donations/', include('donations.urls'), name="donate" ),
     path('stadistics/', include('stadistics.urls'), name="stadistics" ),
+    path('need_list/', need_list_views.list_need_list_products, name="need_list"),
 ]
