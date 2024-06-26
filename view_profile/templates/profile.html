@@ -107,18 +107,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-header">Lista de Necesidades</div>
-                        <div class="card-body">
-                            {% if need_products %}
-                                <ol class="list-group list-group-numbered">
-                                    {% for product in need_products %}<li class="list-group-item">{{ product.name }}</li>{% endfor %}
-                                </ol>
-                            {% else %}
-                                <p class="text-muted">Este usuario no tiene necesidades registradas actualmente.</p>
-                            {% endif %}
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

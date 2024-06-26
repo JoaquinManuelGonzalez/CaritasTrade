@@ -47,17 +47,6 @@
             <li class="nav-item">
               <a class="nav-link fs-4" href="{% url 'create_post' %}"><i class="bi bi-plus-square" style="margin-right: 5px;"></i></i>Crear Publicación</a>
             </li>
-            <!--
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="{% url "see_exchange_requests" %}"><i class="bi bi-envelope-exclamation" style="margin-right: 5px;"></i>Ver Solicitudes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="{% url 'pending_exchanges_management' %}"><i class="bi bi-calendar-check" style="margin-right: 5px;"></i>Confirmación de Intercambios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="{% url "view_pending_score" %}"><i class="bi bi-people" style="margin-right: 5px;"></i>Puntuar Usuarios</a>
-            </li>
-            -->
             <div class="nav-item dropdown">
               <a class="dropdown-toggle nav-link fs-4"
                  type="button"
@@ -81,7 +70,10 @@
               </li>
             {% else %}
               <li class="nav-item">
-                <a class="nav-link fs-4" href="{% url 'editar_perfil_usuario' %}"><i class="bi bi-gear" style="margin-right: 5px;"></i>Editar Perfil </a>
+                <a class="nav-link fs-4" href="{% url 'favorites' %}"><i class="bi bi-star" style="margin-right: 5px;"></i>Favoritos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fs-4" href="{% url 'editar_perfil_usuario' %}"><i class="bi bi-gear" style="margin-right: 5px;"></i>Editar Perfil</a>
               </li>
               <li class="nav-item">
                 <form class="nav-link fs-4" id='form' action="{% url 'confirm_sign_off' %}">
