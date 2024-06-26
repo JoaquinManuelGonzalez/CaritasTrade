@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Ver peticiones de intercambio</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous" />
+    </head>
+    <body>
+        {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
+        <div class="p-5 m-5">
+            <h1 class="mb-4">Cupones</h1>
+            {% if cupons %}
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    {% for cupon in cupons %}
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Cupón {{ cupon.code }}</h5>
+                                    <p class="card-text">Fecha de creación: {{ cupon.timestamp }}</p>
+                                    <p class="card-text">
+                                        Producto canjeado: <a href="{% url 'see_ecommerce_post' id=cupon.exchange_post.id %}">{{ cupon.exchange_post.title }}</a>
+                                    </p>
+                                    <div class="mt-3">
+                                        <a href="{% url 'download_cupon' cupon_id=cupon.id %}"
+                                           class="btn btn-primary">Descargar PDF</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    <strong>No tienes cupones disponibles.</strong>
+                </div>
+            {% endif %}
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12"
+                integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2"
+                crossorigin="anonymous"></script>
+    </body>
+</html>

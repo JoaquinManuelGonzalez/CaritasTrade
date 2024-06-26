@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
@@ -95,6 +96,7 @@ class ExchangePost(models.Model):
     is_finished = models.BooleanField(default=False)
     has_failed = models.BooleanField(default=False)
 
+
 class EcommercePost(models.Model):
     product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
@@ -102,7 +104,9 @@ class EcommercePost(models.Model):
     description = models.TextField(max_length=300)
     point_cost = models.IntegerField()
     stock = models.IntegerField()
-    branch = models.ForeignKey(Branches, on_delete=models.SET_NULL, null=True, blank=True)
+    branch = models.ForeignKey(
+        Branches, on_delete=models.CASCADE, null=True, blank=True
+    )
 
 
 class Affiliate_EcommercePost(models.Model):
@@ -160,3 +164,25 @@ class Exchange(models.Model):
 class Donation(models.Model):
     amount = models.FloatField()
     timestamp = models.DateTimeField()
+
+
+class Cupon(models.Model):
+    code = models.CharField(max_length=5, unique=True)
+    timestamp = models.DateField(null=True, blank=True)
+    pdf = models.BinaryField(null=True, blank=True)
+    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    exchange_post = models.ForeignKey(
+        EcommercePost,
+        on_delete=models.SET_NULL,
+        related_name="exchange_post_id",
+        null=True,
+        blank=True,
+    )
+    branch = models.ForeignKey(Branches, on_delete=models.CASCADE)
+    used = models.BooleanField(default=False)
+    def mark_as_used(self):
+        self.used = True
+        self.save()
+
+    def __str__(self):
+        return f"Cupon {self.code} - Afiliado: {self.affiliate.name}"

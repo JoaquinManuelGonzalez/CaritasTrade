@@ -24,6 +24,18 @@
                 {% include 'worker_navbar.html' with user_session=user_session session_id=session_id session_name=session_name %}
             {% endif %}
             <main class="">
+                {% if message %}
+                    <div class="message_board p-5">
+                        <div class="alert alert-{{ type_of_alert }} alert-dismissible fade show"
+                             role="alert">
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            <strong>{{ message }}</strong>
+                        </div>
+                    </div>
+                {% endif %}
                 {% if post %}
                     <div class="container mt-5 shadow-lg rounded-5 ">
                         <div class="row">
@@ -43,17 +55,23 @@
                                     <p>{{ category.name }}</p>
                                 </div>
                                 {% if role == "user" %}
-                                    <button type="button" class="btn btn-danger m-5" id="request_button">
+                                    <a href="{% url "exchange_points" id=post.id %}"
+                                       type="button"
+                                       class="btn btn-danger m-5"
+                                       id="request_button">
                                         <i class="bi bi-send" style="margin-right: 5px;"></i>Canjear puntos
-                                    </button>
+                                    </a>
                                 {% elif own_post %}
                                     <div class="d-flex">
                                         <button type="button" class="btn btn-warning m-5" id="request_button">
                                             <i class="bi bi-send" style="margin-right: 5px;"></i>Editar post
                                         </button>
-                                        <a href="{% url "delete_post" id=post.id %}"  type="button" class="btn btn-danger m-5" id="request_button">
-                                           <i class="bi bi-trash" style="margin-right: 5px;"></i>Eliminar post
-                                        </a> 
+                                        <a href="{% url "delete_post" id=post.id %}"
+                                           type="button"
+                                           class="btn btn-danger m-5"
+                                           id="request_button">
+                                            <i class="bi bi-trash" style="margin-right: 5px;"></i>Eliminar post
+                                        </a>
                                     </div>
                                 {% endif %}
                             </div>
