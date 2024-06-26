@@ -30,8 +30,20 @@ def list_favorites_products(request):
 
 def delete_from_favorites(request, post_id):
     session_id = request.session.get("id")
+    user_session = session_id == id
     Affiliate_Need_Product.objects.get(affiliate=Affiliate.objects.get(id=session_id), product=ExchangePost.objects.get(id=post_id)).delete()
-    return list_favorites_products(request)
+    favorites = Affiliate_Need_Product.objects.filter(affiliate_id=session_id)
+    exchange_posts = ExchangePost.objects.filter(id__in=favorites.values('product'))
+    combined_data = decode_images(exchange_posts)
+
+    return render(request, "favorites.html", {
+        "session_id": session_id,
+        "user_session": user_session,
+        "session_name": session_name(request),
+        "combined_data": combined_data,
+        "message": "Producto eliminado de la Lista de Favoritos."
+    })
+    
     
 
 def add_to_favorites(request, post_id):
