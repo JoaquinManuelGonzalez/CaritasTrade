@@ -31,6 +31,21 @@
 <body>
     {% include 'user_navbar_with_edit_and_close.html' with user_session=user_session session_id=session_id session_name=session_name %}
     {% block content %}
+    {% if message %}
+        <div
+            class="alert alert-primary alert-dismissible fade show m-2"
+            role="alert"
+        >
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+            ></button>
+        
+            <strong>{{ message }}</strong>
+        </div>
+    {% endif %}
     <div class="container mt-5">
         <div class="custom-header">
             <h1><i class="bi bi-star" style="margin-right: 5px;"></i>Lista de Favoritos<i class="bi bi-star" style="margin-left: 5px;"></i></h1>
