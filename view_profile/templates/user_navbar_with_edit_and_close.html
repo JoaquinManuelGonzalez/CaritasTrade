@@ -14,6 +14,7 @@
           crossorigin="anonymous" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
           rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-secondary ">
@@ -40,28 +41,49 @@
             <li class="nav-item">
               <a class="nav-link fs-4" href="{% url 'list_products' %}"><i class="bi bi-shop" style="margin-right: 5px;"></i>Home</a>
             </li>
+            <div class="nav-item dropdown">
+              <a class="dropdown-toggle nav-link fs-4"
+                 type="button"
+                 data-bs-toggle="dropdown"
+                 aria-expanded="false"><i class="bi bi-cart3"  style="margin-right: 5px;"></i>Ecommerce</a>
+              <ul class="dropdown-menu">
+                <li class="nav-item">
+                  <a class="nav-link fs-4"  style="margin-right: 5px;" href="{% url 'list_ecommerce' %}"><i class="bi bi-cart3"></i> Ver Ecommerce</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link fs-4"  style="margin-right: 5px;" href="{% url 'see_cupons' %}"><i class="bi bi-card-list"></i> Ver Cupones</a>
+                </li>
+            </div>
             <li class="nav-item">
-              <a class="nav-link fs-4" href="#"><i class="bi bi-cart3"></i>Ver Ecommerce</a>
+              <a class="nav-link fs-4" href="{% url 'create_post' %}"><i class="bi bi-plus-square" style="margin-right: 5px;"></i>Crear Publicación</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="{% url 'create_post' %}"><i class="bi bi-plus-square" style="margin-right: 5px;"></i></i>Crear Publicación</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="{% url "see_exchange_requests" %}"><i class="bi bi-envelope-exclamation" style="margin-right: 5px;"></i>Ver Solicitudes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="{% url 'pending_exchanges_management' %}"><i class="bi bi-calendar-check" style="margin-right: 5px;"></i>Confirmación de Intercambios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fs-4" href="{% url "view_pending_score" %}"><i class="bi bi-people" style="margin-right: 5px;"></i>Puntuar Usuarios</a>
-            </li>
+            <div class="nav-item dropdown">
+              <a class="dropdown-toggle nav-link fs-4"
+                 type="button"
+                 data-bs-toggle="dropdown"
+                 aria-expanded="false"><i class="bi bi-arrow-repeat" style="margin-right: 5px;"></i>Gestión de Intercambios</a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="nav-link fs-4" href="{% url "see_exchange_requests" %}">Ver Solicitudes de Intercambio</a>
+                </li>
+                <li>
+                  <a class="nav-link fs-4" href="{% url 'pending_exchanges_management' %}">Confirmación de Intercambios</a>
+                </li>
+                <li>
+                  <a class="nav-link fs-4" href="{% url "view_pending_score" %}">Puntuar Usuarios</a>
+                </li>
+              </ul>
+            </div>
             {% if not user_session %}
               <li class="nav-item">
                 <a class="nav-link fs-4" href="{% url 'view_profile' id=session_id %}"><i class="bi bi-person-bounding-box" style="margin-right: 5px;"></i> {{ session_name }} </a>
               </li>
             {% else %}
               <li class="nav-item">
-                <a class="nav-link fs-4" href="{% url 'editar_perfil_usuario' %}"><i class="bi bi-gear" style="margin-right: 5px;"></i>Editar Perfil </a>
+                <a class="nav-link fs-4" href="{% url 'favorites' %}"><i class="bi bi-star" style="margin-right: 5px;"></i>Favoritos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link fs-4" href="{% url 'editar_perfil_usuario' %}"><i class="bi bi-gear" style="margin-right: 5px;"></i>Editar Perfil</a>
               </li>
               <li class="nav-item">
                 <form class="nav-link fs-4" id='form' action="{% url 'confirm_sign_off' %}">

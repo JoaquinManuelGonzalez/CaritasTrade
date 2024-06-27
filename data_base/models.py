@@ -1,16 +1,7 @@
+import uuid
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
-
-
-class Workers(models.Model):
-    name = models.CharField(max_length=20, blank=True)
-    surname = models.CharField(max_length=20)
-    dni = models.CharField(max_length=8, unique=True)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=10, blank=True)
-    birth_day = models.DateField(blank=True)
-    password = models.CharField(max_length=8)
 
 
 class Affiliate(models.Model):
@@ -47,6 +38,16 @@ class Tokens(models.Model):
     expiration_date = models.DateTimeField()
 
 
+class Workers(models.Model):
+    name = models.CharField(max_length=20, blank=True)
+    surname = models.CharField(max_length=20)
+    dni = models.CharField(max_length=8, unique=True)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=10, blank=True)
+    birth_day = models.DateField(blank=True)
+    password = models.CharField(max_length=8)
+
+
 class Branches(models.Model):
     worker = models.ForeignKey(Workers, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
@@ -75,11 +76,6 @@ class Products(models.Model):
     name = models.CharField(max_length=20)
 
 
-class Affiliate_Need_Product(models.Model):
-    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
-
-
 class ExchangePost(models.Model):
     affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     product_category = models.ForeignKey(
@@ -95,6 +91,12 @@ class ExchangePost(models.Model):
     is_finished = models.BooleanField(default=False)
     has_failed = models.BooleanField(default=False)
 
+
+class Affiliate_Need_Product(models.Model):
+    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    product = models.ForeignKey(ExchangePost, on_delete=models.CASCADE)
+
+
 class EcommercePost(models.Model):
     product_category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
@@ -102,6 +104,9 @@ class EcommercePost(models.Model):
     description = models.TextField(max_length=300)
     point_cost = models.IntegerField()
     stock = models.IntegerField()
+    branch = models.ForeignKey(
+        Branches, on_delete=models.CASCADE, null=True, blank=True
+    )
 
 
 class Affiliate_EcommercePost(models.Model):
@@ -159,3 +164,26 @@ class Exchange(models.Model):
 class Donation(models.Model):
     amount = models.FloatField()
     timestamp = models.DateTimeField()
+
+
+class Cupon(models.Model):
+    code = models.CharField(max_length=5, unique=True)
+    timestamp = models.DateField(null=True, blank=True)
+    pdf = models.BinaryField(null=True, blank=True)
+    affiliate = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
+    exchange_post = models.ForeignKey(
+        EcommercePost,
+        on_delete=models.SET_NULL,
+        related_name="exchange_post_id",
+        null=True,
+        blank=True,
+    )
+    branch = models.ForeignKey(Branches, on_delete=models.CASCADE)
+    used = models.BooleanField(default=False)
+
+    def mark_as_used(self):
+        self.used = True
+        self.save()
+
+    def __str__(self):
+        return f"Cupon {self.code} - Afiliado: {self.affiliate.name}"
