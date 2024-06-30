@@ -103,4 +103,5 @@ urlpatterns = [
     path("see_cupons/", ecommerce_views.see_cupons, name="see_cupons"),
     path("download_cupon/<int:cupon_id>/", ecommerce_views.download_cupon, name="download_cupon"),
     path("register_cupons/", ecommerce_views.register_cupons, name="register_cupons"),
+    path("edit_eccomerce_post/<int:id>/", ecommerce_views.edit_eccomerce_post, name="edit_eccomerce_post")
 ]
