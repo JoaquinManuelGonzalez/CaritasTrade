@@ -4,16 +4,6 @@ from django.utils import timezone
 from datetime import timedelta
 
 
-class Workers(models.Model):
-    name = models.CharField(max_length=20, blank=True)
-    surname = models.CharField(max_length=20)
-    dni = models.CharField(max_length=8, unique=True)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=10, blank=True)
-    birth_day = models.DateField(blank=True)
-    password = models.CharField(max_length=8)
-
-
 class Affiliate(models.Model):
     dni = models.CharField(max_length=8, unique=True)
     email = models.EmailField(unique=True)
@@ -46,6 +36,16 @@ class Tokens(models.Model):
     affiliate_id = models.ForeignKey(Affiliate, on_delete=models.CASCADE)
     token = models.CharField(max_length=16, unique=True)
     expiration_date = models.DateTimeField()
+
+
+class Workers(models.Model):
+    name = models.CharField(max_length=20, blank=True)
+    surname = models.CharField(max_length=20)
+    dni = models.CharField(max_length=8, unique=True)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=10, blank=True)
+    birth_day = models.DateField(blank=True)
+    password = models.CharField(max_length=8)
 
 
 class Branches(models.Model):
@@ -180,6 +180,7 @@ class Cupon(models.Model):
     )
     branch = models.ForeignKey(Branches, on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
+
     def mark_as_used(self):
         self.used = True
         self.save()

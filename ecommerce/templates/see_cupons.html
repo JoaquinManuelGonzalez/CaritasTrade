@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -23,7 +24,7 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h5 class="card-title">Cupón {{ cupon.code }}</h5>
-                                    <p class="card-text">Fecha de creación: {{ cupon.timestamp }}</p>
+                                    <p class="card-text">Fecha de creación: {{ cupon.timestamp|date:"SHORT_DATE_FORMAT" }}</p>
                                     <p class="card-text">
                                         Producto canjeado: <a href="{% url 'see_ecommerce_post' id=cupon.exchange_post.id %}">{{ cupon.exchange_post.title }}</a>
                                     </p>

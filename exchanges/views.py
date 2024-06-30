@@ -87,7 +87,17 @@ def finish_post(exchange):
     in_post.is_finished = True
     in_post.save()
 
-
+def fail_post(exchange):
+    exchange_solicitude = exchange.exchange_solicitude
+    post_for = exchange_solicitude.exchange_post_for_id
+    in_post = exchange_solicitude.in_exchange_post_id
+    if bool(in_post):
+        in_post.has_failed = True
+        in_post.save()
+    if bool(post_for):
+        post_for.has_failed = True
+        post_for.save()
+    
 def penalize_affiliate(affiliate):
     if affiliate.points > 0:
         affiliate.points -= 1
@@ -124,7 +134,9 @@ def validate_exchange_codes(request):
             if penalized_affiliate:
                 message = penalize_affiliate(penalized_affiliate)
                 type_of_alert = "success"
-
+                fail_post(Exchange.objects.get(code1=code1))
+                fail_post(Exchange.objects.get(code2=code1))
+                
     elif not code1 and code2:
         if Exchange.objects.filter(code1=code2, timestamp__isnull=True).exists() and not Exchange.objects.get(code1=code1, timestamp__isnull=True).exchange_date == datetime.datetime.now().date():
             message = "Este intercambio no tiene turno para el dia actual"
@@ -137,6 +149,8 @@ def validate_exchange_codes(request):
             if penalized_affiliate:
                 message = penalize_affiliate(penalized_affiliate)
                 type_of_alert = "success"
+                fail_post(Exchange.objects.get(code1=code1))
+                fail_post(Exchange.objects.get(code2=code1))
 
     elif code1 and code2:
         exchange = (

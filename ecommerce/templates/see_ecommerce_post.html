@@ -58,7 +58,8 @@
                                     <a href="{% url "exchange_points" id=post.id %}"
                                        type="button"
                                        class="btn btn-danger m-5"
-                                       id="request_button">
+                                       id="request_button"
+                                       onclick="return confirm('¿Estás seguro de que deseas canjear puntos por este producto?');">
                                         <i class="bi bi-send" style="margin-right: 5px;"></i>Canjear puntos
                                     </a>
                                 {% elif own_post %}
