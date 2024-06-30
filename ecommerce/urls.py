@@ -15,4 +15,6 @@ urlpatterns = [
     path("see_cupons/", views.see_cupons, name="see_cupons"),
     path("download_cupon/<int:cupon_id>/", views.download_cupon, name="download_cupon"),
     path("register_cupons/", views.register_cupons, name="register_cupons"),
+    path("see_ecommerce_post/", views.see_ecommerce_post, nam="see_ecommerce_post"),
+    path("edit_eccomerce_post/<int:id>/", views.edit_eccomerce_post, name="edit_eccomerce_post")
 ]
