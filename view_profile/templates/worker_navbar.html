@@ -48,6 +48,9 @@
             <li class="nav-item">
               <a class="nav-link fs-4"  style="margin-right: 5px;" href="{% url 'register_cupons' %}"><i class="bi bi-pencil"></i> Registrar Cupón</a>
             </li>
+            <li class="nav-item"> 
+              <a class="nav-link fs-4"  style="margin-right: 5px;" href="{% url 'create_eccomerce_post' %}"><i class="bi bi-plus-square"></i> Crear Eccomerce post</a>
+            </li>
         </div>
         <li class="nav-item">
           <a class="nav-link fs-4" href="{% url "see_waiting_posts" %}"><i class="bi bi-card-checklist" style="margin-right: 5px;"></i> Validar Publicación </a>
@@ -56,7 +59,7 @@
           <a class="nav-link fs-4" href="{% url "category_list" %}"><i class="bi bi-tags" style="margin-right: 5px;"></i> Categorías </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fs-4" href="{% url "finish_day" %}"><i class="bi bi-building-check" style="margin-right: 5px;"></i> Finalizar dia </a>
+          <a class="nav-link fs-4" href="{% url "finish_day" %}" onclick="confirmarFinalizarDia(event)"><i class="bi bi-building-check" style="margin-right: 5px;"></i> Finalizar dia </a>
         </li>
         {% if not user_session %}
           <li class="nav-item">
@@ -72,6 +75,12 @@
           </li>
         {% endif %}
         <script>
+                    function confirmarFinalizarDia(event) {
+                      event.preventDefault();
+                      if (confirm("¿Estás seguro de que deseas finalizar el dia?")) {
+                        window.location.href = "{% url 'finish_day' %}";
+                      }
+                    }
                     function confirmarCierreSesion() {
                         // Mostrar cuadro de diálogo de confirmación
                         if (confirm("¿Estás seguro de que deseas cerrar la sesión?")) {

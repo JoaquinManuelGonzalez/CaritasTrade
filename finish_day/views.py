@@ -16,6 +16,7 @@ def finish_day(request):
         if (exchanges):
             for exchange in exchanges:
                 exchange.timestamp=timezone.now()
+                exchange.has_failed=True
                 exchange.save()
                 penalize_affiliate(exchange.affiliate_1)
                 penalize_affiliate(exchange.affiliate_2)

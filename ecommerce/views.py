@@ -3,6 +3,8 @@ import uuid
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from requests import session
+import base64
+from .forms import ExchangeForm
 from list_exchange_products.views import session_name
 from data_base.models import (
     Branches,
@@ -99,6 +101,44 @@ def delete_post(request, id):
     if EcommercePost.objects.filter(id=id).exists():
         EcommercePost.objects.filter(id=id).first().delete()
     return redirect("list_ecommerce")
+
+
+def create_eccomerce_post(request):
+    worker_branch = Branches.objects.filter(worker_id=request.session.get("id")).first()
+    if (worker_branch):
+        form = ExchangeForm(request.POST or None, request.FILES or None)
+        success_message = None
+        if form.is_valid():
+            post = EcommercePost(
+                title=form.cleaned_data["title"],
+                product_category_id=form.cleaned_data["category"].id,
+                description=form.cleaned_data["description"],
+                image=(
+                    base64.b64encode(form.cleaned_data["image"].read())
+                    if form.cleaned_data["image"]
+                    else form.cleaned_data["image"]
+                ),
+                point_cost=form.cleaned_data["point_cost"],
+                stock=form.cleaned_data["stock"],
+                branch=worker_branch
+            )
+            post.save()
+            success_message = "El post se creo exitosamente"
+            form = ExchangeForm()
+        return render(
+            request,
+            "eccomerce_post_creation.html",
+            {
+                "form": form,
+                "categories": ProductCategory.objects.all(),
+                "success_message": success_message,
+                "user_session": False,
+                "session_id": request.session.get("id"),
+                "session_name": session_name(request),
+            },
+        )
+    else:
+        return render(request, "no_branch_message.html")
 
 
 def exchange_points(request, id):
