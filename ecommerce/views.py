@@ -36,8 +36,9 @@ def decode_images(post):
 
 # Create your views here.
 def list_ecommerce(request):
-    posts = EcommercePost.objects.filter(stock__gt=0)
-
+    posts = EcommercePost.objects.all()
+    if request.session.get("role") == "user":
+        posts = EcommercePost.objects.filter(stock__gt=0)
     query = request.GET.get("q")
     category = request.GET.get("category")
 
@@ -361,6 +362,7 @@ def register_cupons(request):
                 },
             )
         if (
+            not Branches.objects.filter(worker=request.session.get("id")).exists() or
             not Cupon.objects.filter(code=code).first().branch
             == Branches.objects.get(worker=request.session.get("id"))
         ):

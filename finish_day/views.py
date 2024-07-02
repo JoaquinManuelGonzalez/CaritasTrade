@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from data_base.models import Exchange, Branches, Affiliate
 from django.utils import timezone
+from exchanges.views import fail_post
 
 def penalize_affiliate(affiliate):
     if affiliate.points > 0:
@@ -20,6 +21,7 @@ def finish_day(request):
                 exchange.save()
                 penalize_affiliate(exchange.affiliate_1)
                 penalize_affiliate(exchange.affiliate_2)
+                fail_post(exchange)
             return render(request, "success_day_message.html")
         else:
             return render(request, "empty_day_message.html")

@@ -81,15 +81,15 @@ def transactions_pie_chart(request):
                 is_rejected=False,
                 has_failed=False,
             ).count(),
-            "Finalizadas": exchange_posts.filter(
+            "Finalizadas correctamente": exchange_posts.filter(
                 is_finished=True,
                 is_active=True,
                 is_paused=False,
                 is_rejected=False,
                 has_failed=False,
             ).count(),
-            "Fallidas": exchange_posts.filter(
-                is_finished=False,
+            "Finalizadas con ausencia": exchange_posts.filter(
+                is_finished=True,
                 is_active=True,
                 is_paused=False,
                 is_rejected=False,

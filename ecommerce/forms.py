@@ -81,14 +81,14 @@ class ExchangeForm(forms.Form):
     
     def clean_point_cost(self):
         point_cost = self.cleaned_data.get("point_cost")
-        if(point_cost < 0):
+        if(point_cost <= 0):
             raise ValidationError(
                 "El coste de puntos ingresado es inválido. Debe ser positivo.")   
         return point_cost
     
     def clean_stock(self):
         stock = self.cleaned_data.get("stock")
-        if(stock < 0):
+        if(stock <= 0):
             raise ValidationError(
                 "El stock ingresado es inválido. Debe ser positivo.")            
         return stock
@@ -118,16 +118,17 @@ class edit_Form(forms.Form):
         if len(new_description) <= 0:
             raise ValidationError("Ingrese una descripcion.")
         if len(new_description) > 300:
-            raise ValidationError("El titulo debe ser menor a 300 caracteres")
+            raise ValidationError("La descripcción debe ser menor a 300 caracteres")
         return new_description
-    
+
+
     def clean_category(self):
         category = self.cleaned_data.get('category')
         return category
     
     def clean_point_cost(self):
         new_point_cost = self.cleaned_data.get('point_cost')
-        if not new_point_cost:
+        if new_point_cost is None:
             return new_point_cost
         if new_point_cost <= 0:
             raise ValidationError("Ingrese un coste de puntos positivo.")
@@ -135,9 +136,9 @@ class edit_Form(forms.Form):
     
     def clean_stock(self):
         new_stock = self.cleaned_data.get('stock')
-        if not new_stock:
+        if new_stock is None:
             return new_stock
-        if new_stock < 0:
+        if new_stock <= 0:
             raise ValidationError("Ingrese un stock positivo.")
         return new_stock
     
