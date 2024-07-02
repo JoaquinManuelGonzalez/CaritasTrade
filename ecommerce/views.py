@@ -100,7 +100,7 @@ def see_ecommerce_post(request, id):
 def delete_post(request, id):
     if EcommercePost.objects.filter(id=id).exists():
         EcommercePost.objects.filter(id=id).first().delete()
-    return redirect("list_ecommerce")
+    return render(request, "eccomerce_post_delete_message.html")
 
 
 def create_eccomerce_post(request):
