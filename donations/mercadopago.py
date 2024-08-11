@@ -1,3 +1,4 @@
+from django.shortcuts import render
 import mercadopago
 from django.conf import settings
 from requests.exceptions import ConnectionError, RequestException
@@ -27,4 +28,4 @@ def create_preference(donation_amount):
         return preference
     except (ConnectionError, RequestException) as e:
         print(f"Error al conectar con la API de MercadoPago: {e}")
-        return None
+        return render ("donation_error.html")
