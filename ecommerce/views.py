@@ -3,6 +3,8 @@ import uuid
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from requests import session
+import base64
+from .forms import ExchangeForm, edit_Form
 from list_exchange_products.views import session_name
 from data_base.models import (
     Branches,
@@ -34,8 +36,9 @@ def decode_images(post):
 
 # Create your views here.
 def list_ecommerce(request):
-    posts = EcommercePost.objects.filter(stock__gt=0)
-
+    posts = EcommercePost.objects.all()
+    if request.session.get("role") == "user":
+        posts = EcommercePost.objects.filter(stock__gt=0)
     query = request.GET.get("q")
     category = request.GET.get("category")
 
@@ -76,7 +79,6 @@ def see_ecommerce_post(request, id):
             == Branches.objects.get(worker=request.session.get("id")).id
         ):
             own_post = True
-    print(own_post)
     return render(
         request,
         "see_ecommerce_post.html",
@@ -98,7 +100,98 @@ def see_ecommerce_post(request, id):
 def delete_post(request, id):
     if EcommercePost.objects.filter(id=id).exists():
         EcommercePost.objects.filter(id=id).first().delete()
-    return redirect("list_ecommerce")
+    return render(request, "eccomerce_post_delete_message.html")
+
+
+def create_eccomerce_post(request):
+    worker_branch = Branches.objects.filter(worker_id=request.session.get("id")).first()
+    if (worker_branch):
+        form = ExchangeForm(request.POST or None, request.FILES or None)
+        success_message = None
+        if form.is_valid():
+            post = EcommercePost(
+                title=form.cleaned_data["title"],
+                product_category_id=form.cleaned_data["category"].id,
+                description=form.cleaned_data["description"],
+                image=(
+                    base64.b64encode(form.cleaned_data["image"].read())
+                    if form.cleaned_data["image"]
+                    else form.cleaned_data["image"]
+                ),
+                point_cost=form.cleaned_data["point_cost"],
+                stock=form.cleaned_data["stock"],
+                branch=worker_branch
+            )
+            post.save()
+            success_message = "El post se creo exitosamente"
+            form = ExchangeForm()
+        return render(
+            request,
+            "eccomerce_post_creation.html",
+            {
+                "form": form,
+                "categories": ProductCategory.objects.all(),
+                "success_message": success_message,
+                "user_session": False,
+                "session_id": request.session.get("id"),
+                "session_name": session_name(request),
+            },
+        )
+    else:
+        return render(request, "no_branch_message.html")
+    
+def edit_eccomerce_post(request, id):
+    post = EcommercePost.objects.get(id=id)
+    if request.method == "POST":
+        edit_form = edit_Form(request.POST, request.FILES)
+        if edit_form.is_valid():
+            title = edit_form.cleaned_data["title"]
+            description = edit_form.cleaned_data["description"]
+            category = edit_form.cleaned_data["category"]
+            point_cost = edit_form.cleaned_data["point_cost"]
+            stock = edit_form.cleaned_data["stock"]
+            image=(
+                base64.b64encode(edit_form.cleaned_data["image"].read())
+                if edit_form.cleaned_data["image"]
+                else edit_form.cleaned_data["image"]
+            )
+            if title:
+                post.title = title
+            if description:
+                post.description = description
+            if category:
+                post.product_category = category
+            if point_cost:
+                post.point_cost = point_cost
+            if stock:
+                post.stock = stock   
+            if image:
+                post.image = image         
+            post.save()
+            return render(
+                request, "edit_eccomerce_post_success.html", {"id_post": id}
+            )
+        else:
+            return render(
+                request,
+                "eccomerce_post_edition.html",
+                {
+                    "post": post,
+                    "form": edit_form,
+                    "categories": ProductCategory.objects.all()
+                },
+            )
+    else:
+        edit_form = edit_Form()
+        return render(
+            request,
+            "eccomerce_post_edition.html",
+            {
+                "post": post,
+                "form": edit_form,
+                "categories": ProductCategory.objects.all()
+            },
+        )
 
 
 def exchange_points(request, id):
@@ -269,6 +362,7 @@ def register_cupons(request):
                 },
             )
         if (
+            not Branches.objects.filter(worker=request.session.get("id")).exists() or
             not Cupon.objects.filter(code=code).first().branch
             == Branches.objects.get(worker=request.session.get("id"))
         ):

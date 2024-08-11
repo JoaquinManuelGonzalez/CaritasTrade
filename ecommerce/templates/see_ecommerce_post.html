@@ -64,15 +64,20 @@
                                     </a>
                                 {% elif own_post %}
                                     <div class="d-flex">
-                                        <button type="button" class="btn btn-warning m-5" id="request_button">
-                                            <i class="bi bi-send" style="margin-right: 5px;"></i>Editar post
-                                        </button>
-                                        <a href="{% url "delete_post" id=post.id %}"
-                                           type="button"
-                                           class="btn btn-danger m-5"
-                                           id="request_button">
-                                            <i class="bi bi-trash" style="margin-right: 5px;"></i>Eliminar post
-                                        </a>
+                                        <a href="{% url 'edit_eccomerce_post' id=post.id %}"
+                                        type="button"
+                                        class="btn btn-warning m-5"
+                                        id="edit_button"
+                                        onclick="return confirm('¿Estás seguro de que deseas editar este post?');">
+                                        <i class="bi bi-pencil" style="margin-right: 5px;"></i>Editar post
+                                     </a>                                   
+                                     <a href="{% url 'delete_post' id=post.id %}"
+                                     type="button"
+                                     class="btn btn-danger m-5"
+                                     id="delete_button"
+                                     onclick="return confirm('¿Estás seguro de que deseas eliminar este post?');">
+                                     <i class="bi bi-trash" style="margin-right: 5px;"></i>Eliminar post
+                                  </a>
                                     </div>
                                 {% endif %}
                             </div>

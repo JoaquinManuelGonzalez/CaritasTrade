@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Edita tu cuenta</title>
+        <meta charset="utf-8" />
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous" />
+        <!-- Bootstrap Icons CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+              rel="stylesheet">
+    </head>
+    <body class="bg-body-tertiary">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible show" role="alert">
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible show m-2 " role="alert">
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                <strong>Error:
+                    {% for field, errors in form.errors.items %}
+                        {% if forloop.first %}{{ errors.0 }}{% endif %}
+                    {% endfor %}
+                </strong>
+            </div>
+        {% endif %}
+        <div class="container-fluid d-flex justify-content-center align-items-center"
+             style="height: 130vh;
+                    width: 40%">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-2">Editar posteo</h5>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <label for="{{ form.image.id_for_label }}" class="col-sm-9 col-form-label">Imagen</label>
+                            <div class="col-sm-15">
+                                <input type="file"
+                                       class="form-control"
+                                       name="{{ form.image.html_name }}"
+                                       accept="image/*"
+                                       id="{{ form.image.id_for_label }}"
+                                       aria-describedby="fileHelpId" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.title.id_for_label }}" class="col-sm-9 col-form-label">Titulo</label>
+                            <div class="col-sm-15">
+                                <input type="title" class="form-control" id="{{ form.title.id_for_label }}" name="{{ form.title.html_name }}" placeholder="{{ post.title }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.description.id_for_label }}" class="col-sm-9 col-form-label">Descripcion</label>
+                            <div class="col-sm-15">
+                                <input type="description" class="form-control" id="{{ form.description.id_for_label }}" name="{{ form.description.html_name }}" placeholder="{{ post.description }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.category.id_for_label }}" class="col-sm-9 col-form-label">Categoria</label>
+                            <div class="col-sm-15">
+                                <select class="form-select form-select-lg" name="{{ form.category.html_name }}" id="{{ form.category.id_for_label }}">
+                                    <option value=""></option>
+                                    {% for category in categories %}<option value="{{ category.id }}">{{ category.name }}</option>{% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.point_cost.id_for_label }}" class="col-sm-9 col-form-label">Coste de puntos</label>
+                            <div class="col-sm-15">
+                                <input type="point_cost" class="form-control" id="{{ form.point_cost.id_for_label }}" name="{{ form.point_cost.html_name }}" placeholder="{{ post.point_cost }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="{{ form.stock.id_for_label }}" class="col-sm-9 col-form-label">Stock</label>
+                            <div class="col-sm-15">
+                                <input type="stock" class="form-control" id="{{ form.stock.id_for_label }}" name="{{ form.stock.html_name }}" placeholder="{{ post.stock }}">
+                            </div>
+                        </div>
+                        <div class="form-group row mt-4">
+                            <div class="col-sm-6 text-end">
+                                <a href="{% url 'see_ecommerce_post' id=post.id %}" class="btn btn-primary fw-bold mx-2">Volver</a>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-danger fw-bold btn-block">Confirmar cambios</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"></script>
+        <script>
+            var alertList = document.querySelectorAll(".alert");
+            alertList.forEach(function (alert) {
+                new bootstrap.Alert(alert);
+            });
+        </script>
+        <script>
+        </script>
+    </body>
+</html>

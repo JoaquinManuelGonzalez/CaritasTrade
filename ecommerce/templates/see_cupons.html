@@ -29,8 +29,10 @@
                                         Producto canjeado: <a href="{% url 'see_ecommerce_post' id=cupon.exchange_post.id %}">{{ cupon.exchange_post.title }}</a>
                                     </p>
                                     <div class="mt-3">
+                                        {% if not cupon.used %}
                                         <a href="{% url 'download_cupon' cupon_id=cupon.id %}"
                                            class="btn btn-primary">Descargar PDF</a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

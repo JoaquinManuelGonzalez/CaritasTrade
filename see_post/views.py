@@ -51,6 +51,7 @@ def see_post(request, id):
                         is_active=True,
                         product_category=post.product_category,
                         is_finished=False,
+                        has_failed=False
                     ),
                     "is_in_favorites": is_in_favorite,
                 },
